@@ -1,20 +1,28 @@
 part of 'bloc.dart';
 
-abstract class DishesViewState {}
+class DishesViewState {
+  List<DishModel> dishes;
+  bool isLastPage;
+  DishesStates status;
+  Object errorMessage;
 
-class EmptyState extends DishesViewState {}
+  DishesViewState({
+    required this.dishes,
+    required this.isLastPage,
+    required this.status,
+    required this.errorMessage,
+  });
 
-class LoadingState extends DishesViewState {}
-
-class LoadedState extends DishesViewState {
-  final List<DishModel> dishes;
-  final bool isLastPage;
-
-  LoadedState({required this.dishes, required this.isLastPage});
-}
-
-class ErrorState extends DishesViewState {
-  final String errorMessage;
-
-  ErrorState({required this.errorMessage});
+  DishesViewState copyWith({
+    List<DishModel>? dishes,
+    bool? isLastPage,
+    required DishesStates status,
+    Object? errorMessage,
+  }) =>
+      DishesViewState(
+        dishes: dishes == null ? this.dishes : [...this.dishes, ...dishes],
+        isLastPage: isLastPage ?? this.isLastPage,
+        status: status,
+        errorMessage: errorMessage ?? this.errorMessage,
+      );
 }

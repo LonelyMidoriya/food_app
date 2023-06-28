@@ -1,18 +1,11 @@
-import 'package:core/consts/consts.dart';
 import 'package:core/di/app_di.dart';
+import 'package:core_ui/colors/custom_orange_color.dart';
 import 'package:dishes_view/dishes_view.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:core/config/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AppDI().initDependencies();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  await AppDI().initDependencies();
   runApp(const MyApp());
 }
 
@@ -24,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: myColor,
+        primarySwatch: CustomOrangeColor,
       ),
       home: const DishesViewPage(),
     );
