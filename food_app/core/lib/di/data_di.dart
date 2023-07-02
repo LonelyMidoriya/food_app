@@ -16,27 +16,27 @@ class DataDI {
   }
 
   void _initFirestore() {
-    i.registerLazySingleton<FirestoreProvider>(
-      () => FirestoreProviderImpl(),
+    appLocator.registerLazySingleton<FirestoreProvider>(
+      () => FirestoreProvider(),
     );
   }
 
   void _initDishesMapper() {
-    i.registerLazySingleton<DishMapper>(
+    appLocator.registerLazySingleton<DishMapper>(
       () => DishMapper(),
     );
   }
 
   void _initDishes() {
-    i.registerLazySingleton<DishesRepository>(
+    appLocator.registerLazySingleton<DishesRepository>(
       () => DishesRepositoryImpl(
-        i.get(),
-        i.get(),
+        appLocator.get(),
+        appLocator.get(),
       ),
     );
-    i.registerLazySingleton<DishesUseCase>(
-      () => DishesUseCaseImpl(
-        i.get(),
+    appLocator.registerLazySingleton<DishesUseCase>(
+      () => DishesUseCase(
+        appLocator.get(),
       ),
     );
   }

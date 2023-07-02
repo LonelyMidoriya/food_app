@@ -8,6 +8,7 @@ class DishMapper {
       imageUrl: model.imageUrl,
       cost: model.cost,
       type: model.type,
+      description: model.description,
     );
   }
 
@@ -17,6 +18,7 @@ class DishMapper {
       imageUrl: entity.imageUrl,
       cost: entity.cost,
       type: entity.type,
+      description: entity.description,
     );
   }
 }

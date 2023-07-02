@@ -10,6 +10,7 @@ class DishEntity with _$DishEntity {
     required String imageUrl,
     required double cost,
     required String type,
+    required String description,
   }) = _DishEntity;
 
   factory DishEntity.fromJson(Map<String, Object?> json) =>
