@@ -24,6 +24,7 @@ mixin _$DishEntity {
   String get imageUrl => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +38,12 @@ abstract class $DishEntityCopyWith<$Res> {
           DishEntity value, $Res Function(DishEntity) then) =
       _$DishEntityCopyWithImpl<$Res, DishEntity>;
   @useResult
-  $Res call({String name, String imageUrl, double cost, String type});
+  $Res call(
+      {String name,
+      String imageUrl,
+      double cost,
+      String type,
+      String description});
 }
 
 /// @nodoc
@@ -57,6 +63,7 @@ class _$DishEntityCopyWithImpl<$Res, $Val extends DishEntity>
     Object? imageUrl = null,
     Object? cost = null,
     Object? type = null,
+    Object? description = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -75,6 +82,10 @@ class _$DishEntityCopyWithImpl<$Res, $Val extends DishEntity>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -87,7 +98,12 @@ abstract class _$$_DishEntityCopyWith<$Res>
       __$$_DishEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String imageUrl, double cost, String type});
+  $Res call(
+      {String name,
+      String imageUrl,
+      double cost,
+      String type,
+      String description});
 }
 
 /// @nodoc
@@ -105,6 +121,7 @@ class __$$_DishEntityCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? cost = null,
     Object? type = null,
+    Object? description = null,
   }) {
     return _then(_$_DishEntity(
       name: null == name
@@ -123,6 +140,10 @@ class __$$_DishEntityCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -134,7 +155,8 @@ class _$_DishEntity implements _DishEntity {
       {required this.name,
       required this.imageUrl,
       required this.cost,
-      required this.type});
+      required this.type,
+      required this.description});
 
   factory _$_DishEntity.fromJson(Map<String, dynamic> json) =>
       _$$_DishEntityFromJson(json);
@@ -147,10 +169,12 @@ class _$_DishEntity implements _DishEntity {
   final double cost;
   @override
   final String type;
+  @override
+  final String description;
 
   @override
   String toString() {
-    return 'DishEntity(name: $name, imageUrl: $imageUrl, cost: $cost, type: $type)';
+    return 'DishEntity(name: $name, imageUrl: $imageUrl, cost: $cost, type: $type, description: $description)';
   }
 
   @override
@@ -162,12 +186,15 @@ class _$_DishEntity implements _DishEntity {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.cost, cost) || other.cost == cost) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.description, description) ||
+                other.description == description));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, imageUrl, cost, type);
+  int get hashCode =>
+      Object.hash(runtimeType, name, imageUrl, cost, type, description);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +215,8 @@ abstract class _DishEntity implements DishEntity {
       {required final String name,
       required final String imageUrl,
       required final double cost,
-      required final String type}) = _$_DishEntity;
+      required final String type,
+      required final String description}) = _$_DishEntity;
 
   factory _DishEntity.fromJson(Map<String, dynamic> json) =
       _$_DishEntity.fromJson;
@@ -201,6 +229,8 @@ abstract class _DishEntity implements DishEntity {
   double get cost;
   @override
   String get type;
+  @override
+  String get description;
   @override
   @JsonKey(ignore: true)
   _$$_DishEntityCopyWith<_$_DishEntity> get copyWith =>

@@ -12,6 +12,7 @@ _$_DishEntity _$$_DishEntityFromJson(Map<String, dynamic> json) =>
       imageUrl: json['imageUrl'] as String,
       cost: (json['cost'] as num).toDouble(),
       type: json['type'] as String,
+      description: json['description'] as String,
     );
 
 Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
       'imageUrl': instance.imageUrl,
       'cost': instance.cost,
       'type': instance.type,
+      'description': instance.description,
     };
