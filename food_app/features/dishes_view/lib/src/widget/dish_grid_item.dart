@@ -1,27 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core_ui/widgets/grid_text.dart';
+import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
+import 'dish_grid_text.dart';
 
-import 'app_loader_center_widget.dart';
 
-class GridItem extends StatelessWidget {
+
+class DishGridItem extends StatelessWidget {
   final DishModel dish;
-  const GridItem(this.dish, {super.key});
+  const DishGridItem(this.dish, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(6),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          color: theme.colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
               blurStyle: BlurStyle.normal,
-              color: Theme.of(context).colorScheme.secondaryContainer,
+              color: theme.colorScheme.secondaryContainer,
               blurRadius: 30.0,
               spreadRadius: 1.0,
               offset: const Offset(
@@ -60,7 +62,7 @@ class GridItem extends StatelessWidget {
               onPressed: () {},
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.primary,
+                  theme.colorScheme.primary,
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(

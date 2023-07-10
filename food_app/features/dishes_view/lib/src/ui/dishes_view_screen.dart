@@ -1,13 +1,12 @@
-import 'package:core/consts/dishes_states.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
-import 'package:core_ui/widgets/grid_item.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
 import '../bloc/bloc.dart';
+import '../widget/dish_grid_item.dart';
 
 class DishesViewScreen extends StatefulWidget {
   const DishesViewScreen({Key? key}) : super(key: key);
@@ -18,6 +17,7 @@ class DishesViewScreen extends StatefulWidget {
 
 class _DishesViewScreenState extends State<DishesViewScreen> {
   late final ScrollController _scrollController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -47,18 +47,20 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return AnimatedTheme(
+      key: _scaffoldKey,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
-      data: Theme.of(context),
+      data: theme,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: theme.colorScheme.background,
             title: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.primary,
+                  theme.colorScheme.primary,
                 ),
               ),
               onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
@@ -67,30 +69,16 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
               ),
             ),
           ),
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: theme.colorScheme.background,
           body: BlocBuilder<DishesViewBloc, DishesViewState>(
             builder: (BuildContext context, DishesViewState state) {
-              if (state.status == DishesStates.ERROR) {
+              if (state.isError == false && state.isLoaded == false) {
+                return const AppLoaderCenterWidget();
+              } else if (state.isError && state.isLoaded == false) {
                 return Center(
                   child: Text(state.errorMessage.toString()),
                 );
-              }
-              if (state.status == DishesStates.LOADING) {
-                return const AppLoaderCenterWidget();
-              }
-              if (state.status == DishesStates.EMPTY) {
-                return Center(
-                  child: AppButtonWidget(
-                    label: 'load'.trim(),
-                    onTap: () {
-                      BlocProvider.of<DishesViewBloc>(context).add(
-                        LoadEvent(),
-                      );
-                    },
-                  ),
-                );
-              }
-              if (state.status == DishesStates.LOADED) {
+              } else if (state.isLoaded && state.isError == false) {
                 return LiquidPullToRefresh(
                   onRefresh: _onRefresh,
                   child: GridView.builder(
@@ -111,12 +99,22 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                           model: state.dishes[index],
                         ),
                       ),
-                      child: GridItem(state.dishes[index]),
+                      child: DishGridItem(state.dishes[index]),
                     ),
                   ),
                 );
+              } else {
+                return Center(
+                  child: AppButtonWidget(
+                    label: 'load'.trim(),
+                    onTap: () {
+                      BlocProvider.of<DishesViewBloc>(context).add(
+                        InitEvent(),
+                      );
+                    },
+                  ),
+                );
               }
-              return Container();
             },
           ),
         ),

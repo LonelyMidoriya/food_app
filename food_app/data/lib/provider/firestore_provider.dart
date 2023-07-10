@@ -2,15 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:core/di/app_di.dart';
 
 class FirestoreProvider {
-  Future getOne(String name, String collection) async {
+  Future getOne(
+    String name,
+    String collection,
+  ) async {
     return fireStore
         .collection(collection)
-        .where("name", isEqualTo: name)
+        .where('name', isEqualTo: name)
         .get();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getFirstDocs(
-      String collection, int limit) async {
+    String collection,
+    int limit,
+  ) async {
     return await fireStore
         .collection(collection)
         .orderBy('type')
@@ -19,7 +24,10 @@ class FirestoreProvider {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllDocs(
-      String collection, int limit, lastVisible) async {
+    String collection,
+    int limit,
+    lastVisible,
+  ) async {
     return await fireStore
         .collection(collection)
         .orderBy('type')
@@ -28,11 +36,15 @@ class FirestoreProvider {
         .get();
   }
 
-  Future getAllByType(String collection, int limit, String type) async {
+  Future getAllByType(
+    String collection,
+    int limit,
+    String type,
+  ) async {
     return fireStore
         .collection(collection)
         .where(
-          "type",
+          'type',
           isEqualTo: type,
         )
         .limit(limit)

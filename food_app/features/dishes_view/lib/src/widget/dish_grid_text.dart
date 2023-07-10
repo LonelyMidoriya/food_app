@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 class GridText extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
-  const GridText({super.key, required this.text, required this.fontWeight});
+  const GridText({
+    super.key,
+    required this.text,
+    required this.fontWeight,
+  });
 
   @override
   Widget build(BuildContext context) {

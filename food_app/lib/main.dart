@@ -8,11 +8,13 @@ import 'package:navigation/ui/navigation_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  final AdaptiveThemeMode? savedThemeMode = await AdaptiveTheme.getThemeMode();
   await AppDI().initDependencies();
-  runApp(MyApp(
-    savedThemeMode: savedThemeMode,
-  ));
+  runApp(
+    MyApp(
+      savedThemeMode: savedThemeMode,
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -30,11 +32,12 @@ class _MyAppState extends State<MyApp> {
       light: lightTheme,
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       dark: darkTheme,
-      builder: (theme, darkTheme) => MaterialApp(
+      builder: (theme, darkTheme) => MaterialApp.router(
         title: 'Flutter Demo',
+        routerDelegate: appRouter.delegate(),
+        routeInformationParser: appRouter.defaultRouteParser(),
         theme: theme,
         darkTheme: darkTheme,
-        home: const NavigationPage(),
       ),
     );
   }
