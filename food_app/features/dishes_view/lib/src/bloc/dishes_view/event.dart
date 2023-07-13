@@ -2,14 +2,14 @@ part of 'bloc.dart';
 
 abstract class DishesViewEvent {}
 
-class LoadEvent extends DishesViewEvent {}
+class LoadDishesEvent extends DishesViewEvent {}
 
-class InitEvent extends DishesViewEvent {}
+class InitDishesEvent extends DishesViewEvent {}
 
-class LoadByTypeEvent extends DishesViewEvent {
+class LoadDishesByTypeEvent extends DishesViewEvent {
   final String type;
 
-  LoadByTypeEvent({
+  LoadDishesByTypeEvent({
     required this.type,
   });
 }

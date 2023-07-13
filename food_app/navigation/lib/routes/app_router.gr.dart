@@ -17,15 +17,15 @@ class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    NavigationPageRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+    HomePageRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const NavigationPage(),
+        child: const HomePage(),
       );
     },
     DishDescriptionPageRoute.name: (routeData) {
       final args = routeData.argsAs<DishDescriptionPageRouteArgs>();
-      return MaterialPageX<dynamic>(
+      return AdaptivePage<dynamic>(
         routeData: routeData,
         child: DishDescriptionPage(
           key: args.key,
@@ -33,10 +33,16 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    DishesViewPageRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
+    DishesViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
         routeData: routeData,
-        child: const DishesViewPage(),
+        child: const DishesViewScreen(),
+      );
+    },
+    CartViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const CartViewScreen(),
       );
     },
   };
@@ -44,14 +50,19 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(
-          NavigationPageRoute.name,
+          HomePageRoute.name,
           path: '/',
           children: [
             RouteConfig(
-              DishesViewPageRoute.name,
-              path: '',
-              parent: NavigationPageRoute.name,
-            )
+              DishesViewScreenRoute.name,
+              path: 'dishes-view-screen',
+              parent: HomePageRoute.name,
+            ),
+            RouteConfig(
+              CartViewScreenRoute.name,
+              path: 'cart-view-screen',
+              parent: HomePageRoute.name,
+            ),
           ],
         ),
         RouteConfig(
@@ -62,16 +73,16 @@ class _$AppRouter extends RootStackRouter {
 }
 
 /// generated route for
-/// [NavigationPage]
-class NavigationPageRoute extends PageRouteInfo<void> {
-  const NavigationPageRoute({List<PageRouteInfo>? children})
+/// [HomePage]
+class HomePageRoute extends PageRouteInfo<void> {
+  const HomePageRoute({List<PageRouteInfo>? children})
       : super(
-          NavigationPageRoute.name,
+          HomePageRoute.name,
           path: '/',
           initialChildren: children,
         );
 
-  static const String name = 'NavigationPageRoute';
+  static const String name = 'HomePageRoute';
 }
 
 /// generated route for
@@ -79,14 +90,14 @@ class NavigationPageRoute extends PageRouteInfo<void> {
 class DishDescriptionPageRoute
     extends PageRouteInfo<DishDescriptionPageRouteArgs> {
   DishDescriptionPageRoute({
-    required DishModel model,
     Key? key,
+    required DishModel model,
   }) : super(
           DishDescriptionPageRoute.name,
           path: '/dish-description-page',
           args: DishDescriptionPageRouteArgs(
-            model: model,
             key: key,
+            model: model,
           ),
         );
 
@@ -95,28 +106,40 @@ class DishDescriptionPageRoute
 
 class DishDescriptionPageRouteArgs {
   const DishDescriptionPageRouteArgs({
-    required this.model,
     this.key,
+    required this.model,
   });
-
-  final DishModel model;
 
   final Key? key;
 
+  final DishModel model;
+
   @override
   String toString() {
-    return 'DishDescriptionPageRouteArgs{model: $model, key: $key}';
+    return 'DishDescriptionPageRouteArgs{key: $key, model: $model}';
   }
 }
 
 /// generated route for
-/// [DishesViewPage]
-class DishesViewPageRoute extends PageRouteInfo<void> {
-  const DishesViewPageRoute()
+/// [DishesViewScreen]
+class DishesViewScreenRoute extends PageRouteInfo<void> {
+  const DishesViewScreenRoute()
       : super(
-          DishesViewPageRoute.name,
-          path: '',
+          DishesViewScreenRoute.name,
+          path: 'dishes-view-screen',
         );
 
-  static const String name = 'DishesViewPageRoute';
+  static const String name = 'DishesViewScreenRoute';
+}
+
+/// generated route for
+/// [CartViewScreen]
+class CartViewScreenRoute extends PageRouteInfo<void> {
+  const CartViewScreenRoute()
+      : super(
+          CartViewScreenRoute.name,
+          path: 'cart-view-screen',
+        );
+
+  static const String name = 'CartViewScreenRoute';
 }

@@ -12,6 +12,8 @@ dependencies:
     path: ../domain
   core:
     path: ../core
+  cart_view:
+    path: ../features/cart_view
 
   cached_network_image: ^3.2.1
   adaptive_theme: ^3.3.0

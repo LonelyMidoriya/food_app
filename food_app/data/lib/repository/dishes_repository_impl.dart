@@ -15,15 +15,6 @@ class DishesRepositoryImpl implements DishesRepository {
   DishesRepositoryImpl(this._firestoreProvider, this._dishMapper);
 
   @override
-  Future<DishModel> getDish(String name) async {
-    final DishEntity dish = await _firestoreProvider.getOne(
-      name,
-      'dishes',
-    );
-    return _dishMapper.toModel(dish);
-  }
-
-  @override
   Future<List<DishModel>> getFirstDishes() async {
     List<DishModel> listResult = [];
 
@@ -32,12 +23,20 @@ class DishesRepositoryImpl implements DishesRepository {
       'dishes',
       pageCount,
     )
-        .then((value) {
-      _lastVisible = value.docs[value.size - 1];
-      for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-        listResult.add(_dishMapper.toModel(DishEntity.fromJson(result.data())));
-      }
-    });
+        .then(
+      (value) {
+        _lastVisible = value.docs[value.size - 1];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
+          listResult.add(
+            _dishMapper.toModel(
+              DishEntity.fromJson(
+                result.data(),
+              ),
+            ),
+          );
+        }
+      },
+    );
     return listResult;
   }
 
@@ -51,12 +50,20 @@ class DishesRepositoryImpl implements DishesRepository {
       pageCount,
       _lastVisible,
     )
-        .then((value) {
-      _lastVisible = value.docs[value.size - 1];
-      for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-        listResult.add(_dishMapper.toModel(DishEntity.fromJson(result.data())));
-      }
-    });
+        .then(
+      (value) {
+        _lastVisible = value.docs[value.size - 1];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
+          listResult.add(
+            _dishMapper.toModel(
+              DishEntity.fromJson(
+                result.data(),
+              ),
+            ),
+          );
+        }
+      },
+    );
     return listResult;
   }
 
@@ -69,12 +76,20 @@ class DishesRepositoryImpl implements DishesRepository {
       pageCount,
       type,
     )
-        .then((value) {
-      _lastVisible = value.docs[value.size - 1];
-      for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-        listResult.add(_dishMapper.toModel(DishEntity.fromJson(result.data())));
-      }
-    });
+        .then(
+      (value) {
+        _lastVisible = value.docs[value.size - 1];
+        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
+          listResult.add(
+            _dishMapper.toModel(
+              DishEntity.fromJson(
+                result.data(),
+              ),
+            ),
+          );
+        }
+      },
+    );
     return listResult;
   }
 }

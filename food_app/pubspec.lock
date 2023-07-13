@@ -73,6 +73,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  cart_view:
+    dependency: "direct main"
+    description:
+      path: "features/cart_view"
+      relative: true
+    source: path
+    version: "0.0.1"
   characters:
     dependency: transitive
     description:
@@ -166,7 +173,7 @@ packages:
     source: path
     version: "0.0.1"
   domain:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: domain
       relative: true
@@ -656,5 +663,5 @@ packages:
     source: hosted
     version: "1.0.0"
 sdks:
-  dart: ">=3.0.0 <4.0.0"
+  dart: ">=3.0.5 <4.0.0"
   flutter: ">=3.10.0"

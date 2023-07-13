@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core_ui/widgets/add_to_cart_button.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 import 'dish_grid_text.dart';
-
-
 
 class DishGridItem extends StatelessWidget {
   final DishModel dish;
@@ -58,22 +57,9 @@ class DishGridItem extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  theme.colorScheme.primary,
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                ),
-              ),
-              child: const GridText(
-                text: 'Add to cart',
-                fontWeight: FontWeight.w500,
-              ),
+            AddToCartButton(
+              name: dish.name,
+              alignment: MainAxisAlignment.center,
             ),
           ],
         ),

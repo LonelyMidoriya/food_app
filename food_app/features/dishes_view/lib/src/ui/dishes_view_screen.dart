@@ -17,7 +17,6 @@ class DishesViewScreen extends StatefulWidget {
 
 class _DishesViewScreenState extends State<DishesViewScreen> {
   late final ScrollController _scrollController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -32,7 +31,7 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
     if (currentScroll == maxScroll &&
         !BlocProvider.of<DishesViewBloc>(context).state.isLastPage) {
       BlocProvider.of<DishesViewBloc>(context).add(
-        LoadEvent(),
+        LoadDishesEvent(),
       );
     }
   }
@@ -40,7 +39,7 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   Future<void> _onRefresh() async {
     BlocProvider.of<DishesViewBloc>(context).state.isLastPage = false;
     BlocProvider.of<DishesViewBloc>(context).add(
-      InitEvent(),
+      InitDishesEvent(),
     );
     BlocProvider.of<DishesViewBloc>(context).state.dishes = [];
   }
@@ -49,7 +48,6 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return AnimatedTheme(
-      key: _scaffoldKey,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       data: theme,
@@ -99,7 +97,11 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                           model: state.dishes[index],
                         ),
                       ),
-                      child: DishGridItem(state.dishes[index]),
+                      child: GestureDetector(
+                        child: DishGridItem(
+                          state.dishes[index],
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -109,7 +111,7 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                     label: 'load'.trim(),
                     onTap: () {
                       BlocProvider.of<DishesViewBloc>(context).add(
-                        InitEvent(),
+                        InitDishesEvent(),
                       );
                     },
                   ),

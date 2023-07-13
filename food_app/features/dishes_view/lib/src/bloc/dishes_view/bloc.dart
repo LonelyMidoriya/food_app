@@ -1,10 +1,12 @@
 import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
+import 'package:core/di/app_di.dart';
 import 'package:dishes_view/src/ui/dish_description_page.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:domain/usecases/usecase.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/routes/app_router.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -27,12 +29,13 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
             errorMessage: '',
           ),
         ) {
-    on<InitEvent>(_loadInit);
-    on<LoadEvent>(_load);
-    on<NavigateToDetailsEvent>(_navigateToChosenPokemon);
+    on<InitDishesEvent>(_loadInit);
+    on<LoadDishesEvent>(_load);
+    on<NavigateToDetailsEvent>(_navigateToDishDetails);
   }
 
-  Future<void> _load(LoadEvent event, Emitter<DishesViewState> emit) async {
+  Future<void> _load(
+      LoadDishesEvent event, Emitter<DishesViewState> emit) async {
     emit(
       state.copyWith(isLoaded: false, isError: false),
     );
@@ -64,7 +67,8 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     }
   }
 
-  Future<void> _loadInit(InitEvent event, Emitter<DishesViewState> emit) async {
+  Future<void> _loadInit(
+      InitDishesEvent event, Emitter<DishesViewState> emit) async {
     emit(
       state.copyWith(isLoaded: false, isError: false),
     );
@@ -95,15 +99,13 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     }
   }
 
-  void _navigateToChosenPokemon(
+  void _navigateToDishDetails(
     NavigateToDetailsEvent event,
     Emitter<DishesViewState> emit,
   ) {
-    Navigator.of(event.context).push(
-      MaterialPageRoute(
-        builder: (_) => DishDescriptionPage(
-          model: event.model,
-        ),
+    appRouter.navigate(
+      DishDescriptionPageRoute(
+        model: event.model,
       ),
     );
   }

@@ -15,8 +15,12 @@ dependencies:
     path: ../../domain
   core:
     path: ../../core
+  cart_view:
+    path: ../../features/cart_view
   core_ui:
     path: ../../core_ui
+  navigation:
+    path: ../../navigation
 
 dev_dependencies:
   flutter_test:

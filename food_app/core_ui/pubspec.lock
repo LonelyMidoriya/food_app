@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  auto_route:
+    dependency: transitive
+    description:
+      name: auto_route
+      sha256: "12047baeca0e01df93165ef33275b32119d72699ab9a49dc64c20e78f586f96d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.4"
   bloc:
     dependency: transitive
     description:
@@ -65,6 +73,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  cart_view:
+    dependency: "direct main"
+    description:
+      path: "../features/cart_view"
+      relative: true
+    source: path
+    version: "0.0.1"
   characters:
     dependency: transitive
     description:
@@ -132,6 +147,13 @@ packages:
     dependency: transitive
     description:
       path: "../data"
+      relative: true
+    source: path
+    version: "0.0.1"
+  dishes_view:
+    dependency: transitive
+    description:
+      path: "../features/dishes_view"
       relative: true
     source: path
     version: "0.0.1"
@@ -293,6 +315,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  liquid_pull_to_refresh:
+    dependency: transitive
+    description:
+      name: liquid_pull_to_refresh
+      sha256: "11e4cd8c5460085a31b479ec4e1cd063eb8e599f35684d57a44dafa1fd1f67f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   matcher:
     dependency: transitive
     description:
@@ -317,6 +347,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  navigation:
+    dependency: transitive
+    description:
+      path: "../navigation"
+      relative: true
+    source: path
+    version: "0.0.1"
   nested:
     dependency: transitive
     description:
@@ -611,5 +648,5 @@ packages:
     source: hosted
     version: "1.0.0"
 sdks:
-  dart: ">=3.0.0 <4.0.0"
+  dart: ">=3.0.5 <4.0.0"
   flutter: ">=3.10.0"

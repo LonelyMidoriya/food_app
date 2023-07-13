@@ -1,16 +1,16 @@
 import 'package:domain/model/dish_model.dart';
-import 'package:domain/repository/dishes_repository.dart';
 import 'package:domain/usecases/usecase.dart';
+import '../repository/cart_repository.dart';
 
 class GetOneDishUseCase implements FutureUseCase<String, DishModel> {
-  final DishesRepository _dishesRepository;
+  final CartRepository _cartRepository;
 
   const GetOneDishUseCase({
-    required DishesRepository dishesRepository,
-  }) : _dishesRepository = dishesRepository;
+    required CartRepository cartRepository,
+  }) : _cartRepository = cartRepository;
 
   @override
   Future<DishModel> execute(String input) async {
-    return _dishesRepository.getDish(input);
+    return _cartRepository.getDish(input);
   }
 }
