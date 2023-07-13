@@ -1,16 +1,16 @@
-import 'package:domain/model/dish_model.dart';
 import 'package:domain/usecases/usecase.dart';
+
 import '../repository/cart_repository.dart';
 
-class GetOneDishUseCase implements FutureUseCase<String, DishModel> {
+class UpdateCartUseCase implements FutureUseCase<Map<String, dynamic>, void> {
   final CartRepository _cartRepository;
 
-  const GetOneDishUseCase({
+  const UpdateCartUseCase({
     required CartRepository cartRepository,
   }) : _cartRepository = cartRepository;
 
   @override
-  Future<DishModel> execute(String input) async {
-    return _cartRepository.getDish(input);
+  Future<void> execute(Map<String, dynamic> input) async {
+    _cartRepository.updateCart(input);
   }
 }

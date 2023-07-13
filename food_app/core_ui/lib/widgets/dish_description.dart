@@ -54,8 +54,9 @@ class DishDescription extends StatelessWidget {
                     Center(
                       child: Text(
                         model.name,
-                        style: theme.textTheme.titleLarge!
-                            .copyWith(fontWeight: FontWeight.w800),
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -64,8 +65,9 @@ class DishDescription extends StatelessWidget {
                     Center(
                       child: Text(
                         '${model.cost}\$',
-                        style: theme.textTheme.titleLarge!
-                            .copyWith(fontWeight: FontWeight.w500),
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -74,8 +76,9 @@ class DishDescription extends StatelessWidget {
                     Center(
                       child: Text(
                         model.description,
-                        style: theme.textTheme.titleMedium!
-                            .copyWith(fontWeight: FontWeight.w500),
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
