@@ -1,69 +1,78 @@
-import 'package:dishes_view/dishes_view.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:cart_view/cart_view.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/routes/app_router.dart';
 
-class NavigationPage extends StatelessWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
+    ThemeData theme = Theme.of(context);
+    return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: Container(
-          color: Theme.of(context).colorScheme.primary,
-          padding: const EdgeInsets.all(8),
-          child: TabBar(
-            labelColor: Theme.of(context).colorScheme.primary,
-            unselectedLabelColor: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(80.0),
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
-            ),
-            tabs: const [
-              Tab(
-                icon: Icon(
-                  IconData(0xe318, fontFamily: 'MaterialIcons'),
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  IconData(0xe314, fontFamily: 'MaterialIcons'),
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  IconData(0xe59c, fontFamily: 'MaterialIcons'),
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  IconData(0xe57f, fontFamily: 'MaterialIcons'),
-                ),
-              ),
+        body: BlocBuilder<CartViewBloc, CartViewState>(
+            builder: (BuildContext context, CartViewState state) {
+          return AutoTabsScaffold(
+            homeIndex: 0,
+            routes: const [
+              DishesViewScreenRoute(),
+              CartViewScreenRoute(),
             ],
-          ),
-        ),
-        body: const TabBarView(
-          children: [
-            DishesViewPage(),
-            Center(
-              child: Icon(
-                IconData(0xe314, fontFamily: 'MaterialIcons'),
-              ),
-            ),
-            Center(
-              child: Icon(
-                IconData(0xe59c, fontFamily: 'MaterialIcons'),
-              ),
-            ),
-            Center(
-              child: Icon(
-                IconData(0xe57f, fontFamily: 'MaterialIcons'),
-              ),
-            ),
-          ],
-        ),
+            bottomNavigationBuilder: (_, TabsRouter tabsRouter) {
+              return BottomNavigationBar(
+                selectedItemColor: theme.colorScheme.tertiary,
+                unselectedItemColor: theme.colorScheme.secondaryContainer,
+                currentIndex: tabsRouter.activeIndex,
+                onTap: tabsRouter.setActiveIndex,
+                type: BottomNavigationBarType.shifting,
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    backgroundColor: theme.colorScheme.primary,
+                    label: 'Home',
+                    icon: const Icon(
+                      IconData(
+                        0xe318,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                  ),
+                  // BottomNavigationBarItem(
+                  //   backgroundColor: theme.colorScheme.primary,
+                  //   label: 'Order history',
+                  //   icon: const Icon(
+                  //     IconData(
+                  //       0xe314,
+                  //       fontFamily: 'MaterialIcons',
+                  //     ),
+                  //   ),
+                  // ),
+                  BottomNavigationBarItem(
+                    backgroundColor: theme.colorScheme.primary,
+                    label: 'Cart',
+                    icon: const Icon(
+                      IconData(
+                        0xe59c,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                  ),
+                  // BottomNavigationBarItem(
+                  //   backgroundColor: theme.colorScheme.primary,
+                  //   label: 'Settings',
+                  //   icon: const Icon(
+                  //     IconData(
+                  //       0xe57f,
+                  //       fontFamily: 'MaterialIcons',
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              );
+            },
+          );
+        }),
       ),
     );
   }

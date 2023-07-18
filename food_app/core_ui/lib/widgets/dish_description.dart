@@ -10,14 +10,15 @@ class DishDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
       height: double.infinity,
-      color: Theme.of(context).colorScheme.background,
+      color: theme.colorScheme.background,
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               CachedNetworkImage(
                 imageUrl: model.imageUrl,
                 width: 200,
@@ -36,7 +37,7 @@ class DishDescription extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       blurStyle: BlurStyle.normal,
-                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      color: theme.colorScheme.secondaryContainer,
                       blurRadius: 30.0,
                       spreadRadius: 1.0,
                       offset: const Offset(
@@ -45,18 +46,17 @@ class DishDescription extends StatelessWidget {
                       ),
                     ),
                   ],
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Center(
                       child: Text(
                         model.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontWeight: FontWeight.w800),
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -65,10 +65,9 @@ class DishDescription extends StatelessWidget {
                     Center(
                       child: Text(
                         '${model.cost}\$',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(fontWeight: FontWeight.w500),
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -77,10 +76,9 @@ class DishDescription extends StatelessWidget {
                     Center(
                       child: Text(
                         model.description,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(fontWeight: FontWeight.w500),
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],

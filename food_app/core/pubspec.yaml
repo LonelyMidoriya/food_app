@@ -14,6 +14,8 @@ dependencies:
     path: ../data
   domain:
     path: ../domain
+  navigation:
+    path: ../navigation
   flutter:
     sdk: flutter
 
