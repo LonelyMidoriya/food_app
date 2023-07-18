@@ -7,6 +7,7 @@ import 'dish_grid_text.dart';
 
 class DishGridItem extends StatelessWidget {
   final DishModel dish;
+
   const DishGridItem(this.dish, {super.key});
 
   @override
@@ -58,7 +59,7 @@ class DishGridItem extends StatelessWidget {
               height: 10,
             ),
             AddToCartButton(
-              name: dish.name,
+              model: dish,
               alignment: MainAxisAlignment.center,
             ),
           ],

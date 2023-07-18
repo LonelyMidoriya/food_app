@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class DishDescriptionPage extends StatelessWidget {
   final DishModel model;
+
   const DishDescriptionPage({
     super.key,
     required this.model,
@@ -14,10 +15,11 @@ class DishDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: AddToCartButton(
-          name: model.name,
+          model: model,
           alignment: MainAxisAlignment.end,
         ),
         backgroundColor: theme.colorScheme.background,

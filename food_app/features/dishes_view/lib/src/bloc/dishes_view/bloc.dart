@@ -1,7 +1,6 @@
 import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
 import 'package:core/di/app_di.dart';
-import 'package:dishes_view/src/ui/dish_description_page.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:domain/usecases/usecase.dart';
@@ -53,14 +52,12 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
           dishes: allDishes,
           isLastPage: isLastPage,
           isLoaded: true,
-          isInit: false,
         ),
       );
     } catch (e, _) {
       emit(
         state.copyWith(
           isError: true,
-          isInit: false,
           errorMessage: e,
         ),
       );
@@ -85,14 +82,12 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
           dishes: loadedDishes,
           isLastPage: isLastPage,
           isLoaded: true,
-          isInit: false,
         ),
       );
     } catch (e, _) {
       emit(
         state.copyWith(
           isError: true,
-          isInit: false,
           errorMessage: e,
         ),
       );

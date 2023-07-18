@@ -1,3 +1,4 @@
+import 'package:data/mapper/cart_item_mapper.dart';
 import 'package:data/mapper/cart_mapper.dart';
 import 'package:data/mapper/dish_mapper.dart';
 import 'package:data/provider/firestore_provider.dart';
@@ -9,7 +10,6 @@ import 'package:domain/usecases/get_cart_usecase.dart';
 import 'package:domain/usecases/get_dishes_by_type_usecase.dart';
 import 'package:domain/usecases/get_init_dishes_usecase.dart';
 import 'package:domain/usecases/get_next_dishes_usecase.dart';
-import 'package:domain/usecases/get_one_dish_usecase.dart';
 import 'package:domain/usecases/update_cart_usecase.dart';
 
 import 'app_di.dart';
@@ -35,16 +35,14 @@ class DataDI {
       () => DishMapper(),
     );
     appLocator.registerLazySingleton<CartMapper>(
-      () => CartMapper(),
+      () => CartMapper(appLocator.get<CartItemMapper>()),
+    );
+    appLocator.registerLazySingleton<CartItemMapper>(
+          () => CartItemMapper(),
     );
   }
 
   void _initUsecases() {
-    appLocator.registerLazySingleton<GetOneDishUseCase>(
-      () => GetOneDishUseCase(
-        cartRepository: appLocator.get<CartRepository>(),
-      ),
-    );
     appLocator.registerLazySingleton<GetDishesByTypeUseCase>(
       () => GetDishesByTypeUseCase(
         dishesRepository: appLocator.get<DishesRepository>(),
@@ -81,7 +79,6 @@ class DataDI {
     );
     appLocator.registerLazySingleton<CartRepository>(
       () => CartRepositoryImpl(
-        appLocator.get(),
         appLocator.get(),
         appLocator.get(),
       ),

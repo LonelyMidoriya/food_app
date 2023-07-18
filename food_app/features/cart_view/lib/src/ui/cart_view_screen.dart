@@ -3,7 +3,7 @@ import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
-import 'package:domain/model/dish_model.dart';
+import 'package:domain/model/cart_item_model.dart';
 import 'package:flutter/material.dart';
 
 import '../bloc/bloc.dart';
@@ -14,6 +14,7 @@ class CartViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -37,21 +38,20 @@ class CartViewScreen extends StatelessWidget {
           backgroundColor: theme.colorScheme.background,
           body: BlocBuilder<CartViewBloc, CartViewState>(
             builder: (BuildContext context, CartViewState state) {
-              double cost = double.parse((state.cost).toStringAsFixed(2));
-              if (state.isError == false && state.isLoaded == false) {
+              if (!state.isError && !state.isLoaded) {
                 return const AppLoaderCenterWidget();
-              } else if (state.isError && state.isLoaded == false) {
+              } else if (state.isError) {
                 return Center(
                   child: Text(state.errorMessage.toString()),
                 );
-              } else if (state.isLoaded && state.isError == false) {
+              } else if (state.isLoaded) {
                 return Column(
-                  children: [
+                  children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           Text(
                             'Total:',
                             style: Theme.of(context)
@@ -62,7 +62,9 @@ class CartViewScreen extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            '$cost\$',
+                            '${double.parse(
+                              (state.cost).toStringAsFixed(2),
+                            )}\$',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge!
@@ -82,12 +84,11 @@ class CartViewScreen extends StatelessWidget {
                         key: const PageStorageKey<String>('cart'),
                         addAutomaticKeepAlives: false,
                         addRepaintBoundaries: false,
-                        itemCount: state.dishes.length,
+                        itemCount: state.cart.cartItems.length,
                         itemBuilder: (context, index) {
-                          DishModel key = state.dishes[index];
+                          CartItemModel item = state.cart.cartItems[index];
                           return CartListViewItem(
-                            dishModel: key,
-                            count: state.cart[key.name],
+                            itemModel: item,
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>

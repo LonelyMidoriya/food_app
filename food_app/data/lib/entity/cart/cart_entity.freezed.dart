@@ -20,7 +20,7 @@ CartEntity _$CartEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartEntity {
-  Map<String, dynamic> get dishes => throw _privateConstructorUsedError;
+  List<CartItemEntity> get cartItems => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $CartEntityCopyWith<$Res> {
           CartEntity value, $Res Function(CartEntity) then) =
       _$CartEntityCopyWithImpl<$Res, CartEntity>;
   @useResult
-  $Res call({Map<String, dynamic> dishes});
+  $Res call({List<CartItemEntity> cartItems});
 }
 
 /// @nodoc
@@ -50,13 +50,13 @@ class _$CartEntityCopyWithImpl<$Res, $Val extends CartEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dishes = null,
+    Object? cartItems = null,
   }) {
     return _then(_value.copyWith(
-      dishes: null == dishes
-          ? _value.dishes
-          : dishes // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
+      cartItems: null == cartItems
+          ? _value.cartItems
+          : cartItems // ignore: cast_nullable_to_non_nullable
+              as List<CartItemEntity>,
     ) as $Val);
   }
 }
@@ -69,7 +69,7 @@ abstract class _$$_CartEntityCopyWith<$Res>
       __$$_CartEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Map<String, dynamic> dishes});
+  $Res call({List<CartItemEntity> cartItems});
 }
 
 /// @nodoc
@@ -83,13 +83,13 @@ class __$$_CartEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dishes = null,
+    Object? cartItems = null,
   }) {
     return _then(_$_CartEntity(
-      dishes: null == dishes
-          ? _value._dishes
-          : dishes // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
+      cartItems: null == cartItems
+          ? _value._cartItems
+          : cartItems // ignore: cast_nullable_to_non_nullable
+              as List<CartItemEntity>,
     ));
   }
 }
@@ -97,23 +97,23 @@ class __$$_CartEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CartEntity implements _CartEntity {
-  _$_CartEntity({required final Map<String, dynamic> dishes})
-      : _dishes = dishes;
+  _$_CartEntity({required final List<CartItemEntity> cartItems})
+      : _cartItems = cartItems;
 
   factory _$_CartEntity.fromJson(Map<String, dynamic> json) =>
       _$$_CartEntityFromJson(json);
 
-  final Map<String, dynamic> _dishes;
+  final List<CartItemEntity> _cartItems;
   @override
-  Map<String, dynamic> get dishes {
-    if (_dishes is EqualUnmodifiableMapView) return _dishes;
+  List<CartItemEntity> get cartItems {
+    if (_cartItems is EqualUnmodifiableListView) return _cartItems;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_dishes);
+    return EqualUnmodifiableListView(_cartItems);
   }
 
   @override
   String toString() {
-    return 'CartEntity(dishes: $dishes)';
+    return 'CartEntity(cartItems: $cartItems)';
   }
 
   @override
@@ -121,13 +121,14 @@ class _$_CartEntity implements _CartEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CartEntity &&
-            const DeepCollectionEquality().equals(other._dishes, _dishes));
+            const DeepCollectionEquality()
+                .equals(other._cartItems, _cartItems));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_dishes));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_cartItems));
 
   @JsonKey(ignore: true)
   @override
@@ -144,14 +145,14 @@ class _$_CartEntity implements _CartEntity {
 }
 
 abstract class _CartEntity implements CartEntity {
-  factory _CartEntity({required final Map<String, dynamic> dishes}) =
+  factory _CartEntity({required final List<CartItemEntity> cartItems}) =
       _$_CartEntity;
 
   factory _CartEntity.fromJson(Map<String, dynamic> json) =
       _$_CartEntity.fromJson;
 
   @override
-  Map<String, dynamic> get dishes;
+  List<CartItemEntity> get cartItems;
   @override
   @JsonKey(ignore: true)
   _$$_CartEntityCopyWith<_$_CartEntity> get copyWith =>

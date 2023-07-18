@@ -1,22 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core_ui/widgets/add_to_cart_button.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
+import 'package:domain/model/cart_item_model.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
 class CartListViewItem extends StatelessWidget {
-  final DishModel dishModel;
-  final int count;
-  const CartListViewItem(
-      {Key? key, required this.dishModel, required this.count})
-      : super(key: key);
+  final CartItemModel itemModel;
+
+  const CartListViewItem({
+    Key? key,
+    required this.itemModel,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    double cost = double.parse(
-      (count * dishModel.cost).toStringAsFixed(2),
-    );
+
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.primaryContainer,
@@ -40,7 +40,7 @@ class CartListViewItem extends StatelessWidget {
           CachedNetworkImage(
             width: 150,
             height: 150,
-            imageUrl: dishModel.imageUrl,
+            imageUrl: itemModel.imageUrl,
             placeholder: (_, __) => const AppLoaderCenterWidget(),
             errorWidget: (_, __, ___) => const Center(
               child: Text('Error'),
@@ -49,7 +49,7 @@ class CartListViewItem extends StatelessWidget {
           Column(
             children: <Widget>[
               Text(
-                dishModel.name,
+                itemModel.name,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
@@ -58,13 +58,21 @@ class CartListViewItem extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                '$count * ${dishModel.cost} = $cost',
+                '${itemModel.count} * ${itemModel.cost} = ${double.parse(
+                  (itemModel.count * itemModel.cost).toStringAsFixed(2),
+                )}',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
               ),
               AddToCartButton(
-                name: dishModel.name,
+                model: DishModel(
+                  name: itemModel.name,
+                  imageUrl: itemModel.imageUrl,
+                  cost: itemModel.cost,
+                  type: itemModel.type,
+                  description: itemModel.description,
+                ),
                 alignment: MainAxisAlignment.center,
               )
             ],

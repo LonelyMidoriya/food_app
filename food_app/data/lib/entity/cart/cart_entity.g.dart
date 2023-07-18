@@ -8,10 +8,12 @@ part of 'cart_entity.dart';
 
 _$_CartEntity _$$_CartEntityFromJson(Map<String, dynamic> json) =>
     _$_CartEntity(
-      dishes: json['dishes'] as Map<String, dynamic>,
+      cartItems: (json['cartItems'] as List<dynamic>)
+          .map((e) => CartItemEntity.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_CartEntityToJson(_$_CartEntity instance) =>
     <String, dynamic>{
-      'dishes': instance.dishes,
+      'cartItems': instance.cartItems.map((e) => e.toJson()),
     };

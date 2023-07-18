@@ -20,7 +20,6 @@ class DishesViewState {
     bool? isLastPage,
     bool? isLoaded,
     bool? isError,
-    bool? isInit,
     Object? errorMessage,
   }) =>
       DishesViewState(

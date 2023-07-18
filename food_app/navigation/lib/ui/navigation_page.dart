@@ -9,7 +9,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         body: BlocBuilder<CartViewBloc, CartViewState>(

@@ -1,7 +1,9 @@
+import 'package:domain/model/cart_item_model.dart';
+
 class CartModel {
-  Map<String, dynamic> dishes;
+  final List<CartItemModel> cartItems;
 
   CartModel({
-    required this.dishes,
+    required this.cartItems,
   });
 }

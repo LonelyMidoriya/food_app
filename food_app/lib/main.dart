@@ -7,7 +7,6 @@ import 'package:dishes_view/dishes_view.dart';
 import 'package:domain/usecases/get_cart_usecase.dart';
 import 'package:domain/usecases/get_init_dishes_usecase.dart';
 import 'package:domain/usecases/get_next_dishes_usecase.dart';
-import 'package:domain/usecases/get_one_dish_usecase.dart';
 import 'package:domain/usecases/update_cart_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -25,6 +24,7 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   final AdaptiveThemeMode? savedThemeMode;
+
   const MyApp({Key? key, this.savedThemeMode}) : super(key: key);
 
   @override
@@ -47,7 +47,6 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<CartViewBloc>(
           create: (_) => CartViewBloc(
             getCartUseCase: appLocator.get<GetCartUseCase>(),
-            getOneDishUseCase: appLocator.get<GetOneDishUseCase>(),
             updateCartUseCase: appLocator.get<UpdateCartUseCase>(),
           )..add(
               InitCartEvent(),

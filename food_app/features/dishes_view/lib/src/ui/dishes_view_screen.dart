@@ -47,6 +47,7 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -70,13 +71,13 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
           backgroundColor: theme.colorScheme.background,
           body: BlocBuilder<DishesViewBloc, DishesViewState>(
             builder: (BuildContext context, DishesViewState state) {
-              if (state.isError == false && state.isLoaded == false) {
+              if (!state.isError && !state.isLoaded) {
                 return const AppLoaderCenterWidget();
-              } else if (state.isError && state.isLoaded == false) {
+              } else if (state.isError) {
                 return Center(
                   child: Text(state.errorMessage.toString()),
                 );
-              } else if (state.isLoaded && state.isError == false) {
+              } else if (state.isLoaded) {
                 return LiquidPullToRefresh(
                   onRefresh: _onRefresh,
                   child: GridView.builder(

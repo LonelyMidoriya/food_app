@@ -1,26 +1,31 @@
 import 'package:cart_view/cart_view.dart';
 import 'package:core/core.dart';
+import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
 class AddToCartButton extends StatelessWidget {
-  final String name;
+  final DishModel model;
   final MainAxisAlignment alignment;
+
   const AddToCartButton({
     Key? key,
-    required this.name,
+    required this.model,
     required this.alignment,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return AnimatedTheme(
       data: theme,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       child: BlocBuilder<CartViewBloc, CartViewState>(
         builder: (BuildContext context, CartViewState state) {
-          if (state.cart.containsKey(name)) {
+          if (state.cart.cartItems
+              .where((element) => element.name == model.name)
+              .isNotEmpty) {
             return Row(
               mainAxisAlignment: alignment,
               children: <Widget>[
@@ -28,8 +33,11 @@ class AddToCartButton extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<CartViewBloc>(context).add(
                       DeleteFromCartEvent(
-                        name: name,
-                        count: state.cart[name] - 1,
+                        dishModel: model,
+                        count: state.cart.cartItems
+                                .where((element) => element.name == model.name)
+                                .first
+                                .count - 1,
                       ),
                     );
                   },
@@ -56,7 +64,10 @@ class AddToCartButton extends StatelessWidget {
                     horizontal: 6,
                   ),
                   child: Text(
-                    '${state.cart[name]}',
+                    '${state.cart.cartItems
+                        .where((element) => element.name == model.name)
+                        .first
+                        .count}',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
@@ -66,8 +77,11 @@ class AddToCartButton extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<CartViewBloc>(context).add(
                       AddToCartEvent(
-                        name: name,
-                        count: state.cart[name] + 1,
+                        dishModel: model,
+                        count: state.cart.cartItems
+                            .where((element) => element.name == model.name)
+                            .first
+                            .count + 1,
                       ),
                     );
                   },
@@ -95,7 +109,7 @@ class AddToCartButton extends StatelessWidget {
               onPressed: () {
                 BlocProvider.of<CartViewBloc>(context).add(
                   AddToCartEvent(
-                    name: name,
+                    dishModel: model,
                     count: 1,
                   ),
                 );

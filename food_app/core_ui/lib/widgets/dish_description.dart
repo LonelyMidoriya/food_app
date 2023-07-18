@@ -11,6 +11,7 @@ class DishDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return Container(
       height: double.infinity,
       color: theme.colorScheme.background,

@@ -18,12 +18,7 @@ class DishesRepositoryImpl implements DishesRepository {
   Future<List<DishModel>> getFirstDishes() async {
     List<DishModel> listResult = [];
 
-    await _firestoreProvider
-        .getFirstDocs(
-      'dishes',
-      pageCount,
-    )
-        .then(
+    await _firestoreProvider.getFirstDocs('dishes', pageCount).then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
         for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
@@ -45,11 +40,7 @@ class DishesRepositoryImpl implements DishesRepository {
     List<DishModel> listResult = [];
 
     await _firestoreProvider
-        .getAllDocs(
-      'dishes',
-      pageCount,
-      _lastVisible,
-    )
+        .getAllDocs('dishes', pageCount, _lastVisible!)
         .then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
@@ -70,13 +61,8 @@ class DishesRepositoryImpl implements DishesRepository {
   @override
   Future<List<DishModel>> getAllDishesByType(String type) async {
     List<DishModel> listResult = [];
-    await _firestoreProvider
-        .getAllByType(
-      'dishes',
-      pageCount,
-      type,
-    )
-        .then(
+
+    await _firestoreProvider.getAllByType('dishes', pageCount, type).then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
         for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
