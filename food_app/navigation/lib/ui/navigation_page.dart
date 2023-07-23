@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
             routes: const [
               DishesViewScreenRoute(),
               CartViewScreenRoute(),
+              SettingsViewScreenRoute(),
             ],
             bottomNavigationBuilder: (_, TabsRouter tabsRouter) {
               return BottomNavigationBar(
@@ -59,16 +60,16 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // BottomNavigationBarItem(
-                  //   backgroundColor: theme.colorScheme.primary,
-                  //   label: 'Settings',
-                  //   icon: const Icon(
-                  //     IconData(
-                  //       0xe57f,
-                  //       fontFamily: 'MaterialIcons',
-                  //     ),
-                  //   ),
-                  // ),
+                  BottomNavigationBarItem(
+                    backgroundColor: theme.colorScheme.primary,
+                    label: 'Settings',
+                    icon: const Icon(
+                      IconData(
+                        0xe57f,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                  ),
                 ],
               );
             },

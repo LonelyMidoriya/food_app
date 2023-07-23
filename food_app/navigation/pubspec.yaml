@@ -14,6 +14,8 @@ dependencies:
     path: ../features/dishes_view
   cart_view:
     path: ../features/cart_view
+  settings_view:
+    path: ../features/settings_view
   domain:
     path: ../domain
   core:

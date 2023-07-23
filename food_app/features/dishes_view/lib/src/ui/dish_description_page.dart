@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class DishDescriptionPage extends StatelessWidget {
   final DishModel model;
+  final bool hasInternet;
 
   const DishDescriptionPage({
     super.key,
     required this.model,
+    required this.hasInternet,
   });
 
   @override
@@ -21,6 +23,7 @@ class DishDescriptionPage extends StatelessWidget {
         floatingActionButton: AddToCartButton(
           model: model,
           alignment: MainAxisAlignment.end,
+          hasInternet: hasInternet,
         ),
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(

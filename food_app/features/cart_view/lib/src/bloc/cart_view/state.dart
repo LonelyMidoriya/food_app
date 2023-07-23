@@ -6,6 +6,7 @@ class CartViewState {
   final bool isLoaded;
   final bool isError;
   final Object errorMessage;
+  final bool hasInternet;
 
   CartViewState({
     required this.cost,
@@ -13,7 +14,16 @@ class CartViewState {
     required this.isLoaded,
     required this.isError,
     required this.errorMessage,
+    required this.hasInternet,
   });
+
+  CartViewState.empty()
+      : cost = 0,
+        cart = CartModel(cartItems: []),
+        isLoaded = false,
+        isError = false,
+        errorMessage = '',
+        hasInternet = true;
 
   CartViewState copyWith({
     double? cost,
@@ -21,6 +31,7 @@ class CartViewState {
     bool? isLoaded,
     bool? isError,
     Object? errorMessage,
+    bool? hasInternet,
   }) =>
       CartViewState(
         cost: cost ?? this.cost,
@@ -28,5 +39,6 @@ class CartViewState {
         isLoaded: isLoaded ?? this.isLoaded,
         isError: isError ?? this.isError,
         errorMessage: errorMessage ?? this.errorMessage,
+        hasInternet: hasInternet ?? this.hasInternet,
       );
 }

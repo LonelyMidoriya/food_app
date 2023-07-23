@@ -1,8 +1,9 @@
 import 'package:cart_view/src/widget/cart_list_view_item.dart';
 import 'package:core/core.dart';
-import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
+import 'package:core_ui/widgets/custom_text.dart';
+import 'package:dishes_view/dishes_view.dart';
 import 'package:domain/model/cart_item_model.dart';
 import 'package:flutter/material.dart';
 
@@ -21,30 +22,39 @@ class CartViewScreen extends StatelessWidget {
       data: theme,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: theme.colorScheme.background,
-            title: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  theme.colorScheme.primary,
-                ),
-              ),
-              onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
-              child: const Icon(
-                Icons.dark_mode_outlined,
-              ),
-            ),
-          ),
           backgroundColor: theme.colorScheme.background,
-          body: BlocBuilder<CartViewBloc, CartViewState>(
+          body: BlocConsumer<CartViewBloc, CartViewState>(
+            listener: (BuildContext context, CartViewState state) {
+              if (!state.hasInternet) {
+                BlocProvider.of<DishesViewBloc>(context).add(
+                  CheckInternetDishesEvent(),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    elevation: 50,
+                    backgroundColor: Colors.teal,
+                    content: CustomText(
+                      text: 'No Internet connection!',
+                      fontWeight: FontWeight.w800,
+                    ),
+                    duration: Duration(seconds: 2),
+                    margin: EdgeInsets.symmetric(
+                      vertical: 60,
+                      horizontal: 30,
+                    ),
+                  ),
+                );
+              }
+            },
             builder: (BuildContext context, CartViewState state) {
-              if (!state.isError && !state.isLoaded) {
+              if (!state.isError && !state.isLoaded && state.hasInternet) {
                 return const AppLoaderCenterWidget();
-              } else if (state.isError) {
+              } else if (state.isError && state.hasInternet) {
                 return Center(
                   child: Text(state.errorMessage.toString()),
                 );
-              } else if (state.isLoaded) {
+              } else if (state.isLoaded && state.hasInternet) {
                 return Column(
                   children: <Widget>[
                     Padding(
@@ -52,25 +62,15 @@ class CartViewScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            'Total:',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(
-                                  fontWeight: FontWeight.w800,
-                                ),
+                          const CustomText(
+                            text: 'Total:',
+                            fontWeight: FontWeight.w800,
                           ),
-                          Text(
-                            '${double.parse(
+                          CustomText(
+                            text: '${double.parse(
                               (state.cost).toStringAsFixed(2),
                             )}\$',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(
-                                  fontWeight: FontWeight.w800,
-                                ),
+                            fontWeight: FontWeight.w800,
                           ),
                         ],
                       ),
@@ -89,6 +89,7 @@ class CartViewScreen extends StatelessWidget {
                           CartItemModel item = state.cart.cartItems[index];
                           return CartListViewItem(
                             itemModel: item,
+                            hasInternet: state.hasInternet,
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
@@ -99,13 +100,30 @@ class CartViewScreen extends StatelessWidget {
                 );
               } else {
                 return Center(
-                  child: AppButtonWidget(
-                    label: 'load'.trim(),
-                    onTap: () {
-                      BlocProvider.of<CartViewBloc>(context).add(
-                        InitCartEvent(),
-                      );
-                    },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: CustomText(
+                          text: 'Internet connection lost.',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      AppButtonWidget(
+                        label: 'Refresh'.trim(),
+                        onTap: () {
+                          BlocProvider.of<CartViewBloc>(context).add(
+                            InitCartEvent(),
+                          );
+                          BlocProvider.of<DishesViewBloc>(context).add(
+                            CheckInternetDishesEvent(),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 );
               }

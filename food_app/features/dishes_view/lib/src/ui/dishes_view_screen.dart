@@ -1,9 +1,9 @@
+import 'package:cart_view/cart_view.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 
 import '../bloc/bloc.dart';
 import '../widget/dish_grid_item.dart';
@@ -37,11 +37,12 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   }
 
   Future<void> _onRefresh() async {
-    BlocProvider.of<DishesViewBloc>(context).state.isLastPage = false;
     BlocProvider.of<DishesViewBloc>(context).add(
       InitDishesEvent(),
     );
-    BlocProvider.of<DishesViewBloc>(context).state.dishes = [];
+    BlocProvider.of<CartViewBloc>(context).add(
+      CheckInternetEvent(),
+    );
   }
 
   @override
@@ -54,20 +55,6 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
       data: theme,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: theme.colorScheme.background,
-            title: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  theme.colorScheme.primary,
-                ),
-              ),
-              onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
-              child: const Icon(
-                Icons.dark_mode_outlined,
-              ),
-            ),
-          ),
           backgroundColor: theme.colorScheme.background,
           body: BlocBuilder<DishesViewBloc, DishesViewState>(
             builder: (BuildContext context, DishesViewState state) {
@@ -79,6 +66,7 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                 );
               } else if (state.isLoaded) {
                 return LiquidPullToRefresh(
+                  color: theme.colorScheme.primary,
                   onRefresh: _onRefresh,
                   child: GridView.builder(
                     controller: _scrollController,
@@ -100,7 +88,8 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                       ),
                       child: GestureDetector(
                         child: DishGridItem(
-                          state.dishes[index],
+                          hasInternet: state.hasInternet,
+                          dish: state.dishes[index],
                         ),
                       ),
                     ),

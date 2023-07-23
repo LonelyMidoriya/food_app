@@ -14,6 +14,8 @@ class LoadDishesByTypeEvent extends DishesViewEvent {
   });
 }
 
+class CheckInternetDishesEvent extends DishesViewEvent {}
+
 class NavigateToDetailsEvent extends DishesViewEvent {
   final DishModel model;
   final BuildContext context;
