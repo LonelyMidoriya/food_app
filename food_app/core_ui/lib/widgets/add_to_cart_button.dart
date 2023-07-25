@@ -1,20 +1,22 @@
 import 'package:cart_view/cart_view.dart';
+import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
+import 'package:domain/model/cart_item_model.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_view/settings_view.dart';
 
 class AddToCartButton extends StatelessWidget {
   final DishModel model;
-  final MainAxisAlignment alignment;
-  final bool hasInternet;
 
   const AddToCartButton({
     Key? key,
     required this.model,
-    required this.alignment,
-    required this.hasInternet,
   }) : super(key: key);
+
+  Iterable<CartItemModel> _findCartItem(CartViewState state) {
+    return state.cart.cartItems.where((element) => element.name == model.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,129 +27,114 @@ class AddToCartButton extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
       child: BlocBuilder<SettingsViewBloc, SettingsViewState>(
-          builder: (BuildContext context, SettingsViewState settingsState) {
-        return BlocBuilder<CartViewBloc, CartViewState>(
-          builder: (BuildContext context, CartViewState state) {
-            if (state.hasInternet && hasInternet) {
-              if (state.cart.cartItems
-                  .where((element) => element.name == model.name)
-                  .isNotEmpty) {
-                return Row(
-                  mainAxisAlignment: alignment,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<CartViewBloc>(context).add(
-                          DeleteFromCartEvent(
-                            dishModel: model,
-                            count: state.cart.cartItems
-                                    .where(
-                                        (element) => element.name == model.name)
-                                    .first
-                                    .count - 1,
-                          ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          theme.colorScheme.primary,
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                        ),
-                      ),
-                      child: Icon(
-                        const IconData(
-                          0xe24b,
-                          fontFamily: 'MaterialIcons',
-                        ),
-                        size: settingsState.fontSize + 2,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 6,
-                      ),
-                      child: Text(
-                        '${state.cart.cartItems.where((element) => element.name == model.name).first.count}',
-                        style: TextStyle(
-                          fontSize: settingsState.fontSize,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<CartViewBloc>(context).add(
-                          AddToCartEvent(
+        builder: (BuildContext context, SettingsViewState settingsState) {
+          return BlocBuilder<CartViewBloc, CartViewState>(
+            builder: (BuildContext context, CartViewState state) {
+              if (state.hasInternet) {
+                if (_findCartItem(state).isNotEmpty) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CartViewBloc>(context).add(
+                            DeleteFromCartEvent(
                               dishModel: model,
-                              count: state.cart.cartItems
-                                      .where((element) =>
-                                          element.name == model.name)
-                                      .first
-                                      .count + 1),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          theme.colorScheme.primary,
+                              count: _findCartItem(state).first.count - 1,
+                            ),
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            theme.colorScheme.primary,
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
                         ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
+                        child: Icon(
+                          iconMinus1,
+                          size: settingsState.fontSize + 2,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 6,
+                        ),
+                        child: Text(
+                          '${_findCartItem(state).first.count}',
+                          style: TextStyle(
+                            fontSize: settingsState.fontSize,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      child: Icon(
-                        const IconData(
-                          0xe4d6,
-                          fontFamily: 'MaterialIcons',
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CartViewBloc>(context).add(
+                            AddToCartEvent(
+                                dishModel: model,
+                                count: _findCartItem(state).first.count + 1),
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            theme.colorScheme.primary,
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
                         ),
-                        size: settingsState.fontSize + 2,
+                        child: Icon(
+                          iconPlus1,
+                          size: settingsState.fontSize + 2,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<CartViewBloc>(context).add(
+                        AddToCartEvent(
+                          dishModel: model,
+                          count: 1,
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        theme.colorScheme.primary,
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
                       ),
                     ),
-                  ],
-                );
+                    child: Text(
+                      'Add to cart',
+                      style: TextStyle(
+                        fontSize: settingsState.fontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );
+                }
               } else {
-                return ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<CartViewBloc>(context).add(
-                      AddToCartEvent(
-                        dishModel: model,
-                        count: 1,
-                      ),
-                    );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      theme.colorScheme.primary,
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Add to cart',
-                    style: TextStyle(
-                      fontSize: settingsState.fontSize,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
+                return const SizedBox();
               }
-            } else {
-              return const SizedBox();
-            }
-          },
-        );
-      }),
+            },
+          );
+        },
+      ),
     );
   }
 }

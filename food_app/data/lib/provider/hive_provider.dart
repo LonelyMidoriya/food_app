@@ -1,29 +1,20 @@
 import 'package:core/core.dart';
-
-import '../entity/dish/dish_entity.dart';
+import 'package:domain/model/dish_model.dart';
 
 class HiveProvider {
-  Future<void> saveDishesToDB(List<DishEntity> dishes) async {
-    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
-    if (dishesBox.isEmpty) {
-      await dishesBox.addAll(dishes);
+  Future<void> saveDishesToDB(List<DishModel> dishes) async {
+    final Box<DishModel> dishesBox = await Hive.openBox('dishes');
+    for (DishModel model in dishes) {
+      if (!dishesBox.containsKey(model.name)) {
+        await dishesBox.put(model.name, model);
+      }
     }
   }
 
-  Future<List<DishEntity>> getDishesFromDB() async {
-    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
-    final List<DishEntity> entities = dishesBox.values.toList();
-    return entities;
-  }
-
-  Future<double?> getTextSize() async {
-    final Box<double> dishesBox = await Hive.openBox('settings');
-    final double? textSize = dishesBox.get('textSize');
-    return textSize;
-  }
-
-  Future<void> saveTextSize(double textSize) async {
-    final Box<double> dishesBox = await Hive.openBox('settings');
-    dishesBox.put('textSize', textSize);
+  Future<List<DishModel>> getDishesFromDB() async {
+    final Box<DishModel> dishesBox = await Hive.openBox('dishes');
+    final List<DishModel> models = dishesBox.values.toList();
+    models.sort((a,b) => a.type.compareTo(b.type));
+    return models;
   }
 }

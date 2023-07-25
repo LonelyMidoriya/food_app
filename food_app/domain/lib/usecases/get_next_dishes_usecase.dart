@@ -12,6 +12,6 @@ class GetNextDishesUseCase implements FutureUseCase<NoParams, List<DishModel>> {
 
   @override
   Future<List<DishModel>> execute(NoParams input) async {
-    return _dishesRepository.getAllDishes();
+    return _dishesRepository.getNextDishes();
   }
 }

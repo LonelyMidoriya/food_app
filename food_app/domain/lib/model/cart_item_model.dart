@@ -4,7 +4,7 @@ class CartItemModel {
   final double cost;
   final String type;
   final String description;
-  int count;
+  final int count;
 
   CartItemModel({
     required this.name,
@@ -14,4 +14,21 @@ class CartItemModel {
     required this.description,
     required this.count,
   });
+
+  CartItemModel copyWith({
+    String? name,
+    String? imageUrl,
+    double? cost,
+    String? type,
+    String? description,
+    int? count,
+  }) =>
+      CartItemModel(
+        name: name ?? this.name,
+        imageUrl: imageUrl ?? this.imageUrl,
+        cost: cost ?? this.cost,
+        type: type ?? this.type,
+        description: description ?? this.description,
+        count: count ?? this.count,
+      );
 }

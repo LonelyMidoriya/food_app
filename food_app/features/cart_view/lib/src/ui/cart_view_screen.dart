@@ -89,7 +89,6 @@ class CartViewScreen extends StatelessWidget {
                           CartItemModel item = state.cart.cartItems[index];
                           return CartListViewItem(
                             itemModel: item,
-                            hasInternet: state.hasInternet,
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
@@ -102,7 +101,7 @@ class CartViewScreen extends StatelessWidget {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       const Center(
                         child: CustomText(
                           text: 'Internet connection lost.',

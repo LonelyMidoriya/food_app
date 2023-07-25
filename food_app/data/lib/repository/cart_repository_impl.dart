@@ -16,14 +16,11 @@ class CartRepositoryImpl implements CartRepository {
 
   @override
   Future<CartModel> getCart() async {
-    late CartEntity cartEntity;
-
-    await _firestoreProvider.getCart('cart', 1).then(
-      (value) {
-        cartEntity = CartEntity.fromJson(value.data()!);
-      },
-    );
-
+    final CartEntity cartEntity;
+    final Map<String, dynamic>? cartJson = await _firestoreProvider
+        .getCart('cart', 1)
+        .then((value) => value.data());
+    cartEntity = CartEntity.fromJson(cartJson!);
     return _cartMapper.toModel(cartEntity);
   }
 
@@ -31,7 +28,6 @@ class CartRepositoryImpl implements CartRepository {
   Future<void> updateCart(
     CartModel cart,
   ) async {
-    print(_cartMapper.toEntity(cart).toJson());
     await _firestoreProvider.updateCart(
       _cartMapper.toEntity(cart).toJson(),
       'cart',

@@ -30,7 +30,6 @@ class _$AppRouter extends RootStackRouter {
         child: DishDescriptionPage(
           key: args.key,
           model: args.model,
-          hasInternet: args.hasInternet,
         ),
       );
     },

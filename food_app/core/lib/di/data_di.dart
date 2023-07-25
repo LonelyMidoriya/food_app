@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:data/entity/dish/dish_entity_adapter.dart';
 import 'package:data/mapper/cart_item_mapper.dart';
 import 'package:data/mapper/cart_mapper.dart';
 import 'package:data/mapper/dish_mapper.dart';
@@ -8,19 +7,19 @@ import 'package:data/provider/hive_provider.dart';
 import 'package:data/repository/cart_repository_impl.dart';
 import 'package:data/repository/dishes_repository_impl.dart';
 import 'package:data/repository/settings_repository_impl.dart';
+import 'package:domain/model/dish_model.dart';
 import 'package:domain/repository/cart_repository.dart';
 import 'package:domain/repository/dishes_repository.dart';
 import 'package:domain/repository/settings_repository.dart';
 import 'package:domain/usecases/get_cart_usecase.dart';
 import 'package:domain/usecases/get_dishes_by_type_usecase.dart';
-import 'package:domain/usecases/get_dishes_from_db_usecase.dart';
 import 'package:domain/usecases/get_init_dishes_usecase.dart';
 import 'package:domain/usecases/get_next_dishes_usecase.dart';
 import 'package:domain/usecases/get_text_size_usecase.dart';
-import 'package:domain/usecases/save_dishes_to_db_usecase.dart';
 import 'package:domain/usecases/save_text_size_usecase.dart';
 import 'package:domain/usecases/update_cart_usecase.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_di.dart';
 
@@ -34,6 +33,8 @@ class DataDI {
     _initUsecases();
     _initAdapter();
     _initHive();
+    _initInternetConnection();
+    _initPrefs();
   }
 
   void _initFirestore() {
@@ -42,12 +43,20 @@ class DataDI {
     );
   }
 
+  void _initInternetConnection() {
+    appLocator.registerLazySingleton<InternetConnection>(
+      () => InternetConnection(),
+    );
+  }
+
   void _initMappers() {
     appLocator.registerLazySingleton<DishMapper>(
       () => DishMapper(),
     );
     appLocator.registerLazySingleton<CartMapper>(
-      () => CartMapper(appLocator.get<CartItemMapper>()),
+      () => CartMapper(
+        appLocator.get<CartItemMapper>(),
+      ),
     );
     appLocator.registerLazySingleton<CartItemMapper>(
       () => CartItemMapper(),
@@ -55,15 +64,22 @@ class DataDI {
   }
 
   void _initAdapter() {
-    appLocator.registerLazySingleton<DishEntityAdapter>(
-      () => DishEntityAdapter(),
+    appLocator.registerLazySingleton<DishModelAdapter>(
+      () => DishModelAdapter(),
+    );
+  }
+
+  Future<void> _initPrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    appLocator.registerLazySingleton<SharedPreferences>(
+      () => prefs,
     );
   }
 
   Future<void> _initHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(
-      appLocator.get<DishEntityAdapter>(),
+      appLocator.get<DishModelAdapter>(),
     );
     appLocator.registerLazySingleton<HiveProvider>(
       () => HiveProvider(),
@@ -73,16 +89,6 @@ class DataDI {
   void _initUsecases() {
     appLocator.registerLazySingleton<GetDishesByTypeUseCase>(
       () => GetDishesByTypeUseCase(
-        dishesRepository: appLocator.get<DishesRepository>(),
-      ),
-    );
-    appLocator.registerLazySingleton<GetDishesFromDBUseCase>(
-      () => GetDishesFromDBUseCase(
-        dishesRepository: appLocator.get<DishesRepository>(),
-      ),
-    );
-    appLocator.registerLazySingleton<SaveDishesToDBUsecase>(
-      () => SaveDishesToDBUsecase(
         dishesRepository: appLocator.get<DishesRepository>(),
       ),
     );
