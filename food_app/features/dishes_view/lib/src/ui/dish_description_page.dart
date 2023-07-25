@@ -6,19 +6,24 @@ import 'package:flutter/material.dart';
 
 class DishDescriptionPage extends StatelessWidget {
   final DishModel model;
+  final bool hasInternet;
+
   const DishDescriptionPage({
     super.key,
     required this.model,
+    required this.hasInternet,
   });
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: AddToCartButton(
-          name: model.name,
+          model: model,
           alignment: MainAxisAlignment.end,
+          hasInternet: hasInternet,
         ),
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(

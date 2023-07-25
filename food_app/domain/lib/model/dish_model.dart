@@ -1,9 +1,9 @@
 class DishModel {
-  String name;
-  String imageUrl;
-  double cost;
-  String type;
-  String description;
+  final String name;
+  final String imageUrl;
+  final double cost;
+  final String type;
+  final String description;
 
   DishModel({
     required this.name,

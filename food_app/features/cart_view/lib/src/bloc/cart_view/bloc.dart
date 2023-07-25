@@ -1,8 +1,9 @@
 import 'package:core/core.dart';
+import 'package:core/di/app_di.dart';
+import 'package:domain/model/cart_item_model.dart';
 import 'package:domain/model/cart_model.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:domain/usecases/get_cart_usecase.dart';
-import 'package:domain/usecases/get_one_dish_usecase.dart';
 import 'package:domain/usecases/update_cart_usecase.dart';
 import 'package:domain/usecases/usecase.dart';
 
@@ -11,171 +12,203 @@ part 'state.dart';
 
 class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
   final GetCartUseCase _getCartUseCase;
-  final GetOneDishUseCase _getOneDishUseCase;
   final UpdateCartUseCase _updateCartUseCase;
 
   CartViewBloc({
     required GetCartUseCase getCartUseCase,
-    required GetOneDishUseCase getOneDishUseCase,
     required UpdateCartUseCase updateCartUseCase,
   })  : _getCartUseCase = getCartUseCase,
-        _getOneDishUseCase = getOneDishUseCase,
         _updateCartUseCase = updateCartUseCase,
         super(
-          CartViewState(
-            isLoaded: false,
-            isError: false,
-            dishes: [],
-            cart: {},
-            errorMessage: '',
-            cost: 0,
-          ),
+          CartViewState.empty(),
         ) {
     on<InitCartEvent>(_init);
     on<AddToCartEvent>(_addToCart);
     on<DeleteFromCartEvent>(_deleteFromCart);
+    on<CheckInternetEvent>(_checkInternet);
+  }
+
+  Future<void> _checkInternet(
+    CheckInternetEvent event,
+    Emitter<CartViewState> emit,
+  ) async {
+    final bool hasInternet = await internetConnection.hasInternetAccess;
+    emit(
+      state.copyWith(hasInternet: hasInternet),
+    );
   }
 
   Future<void> _init(InitCartEvent event, Emitter<CartViewState> emit) async {
     emit(
-      state.copyWith(isLoaded: false, isError: false),
+      state.copyWith(
+        isLoaded: false,
+        isError: false,
+        hasInternet: true,
+      ),
     );
-    try {
-      final CartModel cartModel =
-          await _getCartUseCase.execute(const NoParams());
-      List<DishModel> dishes = [];
 
-      for (String name in cartModel.dishes.keys) {
-        DishModel dish = await _getOneDishUseCase.execute(name);
-        dishes.add(dish);
+    add(CheckInternetEvent());
+
+    if (state.hasInternet) {
+      try {
+        final CartModel cartModel =
+            await _getCartUseCase.execute(const NoParams());
+        double cost = 0;
+        for (var res in cartModel.cartItems) {
+          cost += res.cost * res.count;
+        }
+        emit(state.copyWith(
+          cost: cost,
+          isLoaded: true,
+          cart: cartModel,
+        ));
+      } catch (e, _) {
+        emit(
+          state.copyWith(
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
+          ),
+        );
       }
-      double cost = 0;
-      for (var res in dishes) {
-        cost += res.cost * cartModel.dishes[res.name];
-      }
-      emit(state.copyWith(
-        dishes: dishes,
-        cost: cost,
-        isLoaded: true,
-        cart: cartModel.dishes,
-      ));
-    } catch (e, _) {
-      emit(
-        state.copyWith(
-          isError: true,
-          isInit: false,
-          errorMessage: e,
-        ),
-      );
     }
   }
 
   Future<void> _addToCart(
-      AddToCartEvent event, Emitter<CartViewState> emit) async {
-    try {
-      if (state.cart.isEmpty) {
-        Map<String, dynamic> newMap = {};
-        newMap.addAll({event.name: event.count});
-        DishModel dish = await _getOneDishUseCase.execute(event.name);
-        double cost = dish.cost;
-        _updateCartUseCase.execute(newMap);
-        emit(
-          state.copyWith(
-            cost: cost,
-            cart: newMap,
-            dishes: [dish],
-            isLoaded: true,
-          ),
-        );
-      } else {
-        if (state.cart.containsKey(event.name)) {
-          Map<String, dynamic> newCart = {};
-          newCart.addAll(state.cart);
-          DishModel dish = state.dishes[
-              state.dishes.indexWhere((element) => element.name == event.name)];
-          newCart[event.name] = event.count;
-          _updateCartUseCase.execute(newCart);
+    AddToCartEvent event,
+    Emitter<CartViewState> emit,
+  ) async {
+    add(CheckInternetEvent());
 
+    if (state.hasInternet) {
+      try {
+        if (state.cart.cartItems.isEmpty) {
+          final CartItemModel cartItemModel = CartItemModel(
+            name: event.dishModel.name,
+            imageUrl: event.dishModel.imageUrl,
+            cost: event.dishModel.cost,
+            type: event.dishModel.type,
+            description: event.dishModel.description,
+            count: event.count,
+          );
+          final CartModel newCartModel = CartModel(cartItems: [cartItemModel]);
+          _updateCartUseCase.execute(newCartModel);
           emit(
             state.copyWith(
+              cost: cartItemModel.cost,
+              cart: newCartModel,
               isLoaded: true,
-              cost: state.cost + dish.cost,
-              cart: newCart,
+              isError: false,
             ),
           );
         } else {
-          Map<String, dynamic> newCart = {};
-          newCart.addAll(state.cart);
-          DishModel dish = await _getOneDishUseCase.execute(event.name);
-          newCart.addAll(
-            {dish.name: 1},
-          );
-          _updateCartUseCase.execute(newCart);
-          emit(
-            state.copyWith(
-              isLoaded: true,
-              cost: state.cost + dish.cost,
-              cart: newCart,
-              dishes: [...state.dishes, dish],
-            ),
-          );
+          if (state.cart.cartItems
+              .where((element) => element.name == event.dishModel.name)
+              .isNotEmpty) {
+            final CartModel newCart;
+            newCart = state.cart;
+            newCart.cartItems
+                .where((element) => element.name == event.dishModel.name)
+                .first
+                .count = event.count;
+            _updateCartUseCase.execute(newCart);
+
+            emit(
+              state.copyWith(
+                isLoaded: true,
+                isError: false,
+                cost: state.cost +
+                    newCart.cartItems
+                        .where(
+                            (element) => element.name == event.dishModel.name)
+                        .first
+                        .cost,
+                cart: newCart,
+              ),
+            );
+          } else {
+            final CartModel newCart;
+            newCart = state.cart;
+            final CartItemModel cartItemModel = CartItemModel(
+              name: event.dishModel.name,
+              imageUrl: event.dishModel.imageUrl,
+              cost: event.dishModel.cost,
+              type: event.dishModel.type,
+              description: event.dishModel.description,
+              count: event.count,
+            );
+            newCart.cartItems.add(cartItemModel);
+            _updateCartUseCase.execute(newCart);
+            emit(
+              state.copyWith(
+                isLoaded: true,
+                isError: false,
+                cost: state.cost + cartItemModel.cost,
+                cart: newCart,
+              ),
+            );
+          }
         }
+      } catch (e, _) {
+        emit(
+          state.copyWith(
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
+          ),
+        );
       }
-    } catch (e, _) {
-      emit(
-        state.copyWith(
-          isError: true,
-          isInit: false,
-          errorMessage: e,
-        ),
-      );
     }
   }
 
   Future<void> _deleteFromCart(
-      DeleteFromCartEvent event, Emitter<CartViewState> emit) async {
-    try {
-      if (event.count == 0) {
-        Map<String, dynamic> newCart = {};
-        newCart.addAll(state.cart);
-        DishModel dish = state.dishes[
-            state.dishes.indexWhere((element) => element.name == event.name)];
-        newCart[event.name] = event.count;
-        newCart.removeWhere((key, value) => value == 0);
-        _updateCartUseCase.execute(newCart);
-        List<DishModel> dishes = [];
-        dishes = [...state.dishes];
-        dishes.removeWhere((element) => element == dish);
+    DeleteFromCartEvent event,
+    Emitter<CartViewState> emit,
+  ) async {
+    add(CheckInternetEvent());
+
+    if (state.hasInternet) {
+      try {
+        if (event.count == 0) {
+          final CartModel newCart;
+          newCart = state.cart;
+          newCart.cartItems
+              .removeWhere((element) => element.name == event.dishModel.name);
+          _updateCartUseCase.execute(newCart);
+          emit(
+            state.copyWith(
+              isLoaded: true,
+              isError: false,
+              cost: state.cost - event.dishModel.cost,
+              cart: newCart,
+            ),
+          );
+        } else {
+          final CartModel newCart;
+          newCart = state.cart;
+          newCart.cartItems
+              .where((element) => element.name == event.dishModel.name)
+              .first
+              .count = event.count;
+          _updateCartUseCase.execute(newCart);
+          emit(
+            state.copyWith(
+              isLoaded: true,
+              isError: false,
+              cost: state.cost - event.dishModel.cost,
+              cart: newCart,
+            ),
+          );
+        }
+      } catch (e, _) {
         emit(
           state.copyWith(
-            isLoaded: true,
-            cost: state.cost - dish.cost,
-            cart: newCart,
-            dishes: dishes,
-          ),
-        );
-      } else {
-        Map<String, dynamic> newCart = {};
-        newCart.addAll(state.cart);
-        DishModel dish = await _getOneDishUseCase.execute(event.name);
-        newCart.update(dish.name, (value) => event.count);
-        _updateCartUseCase.execute(newCart);
-        emit(
-          state.copyWith(
-            isLoaded: true,
-            cost: state.cost - dish.cost,
-            cart: newCart,
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
           ),
         );
       }
-    } catch (e, _) {
-      emit(
-        state.copyWith(
-          isError: true,
-          isInit: false,
-          errorMessage: e,
-        ),
-      );
     }
   }
 }

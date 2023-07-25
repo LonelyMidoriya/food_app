@@ -1,6 +1,7 @@
 import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
 import 'package:data/entity/dish/dish_entity.dart';
+import 'package:data/provider/hive_provider.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:domain/repository/dishes_repository.dart';
 
@@ -9,21 +10,21 @@ import '../provider/firestore_provider.dart';
 
 class DishesRepositoryImpl implements DishesRepository {
   final FirestoreProvider _firestoreProvider;
+  final HiveProvider _hiveProvider;
   final DishMapper _dishMapper;
   QueryDocumentSnapshot<Map<String, dynamic>>? _lastVisible;
 
-  DishesRepositoryImpl(this._firestoreProvider, this._dishMapper);
+  DishesRepositoryImpl(
+    this._firestoreProvider,
+    this._dishMapper,
+    this._hiveProvider,
+  );
 
   @override
   Future<List<DishModel>> getFirstDishes() async {
     List<DishModel> listResult = [];
 
-    await _firestoreProvider
-        .getFirstDocs(
-      'dishes',
-      pageCount,
-    )
-        .then(
+    await _firestoreProvider.getFirstDocs('dishes', pageCount).then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
         for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
@@ -45,11 +46,7 @@ class DishesRepositoryImpl implements DishesRepository {
     List<DishModel> listResult = [];
 
     await _firestoreProvider
-        .getAllDocs(
-      'dishes',
-      pageCount,
-      _lastVisible,
-    )
+        .getAllDocs('dishes', pageCount, _lastVisible!)
         .then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
@@ -68,15 +65,43 @@ class DishesRepositoryImpl implements DishesRepository {
   }
 
   @override
+  Future<List<DishModel>> getAllDishesFromDB() async {
+    List<DishModel> listResult = [];
+
+    await _hiveProvider.getDishesFromDB().then(
+      (value) {
+        for (DishEntity entity in value) {
+          listResult.add(_dishMapper.toModel(entity));
+        }
+      },
+    );
+    return listResult;
+  }
+
+  @override
+  Future<void> saveDishesToDB() async {
+    List<DishEntity> listResult = [];
+
+    await _firestoreProvider.getFirstDocs('dishes', 10000).then(
+      (value) {
+        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
+          listResult.add(
+            DishEntity.fromJson(
+              result.data(),
+            ),
+          );
+        }
+      },
+    );
+
+    await _hiveProvider.saveDishesToDB(listResult);
+  }
+
+  @override
   Future<List<DishModel>> getAllDishesByType(String type) async {
     List<DishModel> listResult = [];
-    await _firestoreProvider
-        .getAllByType(
-      'dishes',
-      pageCount,
-      type,
-    )
-        .then(
+
+    await _firestoreProvider.getAllByType('dishes', pageCount, type).then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
         for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {

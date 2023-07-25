@@ -6,6 +6,7 @@ class DishesViewState {
   bool isLoaded;
   bool isError;
   Object errorMessage;
+  bool hasInternet;
 
   DishesViewState({
     required this.dishes,
@@ -13,15 +14,24 @@ class DishesViewState {
     required this.isLoaded,
     required this.isError,
     required this.errorMessage,
+    required this.hasInternet,
   });
+
+  DishesViewState.empty()
+      : dishes = [],
+        isError = false,
+        isLoaded = false,
+        isLastPage = false,
+        errorMessage = '',
+        hasInternet = true;
 
   DishesViewState copyWith({
     List<DishModel>? dishes,
     bool? isLastPage,
     bool? isLoaded,
     bool? isError,
-    bool? isInit,
     Object? errorMessage,
+    bool? hasInternet,
   }) =>
       DishesViewState(
         dishes: dishes ?? this.dishes,
@@ -29,5 +39,6 @@ class DishesViewState {
         isLoaded: isLoaded ?? this.isLoaded,
         isError: isError ?? this.isError,
         errorMessage: errorMessage ?? this.errorMessage,
+        hasInternet: hasInternet ?? this.hasInternet,
       );
 }

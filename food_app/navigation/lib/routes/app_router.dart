@@ -4,6 +4,7 @@ import 'package:cart_view/cart_view.dart';
 import 'package:dishes_view/dishes_view.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:settings_view/settings_view.dart';
 
 import '../ui/navigation_page.dart';
 
@@ -21,6 +22,9 @@ part 'app_router.gr.dart';
         ),
         AutoRoute(
           page: CartViewScreen,
+        ),
+        AutoRoute(
+          page: SettingsViewScreen,
         ),
       ],
     ),

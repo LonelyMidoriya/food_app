@@ -30,6 +30,7 @@ class _$AppRouter extends RootStackRouter {
         child: DishDescriptionPage(
           key: args.key,
           model: args.model,
+          hasInternet: args.hasInternet,
         ),
       );
     },
@@ -43,6 +44,12 @@ class _$AppRouter extends RootStackRouter {
       return AdaptivePage<dynamic>(
         routeData: routeData,
         child: const CartViewScreen(),
+      );
+    },
+    SettingsViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const SettingsViewScreen(),
       );
     },
   };
@@ -61,6 +68,11 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               CartViewScreenRoute.name,
               path: 'cart-view-screen',
+              parent: HomePageRoute.name,
+            ),
+            RouteConfig(
+              SettingsViewScreenRoute.name,
+              path: 'settings-view-screen',
               parent: HomePageRoute.name,
             ),
           ],
@@ -92,12 +104,14 @@ class DishDescriptionPageRoute
   DishDescriptionPageRoute({
     Key? key,
     required DishModel model,
+    required bool hasInternet,
   }) : super(
           DishDescriptionPageRoute.name,
           path: '/dish-description-page',
           args: DishDescriptionPageRouteArgs(
             key: key,
             model: model,
+            hasInternet: hasInternet,
           ),
         );
 
@@ -108,15 +122,18 @@ class DishDescriptionPageRouteArgs {
   const DishDescriptionPageRouteArgs({
     this.key,
     required this.model,
+    required this.hasInternet,
   });
 
   final Key? key;
 
   final DishModel model;
 
+  final bool hasInternet;
+
   @override
   String toString() {
-    return 'DishDescriptionPageRouteArgs{key: $key, model: $model}';
+    return 'DishDescriptionPageRouteArgs{key: $key, model: $model, hasInternet: $hasInternet}';
   }
 }
 
@@ -142,4 +159,16 @@ class CartViewScreenRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CartViewScreenRoute';
+}
+
+/// generated route for
+/// [SettingsViewScreen]
+class SettingsViewScreenRoute extends PageRouteInfo<void> {
+  const SettingsViewScreenRoute()
+      : super(
+          SettingsViewScreenRoute.name,
+          path: 'settings-view-screen',
+        );
+
+  static const String name = 'SettingsViewScreenRoute';
 }

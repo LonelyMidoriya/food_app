@@ -9,7 +9,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
+
     return SafeArea(
       child: Scaffold(
         body: BlocBuilder<CartViewBloc, CartViewState>(
@@ -19,6 +20,7 @@ class HomePage extends StatelessWidget {
             routes: const [
               DishesViewScreenRoute(),
               CartViewScreenRoute(),
+              SettingsViewScreenRoute(),
             ],
             bottomNavigationBuilder: (_, TabsRouter tabsRouter) {
               return BottomNavigationBar(
@@ -58,16 +60,16 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // BottomNavigationBarItem(
-                  //   backgroundColor: theme.colorScheme.primary,
-                  //   label: 'Settings',
-                  //   icon: const Icon(
-                  //     IconData(
-                  //       0xe57f,
-                  //       fontFamily: 'MaterialIcons',
-                  //     ),
-                  //   ),
-                  // ),
+                  BottomNavigationBarItem(
+                    backgroundColor: theme.colorScheme.primary,
+                    label: 'Settings',
+                    icon: const Icon(
+                      IconData(
+                        0xe57f,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                  ),
                 ],
               );
             },

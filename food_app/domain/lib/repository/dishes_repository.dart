@@ -4,4 +4,6 @@ abstract class DishesRepository {
   Future<List<DishModel>> getAllDishes();
   Future<List<DishModel>> getAllDishesByType(String type);
   Future<List<DishModel>> getFirstDishes();
+  Future<void> saveDishesToDB();
+  Future<List<DishModel>> getAllDishesFromDB();
 }

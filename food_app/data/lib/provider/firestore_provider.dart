@@ -44,7 +44,7 @@ class FirestoreProvider {
   Future<QuerySnapshot<Map<String, dynamic>>> getAllDocs(
     String collection,
     int limit,
-    lastVisible,
+    QueryDocumentSnapshot<Map<String, dynamic>> lastVisible,
   ) async {
     return await fireStore
         .collection(collection)
