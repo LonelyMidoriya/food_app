@@ -1,4 +1,4 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auth_view/auth_view.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cart_view/cart_view.dart';
 import 'package:dishes_view/dishes_view.dart';
@@ -13,9 +13,16 @@ part 'app_router.gr.dart';
 @AdaptiveAutoRouter(
   routes: <AutoRoute>[
     AutoRoute(
+      page: SignupScreen,
+    ),
+    AutoRoute(
+      page: LoginScreen,
+      initial: true,
+    ),
+    AutoRoute(
       path: '/',
       page: HomePage,
-      initial: true,
+
       children: [
         AutoRoute(
           page: DishesViewScreen,

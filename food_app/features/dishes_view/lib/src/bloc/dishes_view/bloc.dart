@@ -1,8 +1,5 @@
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
-import 'package:core/di/app_di.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/model/dish_model.dart';
 import 'package:domain/usecases/usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
@@ -120,7 +117,6 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     appRouter.navigate(
       DishDescriptionPageRoute(
         model: event.model,
-        hasInternet: state.hasInternet,
       ),
     );
   }

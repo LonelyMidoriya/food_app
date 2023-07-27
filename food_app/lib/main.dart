@@ -1,17 +1,10 @@
+import 'package:auth_view/auth_view.dart';
 import 'package:cart_view/cart_view.dart';
 import 'package:core/core.dart';
-import 'package:core/di/app_di.dart';
-import 'package:core_ui/theme/dark_theme.dart';
-import 'package:core_ui/theme/light_theme.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:dishes_view/dishes_view.dart';
-import 'package:domain/usecases/get_cart_usecase.dart';
-import 'package:domain/usecases/get_init_dishes_usecase.dart';
-import 'package:domain/usecases/get_next_dishes_usecase.dart';
-import 'package:domain/usecases/get_text_size_usecase.dart';
-import 'package:domain/usecases/save_text_size_usecase.dart';
-import 'package:domain/usecases/update_cart_usecase.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:settings_view/settings_view.dart';
 
 Future<void> main() async {
@@ -28,7 +21,10 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   final AdaptiveThemeMode? savedThemeMode;
 
-  const MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+  const MyApp({
+    Key? key,
+    this.savedThemeMode,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -39,6 +35,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AuthViewBloc>(
+          create: (_) => AuthViewBloc(
+            signUpUsecase: appLocator.get<SignUpUsecase>(),
+            logInUsecase: appLocator.get<LogInUsecase>(),
+            signOutUsecase: appLocator.get<SignOutUsecase>(),
+            signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
+          )..add(
+              AuthInitEvent(),
+            ),
+        ),
         BlocProvider<DishesViewBloc>(
           create: (_) => DishesViewBloc(
             getInitDishesUseCase: appLocator.get<GetInitDishesUseCase>(),
@@ -51,9 +57,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => CartViewBloc(
             getCartUseCase: appLocator.get<GetCartUseCase>(),
             updateCartUseCase: appLocator.get<UpdateCartUseCase>(),
-          )..add(
-              InitCartEvent(),
-            ),
+          ),
         ),
         BlocProvider<SettingsViewBloc>(
           create: (_) => SettingsViewBloc(

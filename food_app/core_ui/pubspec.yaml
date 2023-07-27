@@ -18,9 +18,10 @@ dependencies:
     path: ../features/dishes_view
   settings_view:
     path: ../features/settings_view
-
-  cached_network_image: ^3.2.1
-  adaptive_theme: ^3.3.0
+  auth_view:
+    path: ../features/auth_view
+  navigation:
+    path: ../navigation
 
 
 dev_dependencies:

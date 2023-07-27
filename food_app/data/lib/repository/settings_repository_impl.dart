@@ -1,5 +1,6 @@
+import 'package:core/core.dart';
 import 'package:domain/repository/settings_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SettingsRepositoryImpl implements SettingsRepository {
   final SharedPreferences _sharedPreferences;

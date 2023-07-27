@@ -1,6 +1,5 @@
 import 'package:domain/usecases/usecase.dart';
-
-import '../repository/settings_repository.dart';
+import 'package:domain/domain.dart';
 
 class SaveTextSizeUseCase implements FutureUseCase<double, void> {
   final SettingsRepository _settingsRepository;

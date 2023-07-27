@@ -1,12 +1,6 @@
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
-import 'package:data/entity/dish/dish_entity.dart';
-import 'package:data/provider/hive_provider.dart';
-import 'package:domain/model/dish_model.dart';
-import 'package:domain/repository/dishes_repository.dart';
-
-import '../mapper/dish_mapper.dart';
-import '../provider/firestore_provider.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 class DishesRepositoryImpl implements DishesRepository {
   final FirestoreProvider _firestoreProvider;

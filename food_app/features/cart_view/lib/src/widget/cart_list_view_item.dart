@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/widgets/add_to_cart_button.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';

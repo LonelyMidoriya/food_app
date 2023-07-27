@@ -17,6 +17,18 @@ class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    SignupScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const SignupScreen(),
+      );
+    },
+    LoginScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const LoginScreen(),
+      );
+    },
     HomePageRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
         routeData: routeData,
@@ -56,6 +68,14 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(
+          SignupScreenRoute.name,
+          path: '/signup-screen',
+        ),
+        RouteConfig(
+          LoginScreenRoute.name,
+          path: '/',
+        ),
+        RouteConfig(
           HomePageRoute.name,
           path: '/',
           children: [
@@ -84,6 +104,30 @@ class _$AppRouter extends RootStackRouter {
 }
 
 /// generated route for
+/// [SignupScreen]
+class SignupScreenRoute extends PageRouteInfo<void> {
+  const SignupScreenRoute()
+      : super(
+          SignupScreenRoute.name,
+          path: '/signup-screen',
+        );
+
+  static const String name = 'SignupScreenRoute';
+}
+
+/// generated route for
+/// [LoginScreen]
+class LoginScreenRoute extends PageRouteInfo<void> {
+  const LoginScreenRoute()
+      : super(
+          LoginScreenRoute.name,
+          path: '/',
+        );
+
+  static const String name = 'LoginScreenRoute';
+}
+
+/// generated route for
 /// [HomePage]
 class HomePageRoute extends PageRouteInfo<void> {
   const HomePageRoute({List<PageRouteInfo>? children})
@@ -103,14 +147,12 @@ class DishDescriptionPageRoute
   DishDescriptionPageRoute({
     Key? key,
     required DishModel model,
-    required bool hasInternet,
   }) : super(
           DishDescriptionPageRoute.name,
           path: '/dish-description-page',
           args: DishDescriptionPageRouteArgs(
             key: key,
             model: model,
-            hasInternet: hasInternet,
           ),
         );
 
@@ -121,18 +163,15 @@ class DishDescriptionPageRouteArgs {
   const DishDescriptionPageRouteArgs({
     this.key,
     required this.model,
-    required this.hasInternet,
   });
 
   final Key? key;
 
   final DishModel model;
 
-  final bool hasInternet;
-
   @override
   String toString() {
-    return 'DishDescriptionPageRouteArgs{key: $key, model: $model, hasInternet: $hasInternet}';
+    return 'DishDescriptionPageRouteArgs{key: $key, model: $model}';
   }
 }
 

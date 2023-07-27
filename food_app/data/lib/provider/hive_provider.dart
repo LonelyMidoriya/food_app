@@ -14,7 +14,9 @@ class HiveProvider {
   Future<List<DishModel>> getDishesFromDB() async {
     final Box<DishModel> dishesBox = await Hive.openBox('dishes');
     final List<DishModel> models = dishesBox.values.toList();
-    models.sort((a,b) => a.type.compareTo(b.type));
+    models.sort(
+      (a, b) => a.type.compareTo(b.type),
+    );
     return models;
   }
 }

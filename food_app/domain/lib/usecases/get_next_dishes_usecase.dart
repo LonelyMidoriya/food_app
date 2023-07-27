@@ -1,7 +1,5 @@
 import 'package:domain/usecases/usecase.dart';
-
-import '../model/dish_model.dart';
-import '../repository/dishes_repository.dart';
+import 'package:domain/domain.dart';
 
 class GetNextDishesUseCase implements FutureUseCase<NoParams, List<DishModel>> {
   final DishesRepository _dishesRepository;

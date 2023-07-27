@@ -1,0 +1,27 @@
+name: auth_view
+version: 0.0.1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  core:
+    path: ../../core
+  core_ui:
+    path: ../../core_ui
+  domain:
+    path: ../../domain
+  navigation:
+    path: ../../navigation
+  cart_view:
+    path: ../cart_view
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:

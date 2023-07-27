@@ -55,48 +55,57 @@ class CartViewScreen extends StatelessWidget {
                   child: Text(state.errorMessage.toString()),
                 );
               } else if (state.isLoaded && state.hasInternet) {
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const CustomText(
-                            text: 'Total:',
-                            fontWeight: FontWeight.w800,
-                          ),
-                          CustomText(
-                            text: '${double.parse(
-                              (state.cost).toStringAsFixed(2),
-                            )}\$',
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ],
+                if (state.cart.cartItems.isEmpty) {
+                  return const Center(
+                    child: CustomText(
+                      text: 'Cart is empty',
+                      fontWeight: FontWeight.w900,
+                    ),
+                  );
+                } else {
+                  return Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const CustomText(
+                              text: 'Total:',
+                              fontWeight: FontWeight.w800,
+                            ),
+                            CustomText(
+                              text: '${double.parse(
+                                (state.cost).toStringAsFixed(2),
+                              )}\$',
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Divider(
-                      thickness: 3,
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(10),
-                        key: const PageStorageKey<String>('cart'),
-                        addAutomaticKeepAlives: false,
-                        addRepaintBoundaries: false,
-                        itemCount: state.cart.cartItems.length,
-                        itemBuilder: (context, index) {
-                          CartItemModel item = state.cart.cartItems[index];
-                          return CartListViewItem(
-                            itemModel: item,
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
+                      const Divider(
+                        thickness: 3,
                       ),
-                    ),
-                  ],
-                );
+                      Expanded(
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(10),
+                          key: const PageStorageKey<String>('cart'),
+                          addAutomaticKeepAlives: false,
+                          addRepaintBoundaries: false,
+                          itemCount: state.cart.cartItems.length,
+                          itemBuilder: (context, index) {
+                            CartItemModel item = state.cart.cartItems[index];
+                            return CartListViewItem(
+                              itemModel: item,
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(),
+                        ),
+                      ),
+                    ],
+                  );
+                }
               } else {
                 return Center(
                   child: Column(

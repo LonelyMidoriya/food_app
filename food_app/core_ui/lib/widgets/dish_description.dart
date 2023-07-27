@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';

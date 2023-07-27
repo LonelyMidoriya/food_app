@@ -1,7 +1,6 @@
 import 'package:core_ui/widgets/add_to_cart_button.dart';
 import 'package:core_ui/widgets/dish_description.dart';
 import 'package:domain/model/dish_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DishDescriptionPage extends StatelessWidget {

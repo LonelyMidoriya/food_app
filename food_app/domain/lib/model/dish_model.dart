@@ -1,4 +1,6 @@
-import 'package:hive/hive.dart';
+
+
+import 'package:core/core.dart';
 
 part 'dish_model.g.dart';
 

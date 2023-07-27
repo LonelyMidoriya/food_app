@@ -1,5 +1,5 @@
-import 'package:data/entity/dish/dish_entity.dart';
-import 'package:domain/model/dish_model.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 class DishMapper {
   DishEntity toEntity(DishModel model) {

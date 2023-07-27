@@ -1,5 +1,4 @@
 import 'package:cart_view/cart_view.dart';
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
 import 'package:domain/model/cart_item_model.dart';
 import 'package:domain/model/dish_model.dart';
@@ -15,7 +14,9 @@ class AddToCartButton extends StatelessWidget {
   }) : super(key: key);
 
   Iterable<CartItemModel> _findCartItem(CartViewState state) {
-    return state.cart.cartItems.where((element) => element.name == model.name);
+    return state.cart.cartItems.where(
+      (element) => element.name == model.name,
+    );
   }
 
   @override
@@ -77,8 +78,9 @@ class AddToCartButton extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<CartViewBloc>(context).add(
                             AddToCartEvent(
-                                dishModel: model,
-                                count: _findCartItem(state).first.count + 1),
+                              dishModel: model,
+                              count: _findCartItem(state).first.count + 1,
+                            ),
                           );
                         },
                         style: ButtonStyle(

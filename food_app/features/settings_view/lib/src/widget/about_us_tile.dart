@@ -1,4 +1,3 @@
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +10,7 @@ class AboutUsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Uri uri = Uri.parse(url);
+    final Uri uri = Uri.parse(gitHubUrl);
 
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
       builder: (BuildContext context, SettingsViewState state) {

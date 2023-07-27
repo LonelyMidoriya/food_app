@@ -1,7 +1,5 @@
-import 'package:domain/model/cart_model.dart';
 import 'package:domain/usecases/usecase.dart';
-
-import '../repository/cart_repository.dart';
+import 'package:domain/domain.dart';
 
 class UpdateCartUseCase implements FutureUseCase<CartModel, void> {
   final CartRepository _cartRepository;
