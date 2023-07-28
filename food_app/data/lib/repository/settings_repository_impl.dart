@@ -1,20 +1,20 @@
+import 'package:core/core.dart';
 import 'package:domain/repository/settings_repository.dart';
 
-import '../provider/hive_provider.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  final HiveProvider _hiveProvider;
+  final SharedPreferences _sharedPreferences;
 
-  SettingsRepositoryImpl(this._hiveProvider);
+  SettingsRepositoryImpl(this._sharedPreferences);
 
   @override
   Future<double?> getTextSize() async {
-    final double? textSize = await _hiveProvider.getTextSize();
+    final double? textSize =  await _sharedPreferences.getDouble('textSize');
     return textSize;
   }
 
   @override
   Future<void> saveTextSize(double textSize) async {
-    await _hiveProvider.saveTextSize(textSize);
+    await _sharedPreferences.setDouble('textSize', textSize);
   }
 }

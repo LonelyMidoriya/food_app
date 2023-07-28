@@ -31,8 +31,16 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
     if (currentScroll == maxScroll &&
         !BlocProvider.of<DishesViewBloc>(context).state.isLastPage) {
       BlocProvider.of<DishesViewBloc>(context).add(
-        LoadDishesEvent(),
+        CheckInternetDishesEvent(),
       );
+      BlocProvider.of<CartViewBloc>(context).add(
+        CheckInternetEvent(),
+      );
+      if (BlocProvider.of<DishesViewBloc>(context).state.hasInternet) {
+        BlocProvider.of<DishesViewBloc>(context).add(
+          LoadDishesEvent(),
+        );
+      }
     }
   }
 
@@ -88,7 +96,6 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                       ),
                       child: GestureDetector(
                         child: DishGridItem(
-                          hasInternet: state.hasInternet,
                           dish: state.dishes[index],
                         ),
                       ),

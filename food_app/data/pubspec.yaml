@@ -9,9 +9,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  json_annotation: ^4.3.0
-  freezed_annotation: ^2.2.0
-
   core:
     path: ../core
 

@@ -1,4 +1,6 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+
+
+import 'package:core/core.dart';
 
 part 'cart_item_entity.freezed.dart';
 part 'cart_item_entity.g.dart';

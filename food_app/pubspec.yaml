@@ -21,6 +21,8 @@ dependencies:
     path: ./core_ui
   dishes_view:
     path: ./features/dishes_view
+  auth_view:
+    path: ./features/auth_view
   cart_view:
     path: ./features/cart_view
   settings_view:

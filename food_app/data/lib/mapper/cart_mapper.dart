@@ -1,9 +1,5 @@
-import 'package:data/entity/cart/cart_entity.dart';
-import 'package:data/entity/cart_item/cart_item_entity.dart';
-import 'package:domain/model/cart_item_model.dart';
-import 'package:domain/model/cart_model.dart';
-
-import 'cart_item_mapper.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 class CartMapper {
   final CartItemMapper _cartItemMapper;

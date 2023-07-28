@@ -1,10 +1,5 @@
 import 'package:core/core.dart';
-import 'package:core/di/app_di.dart';
-import 'package:domain/model/cart_item_model.dart';
-import 'package:domain/model/cart_model.dart';
-import 'package:domain/model/dish_model.dart';
-import 'package:domain/usecases/get_cart_usecase.dart';
-import 'package:domain/usecases/update_cart_usecase.dart';
+import 'package:domain/domain.dart';
 import 'package:domain/usecases/usecase.dart';
 
 part 'event.dart';
@@ -32,7 +27,8 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     CheckInternetEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    final bool hasInternet = await internetConnection.hasInternetAccess;
+    final bool hasInternet =
+        await appLocator.get<InternetConnection>().hasInternetAccess;
     emit(
       state.copyWith(hasInternet: hasInternet),
     );
@@ -44,18 +40,29 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
         isLoaded: false,
         isError: false,
         hasInternet: true,
+        cart: CartModel(cartItems: []),
+        cost: 0,
+        errorMessage: '',
       ),
     );
 
-    add(CheckInternetEvent());
+    final bool hasInternet =
+        await appLocator.get<InternetConnection>().hasInternetAccess;
+    emit(
+      state.copyWith(
+        hasInternet: hasInternet,
+      ),
+    );
 
     if (state.hasInternet) {
       try {
-        final CartModel cartModel =
+        final CartModel? cartModel =
             await _getCartUseCase.execute(const NoParams());
         double cost = 0;
-        for (var res in cartModel.cartItems) {
-          cost += res.cost * res.count;
+        if (cartModel != null) {
+          for (CartItemModel cartItem in cartModel!.cartItems) {
+            cost += cartItem.cost * cartItem.count;
+          }
         }
         emit(state.copyWith(
           cost: cost,
@@ -78,7 +85,13 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     AddToCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    add(CheckInternetEvent());
+    final bool hasInternet =
+        await appLocator.get<InternetConnection>().hasInternetAccess;
+    emit(
+      state.copyWith(
+        hasInternet: hasInternet,
+      ),
+    );
 
     if (state.hasInternet) {
       try {
@@ -107,10 +120,12 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
               .isNotEmpty) {
             final CartModel newCart;
             newCart = state.cart;
-            newCart.cartItems
-                .where((element) => element.name == event.dishModel.name)
-                .first
-                .count = event.count;
+            final int index = newCart.cartItems
+                .indexWhere((element) => element.name == event.dishModel.name);
+            newCart.cartItems[index] = newCart.cartItems
+                .singleWhere((element) => element.name == event.dishModel.name)
+                .copyWith(count: event.count);
+
             _updateCartUseCase.execute(newCart);
 
             emit(
@@ -119,9 +134,9 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
                 isError: false,
                 cost: state.cost +
                     newCart.cartItems
-                        .where(
-                            (element) => element.name == event.dishModel.name)
-                        .first
+                        .singleWhere(
+                          (element) => element.name == event.dishModel.name,
+                        )
                         .cost,
                 cart: newCart,
               ),
@@ -165,7 +180,13 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     DeleteFromCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    add(CheckInternetEvent());
+    final bool hasInternet =
+        await appLocator.get<InternetConnection>().hasInternetAccess;
+    emit(
+      state.copyWith(
+        hasInternet: hasInternet,
+      ),
+    );
 
     if (state.hasInternet) {
       try {
@@ -186,10 +207,11 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
         } else {
           final CartModel newCart;
           newCart = state.cart;
-          newCart.cartItems
-              .where((element) => element.name == event.dishModel.name)
-              .first
-              .count = event.count;
+          final int index = newCart.cartItems
+              .indexWhere((element) => element.name == event.dishModel.name);
+          newCart.cartItems[index] = newCart.cartItems
+              .singleWhere((element) => element.name == event.dishModel.name)
+              .copyWith(count: event.count);
           _updateCartUseCase.execute(newCart);
           emit(
             state.copyWith(

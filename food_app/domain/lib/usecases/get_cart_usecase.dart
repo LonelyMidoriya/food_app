@@ -1,9 +1,8 @@
+import 'package:domain/domain.dart';
 import 'package:domain/usecases/usecase.dart';
 
-import '../model/cart_model.dart';
-import '../repository/cart_repository.dart';
 
-class GetCartUseCase implements FutureUseCase<NoParams, CartModel> {
+class GetCartUseCase implements FutureUseCase<NoParams, CartModel?> {
   final CartRepository _cartRepository;
 
   const GetCartUseCase({
@@ -11,7 +10,7 @@ class GetCartUseCase implements FutureUseCase<NoParams, CartModel> {
   }) : _cartRepository = cartRepository;
 
   @override
-  Future<CartModel> execute(NoParams input) async {
+  Future<CartModel?> execute(NoParams input) async {
     return _cartRepository.getCart();
   }
 }

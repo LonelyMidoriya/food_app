@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:core/di/app_di.dart';
+import 'package:core/core.dart';
 
 class FirestoreProvider {
   Future<QuerySnapshot<Map<String, dynamic>>> getOne(
@@ -18,9 +17,9 @@ class FirestoreProvider {
   Future<void> updateCart(
     Map<String, dynamic> cart,
     String collection,
-    int userId,
+    String userId,
   ) async {
-    await fireStore.collection(collection).doc('$userId').set(cart);
+    await fireStore.collection(collection).doc(userId).set(cart);
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getFirstDocs(
@@ -36,12 +35,12 @@ class FirestoreProvider {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getCart(
     String collection,
-    int userId,
+    String userId,
   ) async {
-    return await fireStore.collection(collection).doc('$userId').get();
+    return await fireStore.collection(collection).doc(userId).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllDocs(
+  Future<QuerySnapshot<Map<String, dynamic>>> getNextDocs(
     String collection,
     int limit,
     QueryDocumentSnapshot<Map<String, dynamic>> lastVisible,

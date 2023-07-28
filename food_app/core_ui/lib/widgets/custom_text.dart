@@ -15,15 +15,16 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
-        builder: (BuildContext context, SettingsViewState state) {
-      return Text(
-        text,
-        style: TextStyle(
-          fontWeight: fontWeight,
-          fontSize: state.fontSize,
-        ),
-        textAlign: TextAlign.center,
-      );
-    });
+      builder: (BuildContext _, SettingsViewState state) {
+        return Text(
+          text,
+          style: TextStyle(
+            fontWeight: fontWeight,
+            fontSize: state.fontSize,
+          ),
+          textAlign: TextAlign.center,
+        );
+      },
+    );
   }
 }

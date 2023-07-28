@@ -1,12 +1,6 @@
-import 'package:core/consts/consts.dart';
 import 'package:core/core.dart';
-import 'package:data/entity/dish/dish_entity.dart';
-import 'package:data/provider/hive_provider.dart';
-import 'package:domain/model/dish_model.dart';
-import 'package:domain/repository/dishes_repository.dart';
-
-import '../mapper/dish_mapper.dart';
-import '../provider/firestore_provider.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 class DishesRepositoryImpl implements DishesRepository {
   final FirestoreProvider _firestoreProvider;
@@ -21,32 +15,38 @@ class DishesRepositoryImpl implements DishesRepository {
   );
 
   @override
-  Future<List<DishModel>> getFirstDishes() async {
+  Future<List<DishModel>> getFirstDishes(bool hasInternet) async {
     List<DishModel> listResult = [];
-
-    await _firestoreProvider.getFirstDocs('dishes', pageCount).then(
-      (value) {
-        _lastVisible = value.docs[value.size - 1];
-        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-          listResult.add(
-            _dishMapper.toModel(
-              DishEntity.fromJson(
-                result.data(),
+    if (hasInternet) {
+      await _firestoreProvider.getFirstDocs('dishes', pageCount).then(
+        (value) {
+          _lastVisible = value.docs[value.size - 1];
+          for (QueryDocumentSnapshot<Map<String, dynamic>> result
+              in value.docs) {
+            listResult.add(
+              _dishMapper.toModel(
+                DishEntity.fromJson(
+                  result.data(),
+                ),
               ),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+      );
+      await _hiveProvider.saveDishesToDB(listResult);
+    } else {
+      listResult = await _hiveProvider.getDishesFromDB();
+    }
+
     return listResult;
   }
 
   @override
-  Future<List<DishModel>> getAllDishes() async {
+  Future<List<DishModel>> getNextDishes() async {
     List<DishModel> listResult = [];
 
     await _firestoreProvider
-        .getAllDocs('dishes', pageCount, _lastVisible!)
+        .getNextDocs('dishes', pageCount, _lastVisible!)
         .then(
       (value) {
         _lastVisible = value.docs[value.size - 1];
@@ -61,40 +61,8 @@ class DishesRepositoryImpl implements DishesRepository {
         }
       },
     );
-    return listResult;
-  }
-
-  @override
-  Future<List<DishModel>> getAllDishesFromDB() async {
-    List<DishModel> listResult = [];
-
-    await _hiveProvider.getDishesFromDB().then(
-      (value) {
-        for (DishEntity entity in value) {
-          listResult.add(_dishMapper.toModel(entity));
-        }
-      },
-    );
-    return listResult;
-  }
-
-  @override
-  Future<void> saveDishesToDB() async {
-    List<DishEntity> listResult = [];
-
-    await _firestoreProvider.getFirstDocs('dishes', 10000).then(
-      (value) {
-        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-          listResult.add(
-            DishEntity.fromJson(
-              result.data(),
-            ),
-          );
-        }
-      },
-    );
-
     await _hiveProvider.saveDishesToDB(listResult);
+    return listResult;
   }
 
   @override

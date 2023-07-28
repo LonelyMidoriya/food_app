@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/core.dart';
 import 'package:core_ui/widgets/add_to_cart_button.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:core_ui/widgets/custom_text.dart';
@@ -8,11 +8,9 @@ import 'package:flutter/material.dart';
 
 class DishGridItem extends StatelessWidget {
   final DishModel dish;
-  final bool hasInternet;
 
   const DishGridItem({
     super.key,
-    required this.hasInternet,
     required this.dish,
   });
 
@@ -27,7 +25,7 @@ class DishGridItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               blurStyle: BlurStyle.normal,
               color: theme.colorScheme.secondaryContainer,
@@ -61,8 +59,6 @@ class DishGridItem extends StatelessWidget {
             ),
             AddToCartButton(
               model: dish,
-              alignment: MainAxisAlignment.center,
-              hasInternet: hasInternet,
             ),
           ],
         ),

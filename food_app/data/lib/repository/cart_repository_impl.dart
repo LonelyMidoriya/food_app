@@ -1,9 +1,6 @@
-import 'package:data/entity/cart/cart_entity.dart';
-import 'package:domain/model/cart_model.dart';
-import 'package:domain/repository/cart_repository.dart';
-
-import '../mapper/cart_mapper.dart';
-import '../provider/firestore_provider.dart';
+import 'package:core/core.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 class CartRepositoryImpl implements CartRepository {
   final FirestoreProvider _firestoreProvider;
@@ -15,15 +12,18 @@ class CartRepositoryImpl implements CartRepository {
   );
 
   @override
-  Future<CartModel> getCart() async {
-    late CartEntity cartEntity;
-
-    await _firestoreProvider.getCart('cart', 1).then(
-      (value) {
-        cartEntity = CartEntity.fromJson(value.data()!);
-      },
-    );
-
+  Future<CartModel?> getCart() async {
+    final CartEntity cartEntity;
+    final Map<String, dynamic>? cartJson = await _firestoreProvider
+        .getCart(
+          'cart',
+          appLocator.get<SharedPreferences>().getString('uid')!,
+        )
+        .then((value) => value.data());
+    if (cartJson == null) {
+      return null;
+    }
+    cartEntity = CartEntity.fromJson(cartJson!);
     return _cartMapper.toModel(cartEntity);
   }
 
@@ -31,11 +31,10 @@ class CartRepositoryImpl implements CartRepository {
   Future<void> updateCart(
     CartModel cart,
   ) async {
-    print(_cartMapper.toEntity(cart).toJson());
     await _firestoreProvider.updateCart(
       _cartMapper.toEntity(cart).toJson(),
       'cart',
-      1,
+      appLocator.get<SharedPreferences>().getString('uid')!,
     );
   }
 }
