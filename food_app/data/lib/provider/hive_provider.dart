@@ -1,22 +1,22 @@
 import 'package:core/core.dart';
-import 'package:domain/model/dish_model.dart';
+import '../entity/dish/dish_entity.dart';
 
 class HiveProvider {
-  Future<void> saveDishesToDB(List<DishModel> dishes) async {
-    final Box<DishModel> dishesBox = await Hive.openBox('dishes');
-    for (DishModel model in dishes) {
-      if (!dishesBox.containsKey(model.name)) {
-        await dishesBox.put(model.name, model);
+  Future<void> saveDishesToDB(List<DishEntity> dishes) async {
+    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
+    for (DishEntity entity in dishes) {
+      if (!dishesBox.containsKey(entity.name)) {
+        await dishesBox.put(entity.name, entity);
       }
     }
   }
 
-  Future<List<DishModel>> getDishesFromDB() async {
-    final Box<DishModel> dishesBox = await Hive.openBox('dishes');
-    final List<DishModel> models = dishesBox.values.toList();
-    models.sort(
+  Future<List<DishEntity>> getDishesFromDB() async {
+    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
+    final List<DishEntity> entities = dishesBox.values.toList();
+    entities.sort(
       (a, b) => a.type.compareTo(b.type),
     );
-    return models;
+    return entities;
   }
 }

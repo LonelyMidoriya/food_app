@@ -16,8 +16,11 @@ class DishesRepositoryImpl implements DishesRepository {
 
   @override
   Future<List<DishModel>> getFirstDishes(bool hasInternet) async {
-    List<DishModel> listResult = [];
+    final List<DishModel> listResult = [];
+    final List<DishEntity> listEntities;
+
     if (hasInternet) {
+      listEntities = [];
       await _firestoreProvider.getFirstDocs('dishes', pageCount).then(
         (value) {
           _lastVisible = value.docs[value.size - 1];
@@ -33,9 +36,18 @@ class DishesRepositoryImpl implements DishesRepository {
           }
         },
       );
-      await _hiveProvider.saveDishesToDB(listResult);
+
+      for(DishModel model in listResult){
+        listEntities.add(_dishMapper.toEntity(model));
+      }
+
+      await _hiveProvider.saveDishesToDB(listEntities);
     } else {
-      listResult = await _hiveProvider.getDishesFromDB();
+      listEntities = await _hiveProvider.getDishesFromDB();
+
+      for(DishEntity entity in listEntities){
+        listResult.add(_dishMapper.toModel(entity));
+      }
     }
 
     return listResult;
@@ -43,7 +55,8 @@ class DishesRepositoryImpl implements DishesRepository {
 
   @override
   Future<List<DishModel>> getNextDishes() async {
-    List<DishModel> listResult = [];
+    final List<DishModel> listResult = [];
+    final List<DishEntity> listEntities = [];
 
     await _firestoreProvider
         .getNextDocs('dishes', pageCount, _lastVisible!)
@@ -61,7 +74,12 @@ class DishesRepositoryImpl implements DishesRepository {
         }
       },
     );
-    await _hiveProvider.saveDishesToDB(listResult);
+
+    for(DishModel model in listResult){
+      listEntities.add(_dishMapper.toEntity(model));
+    }
+
+    await _hiveProvider.saveDishesToDB(listEntities);
     return listResult;
   }
 

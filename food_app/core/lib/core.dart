@@ -16,4 +16,5 @@ export 'consts/consts.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
-
+export 'consts/colors.dart';
+export 'consts/icons.dart';

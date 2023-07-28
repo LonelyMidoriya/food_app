@@ -7,7 +7,7 @@ class AuthProvider {
     required GoogleSignIn googleSignIn,
   }) : _googleSignIn = googleSignIn;
 
-  Future<void> singUp(String email, String password) async {
+  Future<void> singUpWithEmailAndPassword(String email, String password) async {
     await firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,

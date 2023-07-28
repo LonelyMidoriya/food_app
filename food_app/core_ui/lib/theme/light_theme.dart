@@ -1,4 +1,4 @@
-import 'package:core/consts/consts.dart';
+import 'package:core/consts/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(

@@ -6,7 +6,7 @@ import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
 
-import '../widget/signup_with.dart';
+import '../widget/signup_with_socials.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -110,13 +110,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 24,
                           ),
-                          const SignUpWith(),
+                          const SignUpWithSocials(),
                           const SizedBox(
                             height: 24,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: <Widget>[
                               const Text(
                                 "Don\'t have an account? ",
                                 style: TextStyle(

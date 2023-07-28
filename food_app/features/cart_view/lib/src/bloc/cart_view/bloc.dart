@@ -56,11 +56,11 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
 
     if (state.hasInternet) {
       try {
-        final CartModel? cartModel =
+        final CartModel cartModel =
             await _getCartUseCase.execute(const NoParams());
         double cost = 0;
-        if (cartModel != null) {
-          for (CartItemModel cartItem in cartModel!.cartItems) {
+        if (cartModel.cartItems.isNotEmpty) {
+          for (CartItemModel cartItem in cartModel.cartItems) {
             cost += cartItem.cost * cartItem.count;
           }
         }

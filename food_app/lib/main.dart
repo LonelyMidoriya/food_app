@@ -34,13 +34,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
+      providers: <BlocProvider>[
         BlocProvider<AuthViewBloc>(
           create: (_) => AuthViewBloc(
-            signUpUsecase: appLocator.get<SignUpUsecase>(),
+            signUpUsecase: appLocator.get<SignUpWithEmailAndPasswordUsecase>(),
             logInUsecase: appLocator.get<LogInUsecase>(),
             signOutUsecase: appLocator.get<SignOutUsecase>(),
             signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
+            initUserUsecase: appLocator.get<InitUserUsecase>(),
           )..add(
               AuthInitEvent(),
             ),

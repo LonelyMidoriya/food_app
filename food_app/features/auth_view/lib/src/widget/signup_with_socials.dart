@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../auth_view.dart';
 
-class SignUpWith extends StatelessWidget {
-  const SignUpWith({Key? key}) : super(key: key);
+class SignUpWithSocials extends StatelessWidget {
+  const SignUpWithSocials({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

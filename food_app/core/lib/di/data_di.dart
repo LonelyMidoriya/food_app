@@ -1,30 +1,6 @@
 import 'package:core/core.dart';
-import 'package:data/mapper/cart_item_mapper.dart';
-import 'package:data/mapper/cart_mapper.dart';
-import 'package:data/mapper/dish_mapper.dart';
-import 'package:data/provider/auth_provider.dart';
-import 'package:data/provider/firestore_provider.dart';
-import 'package:data/provider/hive_provider.dart';
-import 'package:data/repository/auth_repository_impl.dart';
-import 'package:data/repository/cart_repository_impl.dart';
-import 'package:data/repository/dishes_repository_impl.dart';
-import 'package:data/repository/settings_repository_impl.dart';
-import 'package:domain/model/dish_model.dart';
-import 'package:domain/repository/auth_repository.dart';
-import 'package:domain/repository/cart_repository.dart';
-import 'package:domain/repository/dishes_repository.dart';
-import 'package:domain/repository/settings_repository.dart';
-import 'package:domain/usecases/get_cart_usecase.dart';
-import 'package:domain/usecases/get_dishes_by_type_usecase.dart';
-import 'package:domain/usecases/get_init_dishes_usecase.dart';
-import 'package:domain/usecases/get_next_dishes_usecase.dart';
-import 'package:domain/usecases/get_text_size_usecase.dart';
-import 'package:domain/usecases/log_in_usecase.dart';
-import 'package:domain/usecases/save_text_size_usecase.dart';
-import 'package:domain/usecases/sign_out_usecase.dart';
-import 'package:domain/usecases/sign_up_usecase.dart';
-import 'package:domain/usecases/sign_up_with_google_usecase.dart';
-import 'package:domain/usecases/update_cart_usecase.dart';
+import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 
 final DataDI dataDI = DataDI();
 
@@ -83,8 +59,8 @@ class DataDI {
   }
 
   void _initAdapter() {
-    appLocator.registerLazySingleton<DishModelAdapter>(
-      () => DishModelAdapter(),
+    appLocator.registerLazySingleton<DishEntityAdapter>(
+      () => DishEntityAdapter(),
     );
   }
 
@@ -98,7 +74,7 @@ class DataDI {
   Future<void> _initHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(
-      appLocator.get<DishModelAdapter>(),
+      appLocator.get<DishEntityAdapter>(),
     );
     appLocator.registerLazySingleton<HiveProvider>(
       () => HiveProvider(),
@@ -141,8 +117,8 @@ class DataDI {
         settingsRepository: appLocator.get<SettingsRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<SignUpUsecase>(
-      () => SignUpUsecase(
+    appLocator.registerLazySingleton<SignUpWithEmailAndPasswordUsecase>(
+      () => SignUpWithEmailAndPasswordUsecase(
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
@@ -158,6 +134,11 @@ class DataDI {
     );
     appLocator.registerLazySingleton<SignUpWithGoogleUsecase>(
       () => SignUpWithGoogleUsecase(
+        authRepository: appLocator.get<AuthRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<InitUserUsecase>(
+      () => InitUserUsecase(
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
@@ -184,6 +165,7 @@ class DataDI {
     );
     appLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
+        appLocator.get(),
         appLocator.get(),
       ),
     );

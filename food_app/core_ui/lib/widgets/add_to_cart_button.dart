@@ -57,7 +57,7 @@ class AddToCartButton extends StatelessWidget {
                           ),
                         ),
                         child: Icon(
-                          iconMinus1,
+                          iconMinusOne,
                           size: settingsState.fontSize + 2,
                         ),
                       ),
@@ -95,7 +95,7 @@ class AddToCartButton extends StatelessWidget {
                           ),
                         ),
                         child: Icon(
-                          iconPlus1,
+                          iconPlusOne,
                           size: settingsState.fontSize + 2,
                         ),
                       ),
