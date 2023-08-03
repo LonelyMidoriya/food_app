@@ -14,6 +14,8 @@ class AddToCartEvent extends CartViewEvent {
 
 class CheckInternetEvent extends CartViewEvent {}
 
+class ClearCartEvent extends CartViewEvent {}
+
 class DeleteFromCartEvent extends CartViewEvent {
   final DishModel dishModel;
   final int count;

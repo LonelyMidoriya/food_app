@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:data/data.dart';
+import 'package:data/repository/orders_repository_impl.dart';
 import 'package:domain/domain.dart';
 
 final DataDI dataDI = DataDI();
@@ -55,6 +56,11 @@ class DataDI {
     );
     appLocator.registerLazySingleton<CartItemMapper>(
       () => CartItemMapper(),
+    );
+    appLocator.registerLazySingleton<OrdersMapper>(
+      () => OrdersMapper(
+        appLocator.get<CartMapper>(),
+      ),
     );
   }
 
@@ -142,6 +148,16 @@ class DataDI {
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
+    appLocator.registerLazySingleton<GetOrdersUseCase>(
+      () => GetOrdersUseCase(
+        ordersRepository: appLocator.get<OrdersRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<UpdateOrdersUseCase>(
+      () => UpdateOrdersUseCase(
+        ordersRepository: appLocator.get<OrdersRepository>(),
+      ),
+    );
   }
 
   void _initRepositories() {
@@ -165,6 +181,12 @@ class DataDI {
     );
     appLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
+        appLocator.get(),
+        appLocator.get(),
+      ),
+    );
+    appLocator.registerLazySingleton<OrdersRepository>(
+      () => OrdersRepositoryImpl(
         appLocator.get(),
         appLocator.get(),
       ),

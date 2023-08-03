@@ -21,6 +21,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     on<AddToCartEvent>(_addToCart);
     on<DeleteFromCartEvent>(_deleteFromCart);
     on<CheckInternetEvent>(_checkInternet);
+    on<ClearCartEvent>(_clearCart);
   }
 
   Future<void> _checkInternet(
@@ -34,13 +35,61 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     );
   }
 
+  Future<void> _clearCart(
+    ClearCartEvent event,
+    Emitter<CartViewState> emit,
+  ) async {
+    final bool hasInternet =
+        await appLocator.get<InternetConnection>().hasInternetAccess;
+    try {
+      if (hasInternet) {
+        final CartModel newCartModel = CartModel(
+          cartItems: [],
+          cost: 0,
+          date: '',
+          id: 0,
+        );
+        _updateCartUseCase.execute(newCartModel);
+        emit(
+          state.copyWith(
+            isLoaded: true,
+            isError: false,
+            hasInternet: hasInternet,
+            cart: newCartModel,
+            cost: 0,
+            errorMessage: '',
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            hasInternet: hasInternet,
+          ),
+        );
+      }
+    } catch (e, _) {
+      emit(
+        state.copyWith(
+          isError: true,
+          isLoaded: false,
+          errorMessage: e,
+        ),
+      );
+    }
+  }
+
   Future<void> _init(InitCartEvent event, Emitter<CartViewState> emit) async {
     emit(
       state.copyWith(
         isLoaded: false,
         isError: false,
         hasInternet: true,
-        cart: CartModel(cartItems: []),
+        cart: CartModel(
+          cartItems: [],
+          cost: 0,
+          id: 0,
+          date: '',
+        ),
         cost: 0,
         errorMessage: '',
       ),
@@ -104,7 +153,12 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
             description: event.dishModel.description,
             count: event.count,
           );
-          final CartModel newCartModel = CartModel(cartItems: [cartItemModel]);
+          final CartModel newCartModel = CartModel(
+            cartItems: [cartItemModel],
+            cost: 0,
+            date: '',
+            id: 0,
+          );
           _updateCartUseCase.execute(newCartModel);
           emit(
             state.copyWith(

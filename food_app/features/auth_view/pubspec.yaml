@@ -16,6 +16,8 @@ dependencies:
     path: ../../navigation
   cart_view:
     path: ../cart_view
+  order_history_view:
+    path: ../order_history_view
   flutter:
     sdk: flutter
 

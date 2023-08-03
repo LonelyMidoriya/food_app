@@ -6,6 +6,7 @@ import 'package:core/core.dart';
 import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
+import 'package:order_history_view/order_history_view.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -17,7 +18,8 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -31,6 +33,9 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state.isLoggedIn) {
             BlocProvider.of<CartViewBloc>(context).add(
               InitCartEvent(),
+            );
+            BlocProvider.of<OrdersViewBloc>(context).add(
+              InitOrdersEvent(),
             );
             appRouter.navigate(
               const HomePageRoute(),
@@ -56,6 +61,9 @@ class _SignupScreenState extends State<SignupScreen> {
           } else if (state.isLoaded) {
             BlocProvider.of<CartViewBloc>(context).add(
               InitCartEvent(),
+            );
+            BlocProvider.of<OrdersViewBloc>(context).add(
+              InitOrdersEvent(),
             );
             appRouter.navigate(
               const HomePageRoute(),

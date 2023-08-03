@@ -5,7 +5,6 @@ import 'package:core_ui/widgets/custom_text.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
-
 class DishGridItem extends StatelessWidget {
   final DishModel dish;
 
@@ -29,7 +28,7 @@ class DishGridItem extends StatelessWidget {
             BoxShadow(
               blurStyle: BlurStyle.normal,
               color: theme.colorScheme.secondaryContainer,
-              blurRadius: 30.0,
+              blurRadius: 20.0,
               spreadRadius: 1.0,
               offset: const Offset(
                 2.0,

@@ -1,7 +1,8 @@
 import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
-class SignUpWithEmailAndPasswordUsecase implements FutureUseCase<List<String>, void> {
+class SignUpWithEmailAndPasswordUsecase
+    implements FutureUseCase<List<String>, void> {
   final AuthRepository _authRepository;
 
   const SignUpWithEmailAndPasswordUsecase({

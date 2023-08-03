@@ -18,3 +18,5 @@ export 'package:json_annotation/json_annotation.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
 export 'consts/colors.dart';
 export 'consts/icons.dart';
+export 'package:intl/intl.dart';
+export 'package:adaptive_theme/adaptive_theme.dart';

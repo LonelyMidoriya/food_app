@@ -1,10 +1,12 @@
 import 'package:cart_view/src/widget/cart_list_view_item.dart';
+import 'package:cart_view/src/widget/order_button.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:core_ui/widgets/custom_text.dart';
 import 'package:dishes_view/dishes_view.dart';
-import 'package:domain/model/cart_item_model.dart';
+import 'package:order_history_view/order_history_view.dart';
+
 import 'package:flutter/material.dart';
 
 import '../bloc/bloc.dart';
@@ -22,6 +24,7 @@ class CartViewScreen extends StatelessWidget {
       data: theme,
       child: SafeArea(
         child: Scaffold(
+          floatingActionButton: const OrderButton(),
           backgroundColor: theme.colorScheme.background,
           body: BlocConsumer<CartViewBloc, CartViewState>(
             listener: (BuildContext context, CartViewState state) {
@@ -75,9 +78,7 @@ class CartViewScreen extends StatelessWidget {
                               fontWeight: FontWeight.w800,
                             ),
                             CustomText(
-                              text: '${double.parse(
-                                (state.cost).toStringAsFixed(2),
-                              )}\$',
+                              text: '${(state.cost).toStringAsFixed(2)}\$',
                               fontWeight: FontWeight.w800,
                             ),
                           ],
@@ -94,9 +95,8 @@ class CartViewScreen extends StatelessWidget {
                           addRepaintBoundaries: false,
                           itemCount: state.cart.cartItems.length,
                           itemBuilder: (context, index) {
-                            CartItemModel item = state.cart.cartItems[index];
                             return CartListViewItem(
-                              itemModel: item,
+                              itemModel: state.cart.cartItems[index],
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) =>
@@ -128,6 +128,9 @@ class CartViewScreen extends StatelessWidget {
                           );
                           BlocProvider.of<DishesViewBloc>(context).add(
                             CheckInternetDishesEvent(),
+                          );
+                          BlocProvider.of<OrdersViewBloc>(context).add(
+                            CheckInternetOrdersEvent(),
                           );
                         },
                       ),

@@ -19,4 +19,12 @@ class HiveProvider {
     );
     return entities;
   }
+
+  Future<List<DishEntity>> getDishesByTypeFromDB(String type) async {
+    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
+    final List<DishEntity> entities = dishesBox.values.toList();
+    final List<DishEntity> result = [];
+    result.addAll(entities.where((element) => element.type == type));
+    return result;
+  }
 }

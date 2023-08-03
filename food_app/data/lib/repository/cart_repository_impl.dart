@@ -21,9 +21,14 @@ class CartRepositoryImpl implements CartRepository {
         )
         .then((value) => value.data());
     if (cartJson == null) {
-      return CartModel(cartItems: []);
+      return CartModel(
+        cartItems: [],
+        cost: 0,
+        id: 0,
+        date: '',
+      );
     }
-    cartEntity = CartEntity.fromJson(cartJson!);
+    cartEntity = CartEntity.fromJson(cartJson);
     return _cartMapper.toModel(cartEntity);
   }
 

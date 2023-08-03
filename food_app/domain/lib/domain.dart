@@ -19,3 +19,8 @@ export 'repository/cart_repository.dart';
 export 'repository/dishes_repository.dart';
 export 'repository/settings_repository.dart';
 export 'usecases/init_user_usecase.dart';
+export 'model/orders_model.dart';
+export 'repository/orders_repository.dart';
+export 'usecases/get_orders_usecase.dart';
+export 'usecases/update_orders_usecase.dart';
+export 'usecases/usecase.dart';

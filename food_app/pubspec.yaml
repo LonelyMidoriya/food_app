@@ -27,6 +27,8 @@ dependencies:
     path: ./features/cart_view
   settings_view:
     path: ./features/settings_view
+  order_history_view:
+    path: ./features/order_history_view
 
   cupertino_icons: ^1.0.2
 

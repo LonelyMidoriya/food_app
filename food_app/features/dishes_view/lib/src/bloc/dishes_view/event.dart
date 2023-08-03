@@ -8,9 +8,11 @@ class InitDishesEvent extends DishesViewEvent {}
 
 class LoadDishesByTypeEvent extends DishesViewEvent {
   final String type;
+  final int selectedType;
 
   LoadDishesByTypeEvent({
     required this.type,
+    required this.selectedType,
   });
 }
 

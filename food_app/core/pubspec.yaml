@@ -20,6 +20,7 @@ dependencies:
   adaptive_theme: ^3.3.0
   json_annotation: ^4.3.0
   freezed_annotation: ^2.2.0
+  intl: ^0.18.1
   data:
     path: ../data
   domain:

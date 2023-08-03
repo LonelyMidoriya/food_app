@@ -37,7 +37,7 @@ class DishesRepositoryImpl implements DishesRepository {
         },
       );
 
-      for(DishModel model in listResult){
+      for (DishModel model in listResult) {
         listEntities.add(_dishMapper.toEntity(model));
       }
 
@@ -45,7 +45,7 @@ class DishesRepositoryImpl implements DishesRepository {
     } else {
       listEntities = await _hiveProvider.getDishesFromDB();
 
-      for(DishEntity entity in listEntities){
+      for (DishEntity entity in listEntities) {
         listResult.add(_dishMapper.toModel(entity));
       }
     }
@@ -75,7 +75,7 @@ class DishesRepositoryImpl implements DishesRepository {
       },
     );
 
-    for(DishModel model in listResult){
+    for (DishModel model in listResult) {
       listEntities.add(_dishMapper.toEntity(model));
     }
 
@@ -84,23 +84,40 @@ class DishesRepositoryImpl implements DishesRepository {
   }
 
   @override
-  Future<List<DishModel>> getAllDishesByType(String type) async {
+  Future<List<DishModel>> getAllDishesByType(
+      String type, bool hasInternet) async {
     List<DishModel> listResult = [];
+    final List<DishEntity> listEntities;
 
-    await _firestoreProvider.getAllByType('dishes', pageCount, type).then(
-      (value) {
-        _lastVisible = value.docs[value.size - 1];
-        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-          listResult.add(
-            _dishMapper.toModel(
-              DishEntity.fromJson(
-                result.data(),
+    if (hasInternet) {
+      listEntities = [];
+      await _firestoreProvider.getAllByType('dishes', type).then(
+        (value) {
+          for (QueryDocumentSnapshot<Map<String, dynamic>> result
+              in value.docs) {
+            listResult.add(
+              _dishMapper.toModel(
+                DishEntity.fromJson(
+                  result.data(),
+                ),
               ),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+      );
+
+      for (DishModel model in listResult) {
+        listEntities.add(_dishMapper.toEntity(model));
+      }
+
+      await _hiveProvider.saveDishesToDB(listEntities);
+    } else {
+      listEntities = await _hiveProvider.getDishesByTypeFromDB(type);
+
+      for (DishEntity entity in listEntities) {
+        listResult.add(_dishMapper.toModel(entity));
+      }
+    }
     return listResult;
   }
 }

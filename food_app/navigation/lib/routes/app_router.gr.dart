@@ -51,6 +51,12 @@ class _$AppRouter extends RootStackRouter {
         child: const DishesViewScreen(),
       );
     },
+    OrdersViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const OrdersViewScreen(),
+      );
+    },
     CartViewScreenRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
         routeData: routeData,
@@ -82,6 +88,11 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               DishesViewScreenRoute.name,
               path: 'dishes-view-screen',
+              parent: HomePageRoute.name,
+            ),
+            RouteConfig(
+              OrdersViewScreenRoute.name,
+              path: 'orders-view-screen',
               parent: HomePageRoute.name,
             ),
             RouteConfig(
@@ -185,6 +196,18 @@ class DishesViewScreenRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'DishesViewScreenRoute';
+}
+
+/// generated route for
+/// [OrdersViewScreen]
+class OrdersViewScreenRoute extends PageRouteInfo<void> {
+  const OrdersViewScreenRoute()
+      : super(
+          OrdersViewScreenRoute.name,
+          path: 'orders-view-screen',
+        );
+
+  static const String name = 'OrdersViewScreenRoute';
 }
 
 /// generated route for
