@@ -68,7 +68,7 @@ class FirestoreProvider {
         .get();
   }
 
-  Future getAllByType(
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllByType(
     String collection,
     String type,
   ) async {

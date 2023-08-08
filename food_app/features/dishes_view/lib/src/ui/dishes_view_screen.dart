@@ -32,15 +32,6 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
     final currentScroll = _scrollController.position.pixels;
     if (currentScroll == maxScroll &&
         !BlocProvider.of<DishesViewBloc>(context).state.isLastPage) {
-      BlocProvider.of<DishesViewBloc>(context).add(
-        CheckInternetDishesEvent(),
-      );
-      BlocProvider.of<CartViewBloc>(context).add(
-        CheckInternetEvent(),
-      );
-      BlocProvider.of<OrdersViewBloc>(context).add(
-        CheckInternetOrdersEvent(),
-      );
       if (BlocProvider.of<DishesViewBloc>(context).state.hasInternet) {
         BlocProvider.of<DishesViewBloc>(context).add(
           LoadDishesEvent(),
@@ -52,12 +43,6 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   Future<void> _onRefresh() async {
     BlocProvider.of<DishesViewBloc>(context).add(
       InitDishesEvent(),
-    );
-    BlocProvider.of<CartViewBloc>(context).add(
-      CheckInternetEvent(),
-    );
-    BlocProvider.of<OrdersViewBloc>(context).add(
-      CheckInternetOrdersEvent(),
     );
   }
 
@@ -75,12 +60,8 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Expanded(
-                flex: 1,
-                child: TypeListView(),
-              ),
+              const TypeListView(),
               Expanded(
-                flex: 12,
                 child: BlocBuilder<DishesViewBloc, DishesViewState>(
                   builder: (BuildContext context, DishesViewState state) {
                     if (!state.isError && !state.isLoaded) {

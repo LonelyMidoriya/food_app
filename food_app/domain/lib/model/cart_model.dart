@@ -25,4 +25,10 @@ class CartModel {
         date: date ?? this.date,
         cartItems: cartItems ?? this.cartItems,
       );
+
+  CartModel.empty()
+      : cartItems = [],
+        cost = 0,
+        date = '',
+        id = 0;
 }

@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/usecases/usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -19,17 +18,28 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
         ) {
     on<InitOrdersEvent>(_init);
     on<AddToOrdersEvent>(_addToOrders);
-    on<CheckInternetOrdersEvent>(_checkInternet);
+    on<SetInternetOrdersEvent>(_setInternet);
+    final listener = InternetConnection().onStatusChange.listen(
+      (InternetStatus status) {
+        switch (status) {
+          case InternetStatus.connected:
+            add(SetInternetOrdersEvent(hasInternet: true));
+            add(InitOrdersEvent());
+            break;
+          case InternetStatus.disconnected:
+            add(SetInternetOrdersEvent(hasInternet: false));
+            break;
+        }
+      },
+    );
   }
 
-  Future<void> _checkInternet(
-    CheckInternetOrdersEvent event,
+  Future<void> _setInternet(
+    SetInternetOrdersEvent event,
     Emitter<OrdersViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
     emit(
-      state.copyWith(hasInternet: hasInternet),
+      state.copyWith(hasInternet: event.hasInternet),
     );
   }
 
@@ -41,19 +51,10 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
       state.copyWith(
         isLoaded: false,
         isError: false,
-        hasInternet: true,
         orders: OrdersModel(
           carts: [],
         ),
         errorMessage: '',
-      ),
-    );
-
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
-    emit(
-      state.copyWith(
-        hasInternet: hasInternet,
       ),
     );
 
@@ -82,14 +83,6 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
     AddToOrdersEvent event,
     Emitter<OrdersViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
-    emit(
-      state.copyWith(
-        hasInternet: hasInternet,
-      ),
-    );
-
     if (state.hasInternet) {
       try {
         if (state.orders.carts.isEmpty) {

@@ -5,25 +5,29 @@ import '../entity/orders/orders_entity.dart';
 import 'cart_mapper.dart';
 
 class OrdersMapper {
-  final CartMapper _cartMapper;
+  final CartMapper cartMapper;
 
-  OrdersMapper(this._cartMapper);
+  OrdersMapper({required this.cartMapper});
 
   OrdersEntity toEntity(OrdersModel model) {
-    final List<CartEntity> carts = [];
-    for (CartModel itemModel in model.carts) {
-      carts.add(_cartMapper.toEntity(itemModel));
-    }
+    final List<CartEntity> carts = model.carts
+        .map(
+          (CartModel model) => cartMapper.toEntity(model),
+        )
+        .toList();
+
     return OrdersEntity(
       carts: carts,
     );
   }
 
   OrdersModel toModel(OrdersEntity entity) {
-    final List<CartModel> carts = [];
-    for (CartEntity itemEntity in entity.carts) {
-      carts.add(_cartMapper.toModel(itemEntity));
-    }
+    final List<CartModel> carts = entity.carts
+        .map(
+          (CartEntity entity) => cartMapper.toModel(entity),
+        )
+        .toList();
+
     return OrdersModel(
       carts: carts,
     );

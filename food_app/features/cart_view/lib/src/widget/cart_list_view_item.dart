@@ -1,16 +1,17 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:domain/model/cart_item_model.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
 class CartListViewItem extends StatelessWidget {
   final CartItemModel itemModel;
+  final double cost;
 
   const CartListViewItem({
     Key? key,
     required this.itemModel,
+    required this.cost,
   }) : super(key: key);
 
   @override
@@ -57,7 +58,7 @@ class CartListViewItem extends StatelessWidget {
               ),
               CustomText(
                 text: '${itemModel.count} * ${itemModel.cost} = ${double.parse(
-                  (itemModel.count * itemModel.cost).toStringAsFixed(2),
+                  cost.toStringAsFixed(2),
                 )}',
                 fontWeight: FontWeight.w500,
               ),

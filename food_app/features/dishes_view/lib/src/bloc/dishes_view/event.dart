@@ -16,7 +16,13 @@ class LoadDishesByTypeEvent extends DishesViewEvent {
   });
 }
 
-class CheckInternetDishesEvent extends DishesViewEvent {}
+class SetInternetDishesEvent extends DishesViewEvent {
+  final bool hasInternet;
+
+  SetInternetDishesEvent({
+    required this.hasInternet,
+});
+}
 
 class NavigateToDetailsEvent extends DishesViewEvent {
   final DishModel model;

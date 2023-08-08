@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/usecases/usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -20,18 +19,29 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     on<InitCartEvent>(_init);
     on<AddToCartEvent>(_addToCart);
     on<DeleteFromCartEvent>(_deleteFromCart);
-    on<CheckInternetEvent>(_checkInternet);
+    on<SetInternetCartEvent>(_setInternet);
     on<ClearCartEvent>(_clearCart);
+    final listener = InternetConnection().onStatusChange.listen(
+      (InternetStatus status) {
+        switch (status) {
+          case InternetStatus.connected:
+            add(SetInternetCartEvent(hasInternet: true));
+            add(InitCartEvent());
+            break;
+          case InternetStatus.disconnected:
+            add(SetInternetCartEvent(hasInternet: false));
+            break;
+        }
+      },
+    );
   }
 
-  Future<void> _checkInternet(
-    CheckInternetEvent event,
+  Future<void> _setInternet(
+    SetInternetCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
     emit(
-      state.copyWith(hasInternet: hasInternet),
+      state.copyWith(hasInternet: event.hasInternet),
     );
   }
 
@@ -39,34 +49,18 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     ClearCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
     try {
-      if (hasInternet) {
-        final CartModel newCartModel = CartModel(
-          cartItems: [],
+      final CartModel newCartModel = CartModel.empty();
+      _updateCartUseCase.execute(newCartModel);
+      emit(
+        state.copyWith(
+          isLoaded: true,
+          isError: false,
+          cart: newCartModel,
           cost: 0,
-          date: '',
-          id: 0,
-        );
-        _updateCartUseCase.execute(newCartModel);
-        emit(
-          state.copyWith(
-            isLoaded: true,
-            isError: false,
-            hasInternet: hasInternet,
-            cart: newCartModel,
-            cost: 0,
-            errorMessage: '',
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            hasInternet: hasInternet,
-          ),
-        );
-      }
+          errorMessage: '',
+        ),
+      );
     } catch (e, _) {
       emit(
         state.copyWith(
@@ -83,23 +77,9 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
       state.copyWith(
         isLoaded: false,
         isError: false,
-        hasInternet: true,
-        cart: CartModel(
-          cartItems: [],
-          cost: 0,
-          id: 0,
-          date: '',
-        ),
+        cart: CartModel.empty(),
         cost: 0,
         errorMessage: '',
-      ),
-    );
-
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
-    emit(
-      state.copyWith(
-        hasInternet: hasInternet,
       ),
     );
 
@@ -134,14 +114,6 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     AddToCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
-    emit(
-      state.copyWith(
-        hasInternet: hasInternet,
-      ),
-    );
-
     if (state.hasInternet) {
       try {
         if (state.cart.cartItems.isEmpty) {
@@ -234,14 +206,6 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     DeleteFromCartEvent event,
     Emitter<CartViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
-    emit(
-      state.copyWith(
-        hasInternet: hasInternet,
-      ),
-    );
-
     if (state.hasInternet) {
       try {
         if (event.count == 0) {
