@@ -6,25 +6,28 @@ part 'event.dart';
 part 'state.dart';
 
 class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
-  final SignUpUsecase _signUpUsecase;
+  final SignUpWithEmailAndPasswordUsecase _signUpUsecase;
   final LogInUsecase _logInUsecase;
   final SignOutUsecase _signOutUsecase;
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
+  final InitUserUsecase _initUserUsecase;
 
   AuthViewBloc({
-    required SignUpUsecase signUpUsecase,
+    required SignUpWithEmailAndPasswordUsecase signUpUsecase,
     required LogInUsecase logInUsecase,
     required SignOutUsecase signOutUsecase,
     required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
+    required InitUserUsecase initUserUsecase,
   })  : _signUpUsecase = signUpUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
+        _initUserUsecase = initUserUsecase,
         super(
           AuthViewState.empty(),
         ) {
     on<AuthInitEvent>(_init);
-    on<UserSignupEvent>(_signUp);
+    on<UserSignupWithEmailAndPasswordEvent>(_signUpWithEmailAndPassword);
     on<UserSignupWithGoogleEvent>(_signUpWithGoogle);
     on<UserSignoutEvent>(_signOut);
     on<UserLogInEvent>(_logIn);
@@ -34,27 +37,8 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     AuthInitEvent event,
     Emitter<AuthViewState> emit,
   ) async {
-    final bool? isLoggedIn;
+    final bool isLoggedIn = await _initUserUsecase.execute(const NoParams());
 
-    if (firebaseAuth.currentUser == null) {
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            false,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            '',
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            '',
-          );
-      isLoggedIn = false;
-    } else {
-      isLoggedIn = await appLocator.get<SharedPreferences>().getBool(
-            'isLoggedIn',
-          );
-    }
     emit(
       state.copyWith(
         isLoggedIn: isLoggedIn,
@@ -69,18 +53,7 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
   ) async {
     try {
       await _signUpWithGoogleUsecase.execute(const NoParams());
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            true,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            firebaseAuth.currentUser!.uid,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            firebaseAuth.currentUser!.email!,
-          );
+
       emit(
         state.copyWith(
           isLoggedIn: true,
@@ -104,18 +77,7 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
   ) async {
     try {
       await _signOutUsecase.execute(const NoParams());
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            false,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            '',
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            '',
-          );
+
       emit(
         state.copyWith(
           isLoggedIn: false,
@@ -133,29 +95,15 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     }
   }
 
-  Future<void> _signUp(
-    UserSignupEvent event,
+  Future<void> _signUpWithEmailAndPassword(
+    UserSignupWithEmailAndPasswordEvent event,
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      await _signUpUsecase.execute(
-        [
-          event.email,
-          event.password,
-        ],
-      );
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            true,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            firebaseAuth.currentUser!.uid,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            firebaseAuth.currentUser!.email!,
-          );
+      final UserModel user =
+          UserModel(email: event.email, password: event.password);
+      await _signUpUsecase.execute(user);
+
       emit(
         state.copyWith(
           isLoggedIn: true,
@@ -178,12 +126,9 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      await _logInUsecase.execute(
-        [
-          event.email,
-          event.password,
-        ],
-      );
+      final UserModel user =
+          UserModel(email: event.email, password: event.password);
+      await _logInUsecase.execute(user);
       await appLocator.get<SharedPreferences>().setBool(
             'isLoggedIn',
             true,

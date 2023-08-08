@@ -12,7 +12,15 @@ class AddToCartEvent extends CartViewEvent {
   });
 }
 
-class CheckInternetEvent extends CartViewEvent {}
+class SetInternetCartEvent extends CartViewEvent {
+  final bool hasInternet;
+
+  SetInternetCartEvent({
+    required this.hasInternet,
+  });
+}
+
+class ClearCartEvent extends CartViewEvent {}
 
 class DeleteFromCartEvent extends CartViewEvent {
   final DishModel dishModel;

@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/usecases/usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
 
@@ -10,29 +9,73 @@ part 'state.dart';
 class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
   final GetInitDishesUseCase _getInitDishesUseCase;
   final GetNextDishesUseCase _getNextDishesUseCase;
+  final GetDishesByTypeUseCase _getDishesByTypeUseCase;
 
   DishesViewBloc({
     required GetInitDishesUseCase getInitDishesUseCase,
     required GetNextDishesUseCase getNextDishesUseCase,
+    required GetDishesByTypeUseCase getDishesByTypeUseCase,
   })  : _getInitDishesUseCase = getInitDishesUseCase,
         _getNextDishesUseCase = getNextDishesUseCase,
+        _getDishesByTypeUseCase = getDishesByTypeUseCase,
         super(
           DishesViewState.empty(),
         ) {
     on<InitDishesEvent>(_loadInit);
     on<LoadDishesEvent>(_load);
     on<NavigateToDetailsEvent>(_navigateToDishDetails);
-    on<CheckInternetDishesEvent>(_checkInternet);
+
+    on<LoadDishesByTypeEvent>(_selectType);
+    on<SetInternetDishesEvent>(_setInternet);
+    final listener = InternetConnection().onStatusChange.listen(
+      (InternetStatus status) {
+        switch (status) {
+          case InternetStatus.connected:
+            add(SetInternetDishesEvent(hasInternet: true));
+            break;
+          case InternetStatus.disconnected:
+            add(SetInternetDishesEvent(hasInternet: false));
+            break;
+        }
+      },
+    );
   }
 
-  Future<void> _checkInternet(
-    CheckInternetDishesEvent event,
+  Future<void> _selectType(
+    LoadDishesByTypeEvent event,
     Emitter<DishesViewState> emit,
   ) async {
-    final bool hasInternet =
-        await appLocator.get<InternetConnection>().hasInternetAccess;
     emit(
-      state.copyWith(hasInternet: hasInternet),
+      state.copyWith(
+        isLoaded: false,
+        isError: false,
+        selectedType: event.selectedType,
+        dishes: [],
+        isLastPage: true,
+      ),
+    );
+
+    if (event.type != 'all') {
+      final List<DishModel> loadedDishes =
+          await _getDishesByTypeUseCase.execute(event.type);
+      emit(
+        state.copyWith(
+          dishes: loadedDishes,
+          isLastPage: true,
+          isLoaded: true,
+        ),
+      );
+    } else {
+      add(InitDishesEvent());
+    }
+  }
+
+  Future<void> _setInternet(
+    SetInternetDishesEvent event,
+    Emitter<DishesViewState> emit,
+  ) async {
+    emit(
+      state.copyWith(hasInternet: event.hasInternet),
     );
   }
 
@@ -83,10 +126,8 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     );
 
     try {
-      final bool hasInternet =
-          await appLocator.get<InternetConnection>().hasInternetAccess;
       final List<DishModel> loadedDishes =
-          await _getInitDishesUseCase.execute(hasInternet);
+          await _getInitDishesUseCase.execute(const NoParams());
       bool isLastPage = false;
 
       if (loadedDishes.length < pageCount) {
@@ -94,7 +135,6 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
       }
       emit(
         state.copyWith(
-          hasInternet: hasInternet,
           dishes: loadedDishes,
           isLastPage: isLastPage,
           isLoaded: true,

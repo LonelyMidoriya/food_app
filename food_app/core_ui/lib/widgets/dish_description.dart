@@ -7,6 +7,7 @@ import 'app_loader_center_widget.dart';
 
 class DishDescription extends StatelessWidget {
   final DishModel model;
+
   const DishDescription(
     this.model, {
     super.key,

@@ -19,7 +19,12 @@ class CartViewState {
 
   CartViewState.empty()
       : cost = 0,
-        cart = CartModel(cartItems: []),
+        cart = CartModel(
+          cartItems: [],
+          cost: 0,
+          id: 0,
+          date: '',
+        ),
         isLoaded = false,
         isError = false,
         errorMessage = '',

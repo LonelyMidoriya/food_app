@@ -12,8 +12,13 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'config/firebase_options.dart';
 export 'validator/validators.dart';
 export 'di/app_di.dart';
-export 'consts/consts.dart';
+export 'constants/constants.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
-
+export 'constants/colors.dart';
+export 'constants/icons.dart';
+export 'package:intl/intl.dart';
+export 'package:adaptive_theme/adaptive_theme.dart';
+export 'constants/urls.dart';
+export 'constants/types_of_food.dart';

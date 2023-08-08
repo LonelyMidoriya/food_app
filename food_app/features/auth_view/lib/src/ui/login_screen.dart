@@ -5,8 +5,9 @@ import 'package:core/core.dart';
 import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
+import 'package:order_history_view/order_history_view.dart';
 
-import '../widget/signup_with.dart';
+import '../widget/signup_with_socials.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -32,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
             BlocProvider.of<CartViewBloc>(context).add(
               InitCartEvent(),
             );
+            BlocProvider.of<OrdersViewBloc>(context).add(
+              InitOrdersEvent(),
+            );
             appRouter.navigate(
               const HomePageRoute(),
             );
@@ -56,6 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
           } else if (state.isLoaded) {
             BlocProvider.of<CartViewBloc>(context).add(
               InitCartEvent(),
+            );
+            BlocProvider.of<OrdersViewBloc>(context).add(
+              InitOrdersEvent(),
             );
             appRouter.navigate(
               const HomePageRoute(),
@@ -110,13 +117,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(
                             height: 24,
                           ),
-                          const SignUpWith(),
+                          const SignUpWithSocials(),
                           const SizedBox(
                             height: 24,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: <Widget>[
                               const Text(
                                 "Don\'t have an account? ",
                                 style: TextStyle(

@@ -10,6 +10,9 @@ part 'cart_entity.g.dart';
 @freezed
 class CartEntity with _$CartEntity {
   factory CartEntity({
+    required double cost,
+    required int id,
+    required String date,
     required List<CartItemEntity> cartItems,
   }) = _CartEntity;
 

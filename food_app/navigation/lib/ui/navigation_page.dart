@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
                 homeIndex: 0,
                 routes: const [
                   DishesViewScreenRoute(),
+                  OrdersViewScreenRoute(),
                   CartViewScreenRoute(),
                   SettingsViewScreenRoute(),
                 ],
@@ -37,13 +38,13 @@ class HomePage extends StatelessWidget {
                         label: 'Home',
                         icon: const Icon(iconHome),
                       ),
-                      // BottomNavigationBarItem(
-                      //   backgroundColor: theme.colorScheme.primary,
-                      //   label: 'Order history',
-                      //   icon: const Icon(
-                      // iconHistory
-                      //   ),
-                      // ),
+                      BottomNavigationBarItem(
+                        backgroundColor: theme.colorScheme.primary,
+                        label: 'Order history',
+                        icon: const Icon(
+                          iconHistory,
+                        ),
+                      ),
                       BottomNavigationBarItem(
                         backgroundColor: theme.colorScheme.primary,
                         label: 'Cart',
