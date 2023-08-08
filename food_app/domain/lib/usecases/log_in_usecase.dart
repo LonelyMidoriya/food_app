@@ -1,6 +1,7 @@
+import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
-class LogInUsecase implements FutureUseCase<UserModel, void> {
+class LogInUsecase implements FutureUseCase<List<String>, void> {
   final AuthRepository _authRepository;
 
   const LogInUsecase({
@@ -8,9 +9,10 @@ class LogInUsecase implements FutureUseCase<UserModel, void> {
   }) : _authRepository = authRepository;
 
   @override
-  Future<void> execute(UserModel input) async {
+  Future<void> execute(List<String> input) async {
     return _authRepository.logIn(
-      user: input,
+      input[0],
+      input[1],
     );
   }
 }

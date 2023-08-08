@@ -1,7 +1,30 @@
 import 'package:core/core.dart';
-import 'package:data/data.dart';
-import 'package:data/repository/orders_repository_impl.dart';
-import 'package:domain/domain.dart';
+import 'package:data/mapper/cart_item_mapper.dart';
+import 'package:data/mapper/cart_mapper.dart';
+import 'package:data/mapper/dish_mapper.dart';
+import 'package:data/provider/auth_provider.dart';
+import 'package:data/provider/firestore_provider.dart';
+import 'package:data/provider/hive_provider.dart';
+import 'package:data/repository/auth_repository_impl.dart';
+import 'package:data/repository/cart_repository_impl.dart';
+import 'package:data/repository/dishes_repository_impl.dart';
+import 'package:data/repository/settings_repository_impl.dart';
+import 'package:domain/model/dish_model.dart';
+import 'package:domain/repository/auth_repository.dart';
+import 'package:domain/repository/cart_repository.dart';
+import 'package:domain/repository/dishes_repository.dart';
+import 'package:domain/repository/settings_repository.dart';
+import 'package:domain/usecases/get_cart_usecase.dart';
+import 'package:domain/usecases/get_dishes_by_type_usecase.dart';
+import 'package:domain/usecases/get_init_dishes_usecase.dart';
+import 'package:domain/usecases/get_next_dishes_usecase.dart';
+import 'package:domain/usecases/get_text_size_usecase.dart';
+import 'package:domain/usecases/log_in_usecase.dart';
+import 'package:domain/usecases/save_text_size_usecase.dart';
+import 'package:domain/usecases/sign_out_usecase.dart';
+import 'package:domain/usecases/sign_up_usecase.dart';
+import 'package:domain/usecases/sign_up_with_google_usecase.dart';
+import 'package:domain/usecases/update_cart_usecase.dart';
 
 final DataDI dataDI = DataDI();
 
@@ -34,7 +57,7 @@ class DataDI {
   void _initAuth() {
     appLocator.registerLazySingleton<AuthProvider>(
       () => AuthProvider(
-        googleSignIn: appLocator.get<GoogleSignIn>(),
+        googleSignIn: appLocator.get(),
       ),
     );
   }
@@ -51,37 +74,31 @@ class DataDI {
     );
     appLocator.registerLazySingleton<CartMapper>(
       () => CartMapper(
-        cartItemMapper: appLocator.get<CartItemMapper>(),
+        appLocator.get<CartItemMapper>(),
       ),
     );
     appLocator.registerLazySingleton<CartItemMapper>(
       () => CartItemMapper(),
     );
-    appLocator.registerLazySingleton<OrdersMapper>(
-      () => OrdersMapper(
-        cartMapper: appLocator.get<CartMapper>(),
-      ),
-    );
   }
 
   void _initAdapter() {
-    appLocator.registerLazySingleton<DishEntityAdapter>(
-      () => DishEntityAdapter(),
+    appLocator.registerLazySingleton<DishModelAdapter>(
+      () => DishModelAdapter(),
     );
   }
 
   Future<void> _initPrefs() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     appLocator.registerLazySingleton<SharedPreferences>(
-      () => sharedPreferences,
+      () => prefs,
     );
   }
 
   Future<void> _initHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(
-      appLocator.get<DishEntityAdapter>(),
+      appLocator.get<DishModelAdapter>(),
     );
     appLocator.registerLazySingleton<HiveProvider>(
       () => HiveProvider(),
@@ -124,8 +141,8 @@ class DataDI {
         settingsRepository: appLocator.get<SettingsRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<SignUpWithEmailAndPasswordUsecase>(
-      () => SignUpWithEmailAndPasswordUsecase(
+    appLocator.registerLazySingleton<SignUpUsecase>(
+      () => SignUpUsecase(
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
@@ -144,52 +161,30 @@ class DataDI {
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<InitUserUsecase>(
-      () => InitUserUsecase(
-        authRepository: appLocator.get<AuthRepository>(),
-      ),
-    );
-    appLocator.registerLazySingleton<GetOrdersUseCase>(
-      () => GetOrdersUseCase(
-        ordersRepository: appLocator.get<OrdersRepository>(),
-      ),
-    );
-    appLocator.registerLazySingleton<UpdateOrdersUseCase>(
-      () => UpdateOrdersUseCase(
-        ordersRepository: appLocator.get<OrdersRepository>(),
-      ),
-    );
   }
 
   void _initRepositories() {
     appLocator.registerLazySingleton<DishesRepository>(
       () => DishesRepositoryImpl(
-        firestoreProvider: appLocator.get<FirestoreProvider>(),
-        dishMapper: appLocator.get<DishMapper>(),
-        hiveProvider: appLocator.get<HiveProvider>(),
+        appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
       ),
     );
     appLocator.registerLazySingleton<CartRepository>(
       () => CartRepositoryImpl(
-        firestoreProvider: appLocator.get<FirestoreProvider>(),
-        cartMapper: appLocator.get<CartMapper>(),
+        appLocator.get(),
+        appLocator.get(),
       ),
     );
     appLocator.registerLazySingleton<SettingsRepository>(
       () => SettingsRepositoryImpl(
-        sharedPreferences: appLocator.get<SharedPreferences>(),
+        appLocator.get(),
       ),
     );
     appLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
-        authProvider: appLocator.get<AuthProvider>(),
-        sharedPreferences: appLocator.get<SharedPreferences>(),
-      ),
-    );
-    appLocator.registerLazySingleton<OrdersRepository>(
-      () => OrdersRepositoryImpl(
-        firestoreProvider: appLocator.get<FirestoreProvider>(),
-        ordersMapper: appLocator.get<OrdersMapper>(),
+        appLocator.get(),
       ),
     );
   }

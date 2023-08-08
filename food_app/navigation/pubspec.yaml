@@ -18,8 +18,6 @@ dependencies:
     path: ../features/settings_view
   auth_view:
     path: ../features/auth_view
-  order_history_view:
-    path: ../features/order_history_view
   domain:
     path: ../domain
   core:

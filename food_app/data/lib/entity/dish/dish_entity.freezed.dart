@@ -20,15 +20,10 @@ DishEntity _$DishEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DishEntity {
-  @HiveField(0)
   String get name => throw _privateConstructorUsedError;
-  @HiveField(1)
   String get imageUrl => throw _privateConstructorUsedError;
-  @HiveField(2)
   double get cost => throw _privateConstructorUsedError;
-  @HiveField(3)
   String get type => throw _privateConstructorUsedError;
-  @HiveField(4)
   String get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,11 +39,11 @@ abstract class $DishEntityCopyWith<$Res> {
       _$DishEntityCopyWithImpl<$Res, DishEntity>;
   @useResult
   $Res call(
-      {@HiveField(0) String name,
-      @HiveField(1) String imageUrl,
-      @HiveField(2) double cost,
-      @HiveField(3) String type,
-      @HiveField(4) String description});
+      {String name,
+      String imageUrl,
+      double cost,
+      String type,
+      String description});
 }
 
 /// @nodoc
@@ -104,11 +99,11 @@ abstract class _$$_DishEntityCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@HiveField(0) String name,
-      @HiveField(1) String imageUrl,
-      @HiveField(2) double cost,
-      @HiveField(3) String type,
-      @HiveField(4) String description});
+      {String name,
+      String imageUrl,
+      double cost,
+      String type,
+      String description});
 }
 
 /// @nodoc
@@ -155,32 +150,26 @@ class __$$_DishEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DishEntity extends _DishEntity {
+class _$_DishEntity implements _DishEntity {
   _$_DishEntity(
-      {@HiveField(0) required this.name,
-      @HiveField(1) required this.imageUrl,
-      @HiveField(2) required this.cost,
-      @HiveField(3) required this.type,
-      @HiveField(4) required this.description})
-      : super._();
+      {required this.name,
+      required this.imageUrl,
+      required this.cost,
+      required this.type,
+      required this.description});
 
   factory _$_DishEntity.fromJson(Map<String, dynamic> json) =>
       _$$_DishEntityFromJson(json);
 
   @override
-  @HiveField(0)
   final String name;
   @override
-  @HiveField(1)
   final String imageUrl;
   @override
-  @HiveField(2)
   final double cost;
   @override
-  @HiveField(3)
   final String type;
   @override
-  @HiveField(4)
   final String description;
 
   @override
@@ -221,32 +210,26 @@ class _$_DishEntity extends _DishEntity {
   }
 }
 
-abstract class _DishEntity extends DishEntity {
+abstract class _DishEntity implements DishEntity {
   factory _DishEntity(
-      {@HiveField(0) required final String name,
-      @HiveField(1) required final String imageUrl,
-      @HiveField(2) required final double cost,
-      @HiveField(3) required final String type,
-      @HiveField(4) required final String description}) = _$_DishEntity;
-  _DishEntity._() : super._();
+      {required final String name,
+      required final String imageUrl,
+      required final double cost,
+      required final String type,
+      required final String description}) = _$_DishEntity;
 
   factory _DishEntity.fromJson(Map<String, dynamic> json) =
       _$_DishEntity.fromJson;
 
   @override
-  @HiveField(0)
   String get name;
   @override
-  @HiveField(1)
   String get imageUrl;
   @override
-  @HiveField(2)
   double get cost;
   @override
-  @HiveField(3)
   String get type;
   @override
-  @HiveField(4)
   String get description;
   @override
   @JsonKey(ignore: true)

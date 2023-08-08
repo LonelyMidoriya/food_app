@@ -68,7 +68,7 @@ class SignUpForm extends StatelessWidget {
                 if (passwordController.text.trim() ==
                     confirmPasswordController.text.trim()) {
                   BlocProvider.of<AuthViewBloc>(context).add(
-                    UserSignupWithEmailAndPasswordEvent(
+                    UserSignupEvent(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     ),
@@ -96,9 +96,8 @@ class SignUpForm extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(12)),
               child: const Center(
                 child: Text(
                   "Sign up",

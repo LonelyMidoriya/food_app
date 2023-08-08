@@ -13,5 +13,3 @@ export 'provider/auth_provider.dart';
 export 'repository/cart_repository_impl.dart';
 export 'repository/dishes_repository_impl.dart';
 export 'repository/settings_repository_impl.dart';
-export 'entity/orders/orders_entity.dart';
-export 'mapper/orders_mapper.dart';

@@ -513,13 +513,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  order_history_view:
-    dependency: "direct main"
-    description:
-      path: "../order_history_view"
-      relative: true
-    source: path
-    version: "0.0.1"
   path:
     dependency: transitive
     description:

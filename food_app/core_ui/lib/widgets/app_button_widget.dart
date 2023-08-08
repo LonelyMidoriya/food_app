@@ -1,4 +1,3 @@
-import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
 class AppButtonWidget extends StatelessWidget {
@@ -20,11 +19,12 @@ class AppButtonWidget extends StatelessWidget {
           horizontal: 20,
           vertical: 10,
         ),
+        textStyle: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      child: CustomText(
-        text: label,
-        fontWeight: FontWeight.bold,
-      ),
+      child: Text(label),
     );
   }
 }

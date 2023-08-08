@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:domain/model/user_model.dart';
 
 class AuthProvider {
   final GoogleSignIn _googleSignIn;
@@ -8,12 +7,10 @@ class AuthProvider {
     required GoogleSignIn googleSignIn,
   }) : _googleSignIn = googleSignIn;
 
-  Future<void> singUpWithEmailAndPassword({
-    required UserModel user,
-  }) async {
+  Future<void> singUp(String email, String password) async {
     await firebaseAuth.createUserWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
+      email: email,
+      password: password,
     );
   }
 
@@ -36,12 +33,10 @@ class AuthProvider {
     await _googleSignIn.signOut();
   }
 
-  Future<void> logIn({
-    required UserModel user,
-  }) async {
+  Future<void> logIn(String email, String password) async {
     await firebaseAuth.signInWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
+      email: email,
+      password: password,
     );
   }
 }

@@ -8,21 +8,13 @@ class InitDishesEvent extends DishesViewEvent {}
 
 class LoadDishesByTypeEvent extends DishesViewEvent {
   final String type;
-  final int selectedType;
 
   LoadDishesByTypeEvent({
     required this.type,
-    required this.selectedType,
   });
 }
 
-class SetInternetDishesEvent extends DishesViewEvent {
-  final bool hasInternet;
-
-  SetInternetDishesEvent({
-    required this.hasInternet,
-});
-}
+class CheckInternetDishesEvent extends DishesViewEvent {}
 
 class NavigateToDetailsEvent extends DishesViewEvent {
   final DishModel model;

@@ -8,11 +8,11 @@ class UserSignoutEvent implements AuthViewEvent {}
 
 class UserSignupWithGoogleEvent implements AuthViewEvent {}
 
-class UserSignupWithEmailAndPasswordEvent implements AuthViewEvent {
+class UserSignupEvent implements AuthViewEvent {
   final String email;
   final String password;
 
-  UserSignupWithEmailAndPasswordEvent({
+  UserSignupEvent({
     required this.email,
     required this.password,
   });

@@ -1,7 +1,7 @@
+import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
-class GetDishesByTypeUseCase
-    implements FutureUseCase<String, List<DishModel>> {
+class GetDishesByTypeUseCase implements FutureUseCase<String, List<DishModel>> {
   final DishesRepository _dishesRepository;
 
   const GetDishesByTypeUseCase({
@@ -10,6 +10,6 @@ class GetDishesByTypeUseCase
 
   @override
   Future<List<DishModel>> execute(String input) async {
-    return _dishesRepository.getAllDishesByType(type: input);
+    return _dishesRepository.getAllDishesByType(input);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
 class UpdateCartUseCase implements FutureUseCase<CartModel, void> {
@@ -9,6 +10,6 @@ class UpdateCartUseCase implements FutureUseCase<CartModel, void> {
 
   @override
   Future<void> execute(CartModel input) async {
-    _cartRepository.updateCart(cart: input);
+    _cartRepository.updateCart(input);
   }
 }

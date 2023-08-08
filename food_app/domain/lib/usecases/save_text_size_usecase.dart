@@ -1,3 +1,4 @@
+import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
 class SaveTextSizeUseCase implements FutureUseCase<double, void> {
@@ -9,8 +10,6 @@ class SaveTextSizeUseCase implements FutureUseCase<double, void> {
 
   @override
   Future<void> execute(double input) async {
-    _settingsRepository.saveTextSize(
-      textSize: input,
-    );
+    _settingsRepository.saveTextSize(input);
   }
 }

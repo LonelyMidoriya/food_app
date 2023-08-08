@@ -22,14 +22,6 @@ class FirestoreProvider {
     await fireStore.collection(collection).doc(userId).set(cart);
   }
 
-  Future<void> updateOrderHistory(
-    Map<String, dynamic> orders,
-    String collection,
-    String userId,
-  ) async {
-    await fireStore.collection(collection).doc(userId).set(orders);
-  }
-
   Future<QuerySnapshot<Map<String, dynamic>>> getFirstDocs(
     String collection,
     int limit,
@@ -42,13 +34,6 @@ class FirestoreProvider {
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getCart(
-    String collection,
-    String userId,
-  ) async {
-    return await fireStore.collection(collection).doc(userId).get();
-  }
-
-  Future<DocumentSnapshot<Map<String, dynamic>>> getOrderHistory(
     String collection,
     String userId,
   ) async {
@@ -68,8 +53,9 @@ class FirestoreProvider {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllByType(
+  Future getAllByType(
     String collection,
+    int limit,
     String type,
   ) async {
     return fireStore
@@ -78,6 +64,7 @@ class FirestoreProvider {
           'type',
           isEqualTo: type,
         )
+        .limit(limit)
         .get();
   }
 }

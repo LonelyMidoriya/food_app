@@ -5,7 +5,6 @@ import 'package:core_ui/core_ui.dart';
 import 'package:dishes_view/dishes_view.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:order_history_view/order_history_view.dart';
 import 'package:settings_view/settings_view.dart';
 
 Future<void> main() async {
@@ -35,14 +34,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: <BlocProvider>[
+      providers: [
         BlocProvider<AuthViewBloc>(
           create: (_) => AuthViewBloc(
-            signUpUsecase: appLocator.get<SignUpWithEmailAndPasswordUsecase>(),
+            signUpUsecase: appLocator.get<SignUpUsecase>(),
             logInUsecase: appLocator.get<LogInUsecase>(),
             signOutUsecase: appLocator.get<SignOutUsecase>(),
             signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
-            initUserUsecase: appLocator.get<InitUserUsecase>(),
           )..add(
               AuthInitEvent(),
             ),
@@ -51,7 +49,6 @@ class _MyAppState extends State<MyApp> {
           create: (_) => DishesViewBloc(
             getInitDishesUseCase: appLocator.get<GetInitDishesUseCase>(),
             getNextDishesUseCase: appLocator.get<GetNextDishesUseCase>(),
-            getDishesByTypeUseCase: appLocator.get<GetDishesByTypeUseCase>(),
           )..add(
               InitDishesEvent(),
             ),
@@ -60,12 +57,6 @@ class _MyAppState extends State<MyApp> {
           create: (_) => CartViewBloc(
             getCartUseCase: appLocator.get<GetCartUseCase>(),
             updateCartUseCase: appLocator.get<UpdateCartUseCase>(),
-          ),
-        ),
-        BlocProvider<OrdersViewBloc>(
-          create: (_) => OrdersViewBloc(
-            getOrdersUseCase: appLocator.get<GetOrdersUseCase>(),
-            updateOrdersUseCase: appLocator.get<UpdateOrdersUseCase>(),
           ),
         ),
         BlocProvider<SettingsViewBloc>(

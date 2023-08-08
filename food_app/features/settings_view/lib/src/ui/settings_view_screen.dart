@@ -22,7 +22,7 @@ class SettingsViewScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: BlocBuilder<AuthViewBloc, AuthViewState>(
-              builder: (BuildContext context, AuthViewState state) {
+              builder: (context, state) {
                 if (state.isLoggedIn) {
                   return CustomText(
                     text: firebaseAuth.currentUser!.email!,

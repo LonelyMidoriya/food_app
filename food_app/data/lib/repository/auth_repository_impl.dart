@@ -3,114 +3,62 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
-  final AuthProvider authProvider;
-  final SharedPreferences sharedPreferences;
+  final AuthProvider _authProvider;
 
-  AuthRepositoryImpl({
-    required this.authProvider,
-    required this.sharedPreferences,
-  });
+  AuthRepositoryImpl(
+    this._authProvider,
+  );
 
   @override
-  Future<void> logIn({
-    required UserModel user,
-  }) async {
-    await authProvider.logIn(user: user);
-    sharedPreferences
-      ..setString(
-        'uid',
-        firebaseAuth.currentUser!.uid,
-      )
-      ..setString(
-        'email',
-        firebaseAuth.currentUser!.email!,
-      )
-      ..setBool(
-        'isLoggedIn',
-        true,
-      );
+  Future<void> logIn(String email, String password) async {
+    await _authProvider.logIn(email, password);
+    appLocator
+        .get<SharedPreferences>()
+        .setString('uid', firebaseAuth.currentUser!.uid);
+    appLocator
+        .get<SharedPreferences>()
+        .setString('email', firebaseAuth.currentUser!.email!);
+    appLocator.get<SharedPreferences>().setBool(
+          'isLoggedIn',
+          true,
+        );
   }
 
   @override
   Future<void> signUpWithGoogle() async {
-    await authProvider.singUpWithGoogle();
-    sharedPreferences
-      ..setString(
-        'uid',
-        firebaseAuth.currentUser!.uid,
-      )
-      ..setString(
-        'email',
-        firebaseAuth.currentUser!.email!,
-      )
-      ..setBool(
-        'isLoggedIn',
-        true,
-      );
+    await _authProvider.singUpWithGoogle();
+    appLocator
+        .get<SharedPreferences>()
+        .setString('uid', firebaseAuth.currentUser!.uid);
+    appLocator
+        .get<SharedPreferences>()
+        .setString('email', firebaseAuth.currentUser!.email!);
+    appLocator.get<SharedPreferences>().setBool(
+          'isLoggedIn',
+          true,
+        );
   }
 
   @override
   Future<void> signOut() async {
-    await authProvider.singOut();
-    sharedPreferences
-      ..setBool(
-        'isLoggedIn',
-        false,
-      )
-      ..setString(
-        'uid',
-        '',
-      )
-      ..setString(
-        'email',
-        '',
-      );
+    await _authProvider.singOut();
+    appLocator.get<SharedPreferences>().setString('uid', '');
+    appLocator.get<SharedPreferences>().setString('email', '');
+    appLocator.get<SharedPreferences>().setBool('isLoggedIn', false);
   }
 
   @override
-  Future<void> signUpWithEmailAndPassword({
-    required UserModel user,
-  }) async {
-    await authProvider.singUpWithEmailAndPassword(user: user);
-    sharedPreferences
-      ..setString(
-        'uid',
-        firebaseAuth.currentUser!.uid,
-      )
-      ..setString(
-        'email',
-        firebaseAuth.currentUser!.email!,
-      )
-      ..setBool(
-        'isLoggedIn',
-        true,
-      );
-  }
-
-  @override
-  Future<bool> init() async {
-    final bool isLoggedIn;
-
-    if (firebaseAuth.currentUser == null) {
-      sharedPreferences
-        ..setBool(
+  Future<void> signUp(String email, String password) async {
+    await _authProvider.singUp(email, password);
+    appLocator
+        .get<SharedPreferences>()
+        .setString('uid', firebaseAuth.currentUser!.uid);
+    appLocator
+        .get<SharedPreferences>()
+        .setString('email', firebaseAuth.currentUser!.email!);
+    appLocator.get<SharedPreferences>().setBool(
           'isLoggedIn',
-          false,
-        )
-        ..setString(
-          'uid',
-          '',
-        )
-        ..setString(
-          'email',
-          '',
+          true,
         );
-      isLoggedIn = false;
-    } else {
-      isLoggedIn = sharedPreferences.getBool(
-        'isLoggedIn',
-      )!;
-    }
-    return isLoggedIn;
   }
 }
