@@ -4,18 +4,18 @@ import 'package:domain/model/orders_model.dart';
 import 'package:domain/repository/orders_repository.dart';
 
 class OrdersRepositoryImpl implements OrdersRepository {
-  final FirestoreProvider _firestoreProvider;
-  final OrdersMapper _ordersMapper;
+  final FirestoreProvider firestoreProvider;
+  final OrdersMapper ordersMapper;
 
-  OrdersRepositoryImpl(
-    this._firestoreProvider,
-    this._ordersMapper,
-  );
+  OrdersRepositoryImpl({
+    required this.firestoreProvider,
+    required this.ordersMapper,
+  });
 
   @override
   Future<OrdersModel> getOrders() async {
     final OrdersEntity ordersEntity;
-    final Map<String, dynamic>? ordersJson = await _firestoreProvider
+    final Map<String, dynamic>? ordersJson = await firestoreProvider
         .getCart(
           'orders',
           appLocator.get<SharedPreferences>().getString('uid')!,
@@ -27,15 +27,15 @@ class OrdersRepositoryImpl implements OrdersRepository {
       );
     }
     ordersEntity = OrdersEntity.fromJson(ordersJson);
-    return _ordersMapper.toModel(ordersEntity);
+    return ordersMapper.toModel(ordersEntity);
   }
 
   @override
-  Future<void> updateOrders(
-    OrdersModel cart,
-  ) async {
-    await _firestoreProvider.updateCart(
-      _ordersMapper.toEntity(cart).toJson(),
+  Future<void> updateOrders({
+    required OrdersModel cart,
+  }) async {
+    await firestoreProvider.updateCart(
+      ordersMapper.toEntity(cart).toJson(),
       'orders',
       appLocator.get<SharedPreferences>().getString('uid')!,
     );

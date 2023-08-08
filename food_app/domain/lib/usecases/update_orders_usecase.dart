@@ -12,6 +12,6 @@ class UpdateOrdersUseCase implements FutureUseCase<OrdersModel, void> {
 
   @override
   Future<void> execute(OrdersModel input) async {
-    _ordersRepository.updateOrders(input);
+    _ordersRepository.updateOrders(cart: input);
   }
 }

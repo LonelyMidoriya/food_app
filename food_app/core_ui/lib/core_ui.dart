@@ -8,3 +8,4 @@ export 'widgets/custom_text.dart';
 export 'widgets/dish_description.dart';
 export 'widgets/app_button_widget.dart';
 export 'widgets/app_loader_center_widget.dart';
+export 'widgets/no_internet_connection_snackbar.dart';

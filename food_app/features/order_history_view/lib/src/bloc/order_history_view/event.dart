@@ -12,6 +12,12 @@ class AddToOrdersEvent extends OrdersViewEvent {
   });
 }
 
-class CheckInternetOrdersEvent extends OrdersViewEvent {}
+class SetInternetOrdersEvent extends OrdersViewEvent {
+  final bool hasInternet;
+
+  SetInternetOrdersEvent({
+    required this.hasInternet,
+  });
+}
 
 class InitOrdersEvent extends OrdersViewEvent {}

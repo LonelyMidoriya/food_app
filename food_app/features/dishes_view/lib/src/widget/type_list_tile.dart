@@ -18,18 +18,19 @@ class TypeListTile extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
-        builder: (BuildContext context, SettingsViewState state) {
-      return SizedBox(
-        width: state.fontSize * 6,
-        child: ListTile(
-          selected: isSelected,
-          selectedColor: theme.colorScheme.primary,
-          title: CustomText(
-            text: type,
-            fontWeight: FontWeight.w500,
+      builder: (BuildContext context, SettingsViewState state) {
+        return SizedBox(
+          width: state.fontSize * 6,
+          child: ListTile(
+            selected: isSelected,
+            selectedColor: theme.colorScheme.primary,
+            title: CustomText(
+              text: type,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

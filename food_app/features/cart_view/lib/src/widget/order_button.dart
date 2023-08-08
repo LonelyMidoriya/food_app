@@ -26,26 +26,22 @@ class OrderButton extends StatelessWidget {
               BlocProvider.of<CartViewBloc>(context).add(
                 ClearCartEvent(),
               );
-              final bool hasInternet =
-                  await appLocator.get<InternetConnection>().hasInternetAccess;
-              if (hasInternet) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    elevation: 50,
-                    backgroundColor: Colors.teal,
-                    content: CustomText(
-                      text: 'Your food is ordered!',
-                      fontWeight: FontWeight.w800,
-                    ),
-                    duration: Duration(seconds: 2),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 60,
-                      horizontal: 30,
-                    ),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  elevation: 50,
+                  backgroundColor: Colors.teal,
+                  content: CustomText(
+                    text: 'Your food is ordered!',
+                    fontWeight: FontWeight.w800,
                   ),
-                );
-              }
+                  duration: Duration(seconds: 2),
+                  margin: EdgeInsets.symmetric(
+                    vertical: 60,
+                    horizontal: 30,
+                  ),
+                ),
+              );
             },
             label: 'Order',
           );

@@ -1,8 +1,7 @@
-import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
 class SignUpWithEmailAndPasswordUsecase
-    implements FutureUseCase<List<String>, void> {
+    implements FutureUseCase<UserModel, void> {
   final AuthRepository _authRepository;
 
   const SignUpWithEmailAndPasswordUsecase({
@@ -10,10 +9,9 @@ class SignUpWithEmailAndPasswordUsecase
   }) : _authRepository = authRepository;
 
   @override
-  Future<void> execute(List<String> input) async {
+  Future<void> execute(UserModel input) async {
     return _authRepository.signUpWithEmailAndPassword(
-      input[0],
-      input[1],
+      user: input,
     );
   }
 }
