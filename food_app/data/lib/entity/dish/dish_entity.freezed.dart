@@ -30,6 +30,8 @@ mixin _$DishEntity {
   String get type => throw _privateConstructorUsedError;
   @HiveField(4)
   String get description => throw _privateConstructorUsedError;
+  @HiveField(5)
+  Map<dynamic, dynamic> get stats => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $DishEntityCopyWith<$Res> {
       @HiveField(1) String imageUrl,
       @HiveField(2) double cost,
       @HiveField(3) String type,
-      @HiveField(4) String description});
+      @HiveField(4) String description,
+      @HiveField(5) Map<dynamic, dynamic> stats});
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$DishEntityCopyWithImpl<$Res, $Val extends DishEntity>
     Object? cost = null,
     Object? type = null,
     Object? description = null,
+    Object? stats = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -91,6 +95,10 @@ class _$DishEntityCopyWithImpl<$Res, $Val extends DishEntity>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      stats: null == stats
+          ? _value.stats
+          : stats // ignore: cast_nullable_to_non_nullable
+              as Map<dynamic, dynamic>,
     ) as $Val);
   }
 }
@@ -108,7 +116,8 @@ abstract class _$$_DishEntityCopyWith<$Res>
       @HiveField(1) String imageUrl,
       @HiveField(2) double cost,
       @HiveField(3) String type,
-      @HiveField(4) String description});
+      @HiveField(4) String description,
+      @HiveField(5) Map<dynamic, dynamic> stats});
 }
 
 /// @nodoc
@@ -127,6 +136,7 @@ class __$$_DishEntityCopyWithImpl<$Res>
     Object? cost = null,
     Object? type = null,
     Object? description = null,
+    Object? stats = null,
   }) {
     return _then(_$_DishEntity(
       name: null == name
@@ -149,6 +159,10 @@ class __$$_DishEntityCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      stats: null == stats
+          ? _value._stats
+          : stats // ignore: cast_nullable_to_non_nullable
+              as Map<dynamic, dynamic>,
     ));
   }
 }
@@ -161,8 +175,10 @@ class _$_DishEntity extends _DishEntity {
       @HiveField(1) required this.imageUrl,
       @HiveField(2) required this.cost,
       @HiveField(3) required this.type,
-      @HiveField(4) required this.description})
-      : super._();
+      @HiveField(4) required this.description,
+      @HiveField(5) required final Map<dynamic, dynamic> stats})
+      : _stats = stats,
+        super._();
 
   factory _$_DishEntity.fromJson(Map<String, dynamic> json) =>
       _$$_DishEntityFromJson(json);
@@ -182,10 +198,18 @@ class _$_DishEntity extends _DishEntity {
   @override
   @HiveField(4)
   final String description;
+  final Map<dynamic, dynamic> _stats;
+  @override
+  @HiveField(5)
+  Map<dynamic, dynamic> get stats {
+    if (_stats is EqualUnmodifiableMapView) return _stats;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_stats);
+  }
 
   @override
   String toString() {
-    return 'DishEntity(name: $name, imageUrl: $imageUrl, cost: $cost, type: $type, description: $description)';
+    return 'DishEntity(name: $name, imageUrl: $imageUrl, cost: $cost, type: $type, description: $description, stats: $stats)';
   }
 
   @override
@@ -199,13 +223,14 @@ class _$_DishEntity extends _DishEntity {
             (identical(other.cost, cost) || other.cost == cost) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            const DeepCollectionEquality().equals(other._stats, _stats));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, imageUrl, cost, type, description);
+  int get hashCode => Object.hash(runtimeType, name, imageUrl, cost, type,
+      description, const DeepCollectionEquality().hash(_stats));
 
   @JsonKey(ignore: true)
   @override
@@ -227,7 +252,8 @@ abstract class _DishEntity extends DishEntity {
       @HiveField(1) required final String imageUrl,
       @HiveField(2) required final double cost,
       @HiveField(3) required final String type,
-      @HiveField(4) required final String description}) = _$_DishEntity;
+      @HiveField(4) required final String description,
+      @HiveField(5) required final Map<dynamic, dynamic> stats}) = _$_DishEntity;
   _DishEntity._() : super._();
 
   factory _DishEntity.fromJson(Map<String, dynamic> json) =
@@ -248,6 +274,9 @@ abstract class _DishEntity extends DishEntity {
   @override
   @HiveField(4)
   String get description;
+  @override
+  @HiveField(5)
+  Map<dynamic, dynamic> get stats;
   @override
   @JsonKey(ignore: true)
   _$$_DishEntityCopyWith<_$_DishEntity> get copyWith =>

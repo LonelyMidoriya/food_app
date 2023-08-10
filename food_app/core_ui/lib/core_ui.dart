@@ -8,3 +8,8 @@ export 'widgets/custom_text.dart';
 export 'widgets/dish_description.dart';
 export 'widgets/app_button_widget.dart';
 export 'widgets/app_loader_center_widget.dart';
+export 'widgets/custom_progress_indicator.dart';
+export 'package:cart_view/cart_view.dart';
+export 'package:order_history_view/order_history_view.dart';
+export 'package:dishes_view/dishes_view.dart';
+export 'package:settings_view/settings_view.dart';

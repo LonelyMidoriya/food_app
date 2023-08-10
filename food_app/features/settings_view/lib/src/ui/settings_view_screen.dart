@@ -73,9 +73,13 @@ class SettingsViewScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             children: const <Widget>[
               ThemeListTile(),
-              Divider(),
+              SizedBox(
+                height: 12,
+              ),
               TextSizeListTile(),
-              Divider(),
+              SizedBox(
+                height: 12,
+              ),
               AboutUsTile(),
             ],
           ),

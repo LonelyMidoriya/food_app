@@ -4,6 +4,7 @@ class DishModel {
   final double cost;
   final String type;
   final String description;
+  final Map<dynamic, dynamic> stats;
 
   DishModel({
     required this.name,
@@ -11,5 +12,6 @@ class DishModel {
     required this.cost,
     required this.type,
     required this.description,
+    required this.stats,
   });
 }

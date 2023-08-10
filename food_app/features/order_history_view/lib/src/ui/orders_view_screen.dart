@@ -1,12 +1,7 @@
 import 'package:core/core.dart';
-import 'package:core_ui/widgets/app_button_widget.dart';
-import 'package:core_ui/widgets/app_loader_center_widget.dart';
-import 'package:core_ui/widgets/custom_text.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:order_history_view/order_history_view.dart';
 import 'package:order_history_view/src/widget/order_item.dart';
-import 'package:dishes_view/dishes_view.dart';
-import 'package:cart_view/cart_view.dart';
 
 class OrdersViewScreen extends StatelessWidget {
   const OrdersViewScreen({Key? key}) : super(key: key);
@@ -50,10 +45,11 @@ class OrdersViewScreen extends StatelessWidget {
                         cartModel: state.orders.carts[index],
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      height: 15,
-                    ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const SizedBox(
+                        height: 15,
+                      );
+                    },
                   );
                 }
               } else {
@@ -73,14 +69,27 @@ class OrdersViewScreen extends StatelessWidget {
                       AppButtonWidget(
                         label: 'Refresh'.trim(),
                         onTap: () {
+                          if (!state.hasInternet) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                elevation: 50,
+                                backgroundColor: Colors.teal,
+                                content: CustomText(
+                                  text: 'No Internet connection!',
+                                  fontWeight: FontWeight.w800,
+                                  textColor: theme.colorScheme.tertiary,
+                                ),
+                                duration: const Duration(seconds: 2),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 60,
+                                  horizontal: 30,
+                                ),
+                              ),
+                            );
+                          }
                           BlocProvider.of<OrdersViewBloc>(context).add(
                             InitOrdersEvent(),
-                          );
-                          BlocProvider.of<DishesViewBloc>(context).add(
-                            CheckInternetDishesEvent(),
-                          );
-                          BlocProvider.of<CartViewBloc>(context).add(
-                            CheckInternetEvent(),
                           );
                         },
                       ),

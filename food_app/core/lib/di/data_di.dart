@@ -34,7 +34,7 @@ class DataDI {
   void _initAuth() {
     appLocator.registerLazySingleton<AuthProvider>(
       () => AuthProvider(
-        googleSignIn: appLocator.get(),
+        googleSignIn: appLocator.get<GoogleSignIn>(),
       ),
     );
   }
@@ -51,7 +51,7 @@ class DataDI {
     );
     appLocator.registerLazySingleton<CartMapper>(
       () => CartMapper(
-        appLocator.get<CartItemMapper>(),
+        cartItemMapper: appLocator.get<CartItemMapper>(),
       ),
     );
     appLocator.registerLazySingleton<CartItemMapper>(
@@ -59,7 +59,7 @@ class DataDI {
     );
     appLocator.registerLazySingleton<OrdersMapper>(
       () => OrdersMapper(
-        appLocator.get<CartMapper>(),
+        cartMapper: appLocator.get<CartMapper>(),
       ),
     );
   }
@@ -71,9 +71,10 @@ class DataDI {
   }
 
   Future<void> _initPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     appLocator.registerLazySingleton<SharedPreferences>(
-      () => prefs,
+      () => sharedPreferences,
     );
   }
 
@@ -163,32 +164,35 @@ class DataDI {
   void _initRepositories() {
     appLocator.registerLazySingleton<DishesRepository>(
       () => DishesRepositoryImpl(
-        appLocator.get(),
-        appLocator.get(),
-        appLocator.get(),
+        firestoreProvider: appLocator.get<FirestoreProvider>(),
+        dishMapper: appLocator.get<DishMapper>(),
+        hiveProvider: appLocator.get<HiveProvider>(),
+        internetConnection: appLocator.get<InternetConnection>(),
       ),
     );
     appLocator.registerLazySingleton<CartRepository>(
       () => CartRepositoryImpl(
-        appLocator.get(),
-        appLocator.get(),
+        firestoreProvider: appLocator.get<FirestoreProvider>(),
+        cartMapper: appLocator.get<CartMapper>(),
+        sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
     appLocator.registerLazySingleton<SettingsRepository>(
       () => SettingsRepositoryImpl(
-        appLocator.get(),
+        sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
     appLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
-        appLocator.get(),
-        appLocator.get(),
+        authProvider: appLocator.get<AuthProvider>(),
+        sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
     appLocator.registerLazySingleton<OrdersRepository>(
       () => OrdersRepositoryImpl(
-        appLocator.get(),
-        appLocator.get(),
+        firestoreProvider: appLocator.get<FirestoreProvider>(),
+        ordersMapper: appLocator.get<OrdersMapper>(),
+        sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
   }

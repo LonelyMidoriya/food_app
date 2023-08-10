@@ -9,6 +9,7 @@ class DishMapper {
       cost: model.cost,
       type: model.type,
       description: model.description,
+      stats: model.stats,
     );
   }
 
@@ -19,6 +20,7 @@ class DishMapper {
       cost: entity.cost,
       type: entity.type,
       description: entity.description,
+      stats: entity.stats,
     );
   }
 }

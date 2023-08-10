@@ -1,4 +1,4 @@
-import 'package:core/consts/colors.dart';
+import 'package:core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
@@ -10,6 +10,6 @@ ThemeData lightTheme = ThemeData(
     secondary: Colors.white,
     primaryContainer: Colors.white,
     secondaryContainer: Colors.black45,
-    tertiary: Colors.black,
+    tertiary: Colors.black87,
   ),
 );

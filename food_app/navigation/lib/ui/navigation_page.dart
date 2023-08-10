@@ -19,6 +19,8 @@ class HomePage extends StatelessWidget {
             builder: (BuildContext context, CartViewState state) {
               return AutoTabsScaffold(
                 homeIndex: 0,
+                animationCurve: Curves.easeInOutCubic,
+                animationDuration: const Duration(milliseconds: 300),
                 routes: const [
                   DishesViewScreenRoute(),
                   OrdersViewScreenRoute(),

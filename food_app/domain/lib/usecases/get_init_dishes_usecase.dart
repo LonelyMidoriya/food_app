@@ -1,7 +1,6 @@
-import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
-class GetInitDishesUseCase implements FutureUseCase<bool, List<DishModel>> {
+class GetInitDishesUseCase implements FutureUseCase<NoParams, List<DishModel>> {
   final DishesRepository _dishesRepository;
 
   const GetInitDishesUseCase({
@@ -9,7 +8,7 @@ class GetInitDishesUseCase implements FutureUseCase<bool, List<DishModel>> {
   }) : _dishesRepository = dishesRepository;
 
   @override
-  Future<List<DishModel>> execute(bool input) async {
-    return _dishesRepository.getFirstDishes(input);
+  Future<List<DishModel>> execute(NoParams input) async {
+    return _dishesRepository.getFirstDishes();
   }
 }
