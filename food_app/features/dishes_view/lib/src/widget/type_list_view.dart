@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:dishes_view/src/widget/type_list_tile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cart_view/cart_view.dart';
 
 import '../../dishes_view.dart';
 
@@ -10,30 +9,31 @@ class TypeListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DishesViewBloc, DishesViewState>(
+    return SizedBox(
+      height: 55,
+      child: BlocBuilder<DishesViewBloc, DishesViewState>(
         builder: (BuildContext context, DishesViewState state) {
-      return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: typesOfFood.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            BlocProvider.of<CartViewBloc>(context).add(
-              CheckInternetEvent(),
-            );
-            BlocProvider.of<DishesViewBloc>(context).add(
-              LoadDishesByTypeEvent(
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: typesOfFood.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                BlocProvider.of<DishesViewBloc>(context).add(
+                  LoadDishesByTypeEvent(
+                    type: typesOfFood[index],
+                    selectedType: index,
+                  ),
+                );
+              },
+              child: TypeListTile(
+                isSelected: state.selectedType == index,
                 type: typesOfFood[index],
-                selectedType: index,
               ),
-            );
-          },
-          child: TypeListTile(
-            isSelected: state.selectedType == index,
-            type: typesOfFood[index],
-          ),
-        ),
-      );
-    });
+            ),
+          );
+        },
+      ),
+    );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/usecases/usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -12,13 +11,13 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
   final InitUserUsecase _initUserUsecase;
 
-  AuthViewBloc(
-      {required SignUpWithEmailAndPasswordUsecase signUpUsecase,
-      required LogInUsecase logInUsecase,
-      required SignOutUsecase signOutUsecase,
-      required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
-      required InitUserUsecase initUserUsecase})
-      : _signUpUsecase = signUpUsecase,
+  AuthViewBloc({
+    required SignUpWithEmailAndPasswordUsecase signUpUsecase,
+    required LogInUsecase logInUsecase,
+    required SignOutUsecase signOutUsecase,
+    required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
+    required InitUserUsecase initUserUsecase,
+  })  : _signUpUsecase = signUpUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
@@ -37,9 +36,7 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     AuthInitEvent event,
     Emitter<AuthViewState> emit,
   ) async {
-    final bool isLoggedIn;
-
-    isLoggedIn = await _initUserUsecase.execute(const NoParams());
+    final bool isLoggedIn = await _initUserUsecase.execute(const NoParams());
 
     emit(
       state.copyWith(
@@ -102,12 +99,9 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      await _signUpUsecase.execute(
-        [
-          event.email,
-          event.password,
-        ],
-      );
+      final UserModel user =
+          UserModel(email: event.email, password: event.password);
+      await _signUpUsecase.execute(user);
 
       emit(
         state.copyWith(
@@ -131,12 +125,9 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      await _logInUsecase.execute(
-        [
-          event.email,
-          event.password,
-        ],
-      );
+      final UserModel user =
+          UserModel(email: event.email, password: event.password);
+      await _logInUsecase.execute(user);
       await appLocator.get<SharedPreferences>().setBool(
             'isLoggedIn',
             true,

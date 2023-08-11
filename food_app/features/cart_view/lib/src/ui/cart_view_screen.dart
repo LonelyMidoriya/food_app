@@ -1,15 +1,9 @@
 import 'package:cart_view/src/widget/cart_list_view_item.dart';
 import 'package:cart_view/src/widget/order_button.dart';
 import 'package:core/core.dart';
-import 'package:core_ui/widgets/app_button_widget.dart';
-import 'package:core_ui/widgets/app_loader_center_widget.dart';
-import 'package:core_ui/widgets/custom_text.dart';
-import 'package:dishes_view/dishes_view.dart';
-import 'package:order_history_view/order_history_view.dart';
+import 'package:core_ui/core_ui.dart';
 
 import 'package:flutter/material.dart';
-
-import '../bloc/bloc.dart';
 
 class CartViewScreen extends StatelessWidget {
   const CartViewScreen({Key? key}) : super(key: key);
@@ -29,20 +23,18 @@ class CartViewScreen extends StatelessWidget {
           body: BlocConsumer<CartViewBloc, CartViewState>(
             listener: (BuildContext context, CartViewState state) {
               if (!state.hasInternet) {
-                BlocProvider.of<DishesViewBloc>(context).add(
-                  CheckInternetDishesEvent(),
-                );
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     behavior: SnackBarBehavior.floating,
                     elevation: 50,
                     backgroundColor: Colors.teal,
                     content: CustomText(
                       text: 'No Internet connection!',
                       fontWeight: FontWeight.w800,
+                      textColor: theme.colorScheme.tertiary,
                     ),
-                    duration: Duration(seconds: 2),
-                    margin: EdgeInsets.symmetric(
+                    duration: const Duration(seconds: 2),
+                    margin: const EdgeInsets.symmetric(
                       vertical: 60,
                       horizontal: 30,
                     ),
@@ -61,7 +53,7 @@ class CartViewScreen extends StatelessWidget {
                 if (state.cart.cartItems.isEmpty) {
                   return const Center(
                     child: CustomText(
-                      text: 'Cart is empty',
+                      text: 'Your cart is empty',
                       fontWeight: FontWeight.w900,
                     ),
                   );
@@ -97,6 +89,8 @@ class CartViewScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             return CartListViewItem(
                               itemModel: state.cart.cartItems[index],
+                              cost: state.cart.cartItems[index].count *
+                                  state.cart.cartItems[index].cost,
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) =>
@@ -125,12 +119,6 @@ class CartViewScreen extends StatelessWidget {
                         onTap: () {
                           BlocProvider.of<CartViewBloc>(context).add(
                             InitCartEvent(),
-                          );
-                          BlocProvider.of<DishesViewBloc>(context).add(
-                            CheckInternetDishesEvent(),
-                          );
-                          BlocProvider.of<OrdersViewBloc>(context).add(
-                            CheckInternetOrdersEvent(),
                           );
                         },
                       ),

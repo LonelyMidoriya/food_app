@@ -1,9 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:order_history_view/order_history_view.dart';
-
-import '../../cart_view.dart';
 
 class OrderButton extends StatelessWidget {
   const OrderButton({Key? key}) : super(key: key);
@@ -26,26 +23,23 @@ class OrderButton extends StatelessWidget {
               BlocProvider.of<CartViewBloc>(context).add(
                 ClearCartEvent(),
               );
-              final bool hasInternet =
-                  await appLocator.get<InternetConnection>().hasInternetAccess;
-              if (hasInternet) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    elevation: 50,
-                    backgroundColor: Colors.teal,
-                    content: CustomText(
-                      text: 'Your food is ordered!',
-                      fontWeight: FontWeight.w800,
-                    ),
-                    duration: Duration(seconds: 2),
-                    margin: EdgeInsets.symmetric(
-                      vertical: 60,
-                      horizontal: 30,
-                    ),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  elevation: 50,
+                  backgroundColor: Colors.teal,
+                  content: CustomText(
+                    text: 'Your food is ordered!',
+                    fontWeight: FontWeight.w800,
+                    textColor: Theme.of(context).colorScheme.tertiary,
                   ),
-                );
-              }
+                  duration: const Duration(seconds: 2),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 60,
+                    horizontal: 30,
+                  ),
+                ),
+              );
             },
             label: 'Order',
           );

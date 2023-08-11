@@ -1,4 +1,3 @@
-import 'package:domain/usecases/usecase.dart';
 import 'package:domain/domain.dart';
 
 class SignUpWithGoogleUsecase implements FutureUseCase<NoParams, void> {

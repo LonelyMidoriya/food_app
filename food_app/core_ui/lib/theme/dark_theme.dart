@@ -1,4 +1,4 @@
-import 'package:core/consts/colors.dart';
+import 'package:core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData darkTheme = ThemeData(

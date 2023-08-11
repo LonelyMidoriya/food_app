@@ -1,13 +1,13 @@
-abstract class AuthRepository {
-  Future<void> signUpWithEmailAndPassword(
-    String email,
-    String password,
-  );
+import 'package:domain/domain.dart';
 
-  Future<void> logIn(
-    String email,
-    String password,
-  );
+abstract class AuthRepository {
+  Future<void> signUpWithEmailAndPassword({
+    required UserModel user,
+  });
+
+  Future<void> logIn({
+    required UserModel user,
+  });
 
   Future<void> signUpWithGoogle();
 

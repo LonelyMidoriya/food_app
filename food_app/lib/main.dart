@@ -1,12 +1,8 @@
 import 'package:auth_view/auth_view.dart';
-import 'package:cart_view/cart_view.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:dishes_view/dishes_view.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:order_history_view/order_history_view.dart';
-import 'package:settings_view/settings_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +48,7 @@ class _MyAppState extends State<MyApp> {
             getInitDishesUseCase: appLocator.get<GetInitDishesUseCase>(),
             getNextDishesUseCase: appLocator.get<GetNextDishesUseCase>(),
             getDishesByTypeUseCase: appLocator.get<GetDishesByTypeUseCase>(),
+            internetConnection: appLocator.get<InternetConnection>(),
           )..add(
               InitDishesEvent(),
             ),
@@ -60,12 +57,14 @@ class _MyAppState extends State<MyApp> {
           create: (_) => CartViewBloc(
             getCartUseCase: appLocator.get<GetCartUseCase>(),
             updateCartUseCase: appLocator.get<UpdateCartUseCase>(),
+            internetConnection: appLocator.get<InternetConnection>(),
           ),
         ),
         BlocProvider<OrdersViewBloc>(
           create: (_) => OrdersViewBloc(
             getOrdersUseCase: appLocator.get<GetOrdersUseCase>(),
             updateOrdersUseCase: appLocator.get<UpdateOrdersUseCase>(),
+            internetConnection: appLocator.get<InternetConnection>(),
           ),
         ),
         BlocProvider<SettingsViewBloc>(

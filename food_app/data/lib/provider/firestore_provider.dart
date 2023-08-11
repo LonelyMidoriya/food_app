@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 
 class FirestoreProvider {
-  Future<QuerySnapshot<Map<String, dynamic>>> getOne(
-    String name,
-    String collection,
-  ) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getOne({
+    required String name,
+    required String collection,
+  }) async {
     return fireStore
         .collection(collection)
         .where(
@@ -14,26 +14,26 @@ class FirestoreProvider {
         .get();
   }
 
-  Future<void> updateCart(
-    Map<String, dynamic> cart,
-    String collection,
-    String userId,
-  ) async {
+  Future<void> updateCart({
+    required Map<String, dynamic> cart,
+    required String collection,
+    required String userId,
+  }) async {
     await fireStore.collection(collection).doc(userId).set(cart);
   }
 
-  Future<void> updateOrderHistory(
-    Map<String, dynamic> orders,
-    String collection,
-    String userId,
-  ) async {
+  Future<void> updateOrderHistory({
+    required Map<String, dynamic> orders,
+    required String collection,
+    required String userId,
+  }) async {
     await fireStore.collection(collection).doc(userId).set(orders);
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getFirstDocs(
-    String collection,
-    int limit,
-  ) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getFirstDocs({
+    required String collection,
+    required int limit,
+  }) async {
     return await fireStore
         .collection(collection)
         .orderBy('type')
@@ -41,25 +41,25 @@ class FirestoreProvider {
         .get();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getCart(
-    String collection,
-    String userId,
-  ) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getCart({
+    required String collection,
+    required String userId,
+  }) async {
     return await fireStore.collection(collection).doc(userId).get();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getOrderHistory(
-    String collection,
-    String userId,
-  ) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getOrderHistory({
+    required String collection,
+    required String userId,
+  }) async {
     return await fireStore.collection(collection).doc(userId).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getNextDocs(
-    String collection,
-    int limit,
-    QueryDocumentSnapshot<Map<String, dynamic>> lastVisible,
-  ) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getNextDocs({
+    required String collection,
+    required int limit,
+    required QueryDocumentSnapshot<Map<String, dynamic>> lastVisible,
+  }) async {
     return await fireStore
         .collection(collection)
         .orderBy('type')
@@ -68,10 +68,10 @@ class FirestoreProvider {
         .get();
   }
 
-  Future getAllByType(
-    String collection,
-    String type,
-  ) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllByType({
+    required String collection,
+    required String type,
+  }) async {
     return fireStore
         .collection(collection)
         .where(

@@ -15,6 +15,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.0.0
   internet_connection_checker_plus: ^2.0.0
+  rive: ^0.11.13
   shared_preferences: ^2.2.0
   cached_network_image: ^3.2.1
   adaptive_theme: ^3.3.0

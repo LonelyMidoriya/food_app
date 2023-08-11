@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core_ui/widgets/custom_progress_indicator.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_view/settings_view.dart';
@@ -92,8 +93,34 @@ class DishDescription extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        CustomProgressIndicator(
+                          end: model.stats['kcal']! / 1000,
+                          stat: 'KCal',
+                          statValue: model.stats['kcal']!,
+                        ),
+                        CustomProgressIndicator(
+                          end: model.stats['proteins']! / 100,
+                          stat: 'PRT',
+                          statValue: model.stats['proteins']!,
+                        ),
+                        CustomProgressIndicator(
+                          end: model.stats['fats']! / 100,
+                          stat: 'Fats',
+                          statValue: model.stats['fats']!,
+                        ),
+                        CustomProgressIndicator(
+                          end: model.stats['carbohydrates']! / 100,
+                          stat: 'CHO',
+                          statValue: model.stats['carbohydrates']!,
+                        ),
                       ],
                     ),
+                  ),
+                  const SizedBox(
+                    height: 60,
                   ),
                 ],
               ),

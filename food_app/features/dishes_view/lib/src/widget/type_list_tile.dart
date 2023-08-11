@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:settings_view/settings_view.dart';
 
 class TypeListTile extends StatelessWidget {
   final bool isSelected;
@@ -18,18 +17,19 @@ class TypeListTile extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
-        builder: (BuildContext context, SettingsViewState state) {
-      return SizedBox(
-        width: state.fontSize * 6,
-        child: ListTile(
-          selected: isSelected,
-          selectedColor: theme.colorScheme.primary,
-          title: CustomText(
-            text: type,
-            fontWeight: FontWeight.w500,
+      builder: (BuildContext context, SettingsViewState state) {
+        return SizedBox(
+          width: state.fontSize * 6,
+          child: ListTile(
+            selected: isSelected,
+            selectedTileColor: theme.colorScheme.primary,
+            title: CustomText(
+              text: type,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

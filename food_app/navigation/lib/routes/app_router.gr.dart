@@ -18,31 +18,47 @@ class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     SignupScreenRoute.name: (routeData) {
-      return AdaptivePage<dynamic>(
+      return CustomPage<dynamic>(
         routeData: routeData,
         child: const SignupScreen(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
       );
     },
     LoginScreenRoute.name: (routeData) {
-      return AdaptivePage<dynamic>(
+      return CustomPage<dynamic>(
         routeData: routeData,
         child: const LoginScreen(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
       );
     },
     HomePageRoute.name: (routeData) {
-      return AdaptivePage<dynamic>(
+      return CustomPage<dynamic>(
         routeData: routeData,
         child: const HomePage(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
       );
     },
     DishDescriptionPageRoute.name: (routeData) {
       final args = routeData.argsAs<DishDescriptionPageRouteArgs>();
-      return AdaptivePage<dynamic>(
+      return CustomPage<dynamic>(
         routeData: routeData,
         child: DishDescriptionPage(
           key: args.key,
           model: args.model,
         ),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
       );
     },
     DishesViewScreenRoute.name: (routeData) {

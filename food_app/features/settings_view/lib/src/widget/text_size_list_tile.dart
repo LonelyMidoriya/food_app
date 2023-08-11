@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-
-import '../../settings_view.dart';
 
 class TextSizeListTile extends StatelessWidget {
   const TextSizeListTile({Key? key}) : super(key: key);
@@ -20,30 +19,35 @@ class TextSizeListTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
           backgroundColor: theme.colorScheme.primary,
-          clipBehavior: Clip.antiAlias,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
           collapsedBackgroundColor: theme.colorScheme.primary,
+          iconColor: theme.colorScheme.tertiary,
+          collapsedIconColor: theme.colorScheme.tertiary,
           leading: const Icon(
             Icons.text_fields,
           ),
           title: Row(
             children: <Widget>[
-              Expanded(
-                child: Text(
-                  'Text size',
-                  style: TextStyle(fontSize: state.fontSize),
+              const Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: CustomText(
+                    text: 'Text size',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              Text(
-                '${state.fontSize}',
-                style: TextStyle(fontSize: state.fontSize),
+              CustomText(
+                text: '${state.fontSize}',
+                fontWeight: FontWeight.w500,
               ),
             ],
           ),
           children: <Widget>[
             ListTile(
-              title: const Text(
-                'Small',
-                style: TextStyle(fontSize: 14),
+              title: const CustomText(
+                text: 'Small',
+                fontWeight: FontWeight.w500,
               ),
               trailing: 14 == state.fontSize
                   ? const Icon(
@@ -57,9 +61,9 @@ class TextSizeListTile extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text(
-                'Medium',
-                style: TextStyle(fontSize: 18),
+              title: const CustomText(
+                text: 'Medium',
+                fontWeight: FontWeight.w500,
               ),
               trailing: 18 == state.fontSize
                   ? const Icon(
@@ -73,9 +77,9 @@ class TextSizeListTile extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text(
-                'Large',
-                style: TextStyle(fontSize: 22),
+              title: const CustomText(
+                text: 'Large',
+                fontWeight: FontWeight.w500,
               ),
               trailing: 22 == state.fontSize
                   ? const Icon(

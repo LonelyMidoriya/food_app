@@ -1,12 +1,10 @@
 import 'package:auth_view/auth_view.dart';
 import 'package:auth_view/src/widget/signup_form.dart';
 import 'package:auth_view/src/widget/signup_with_socials.dart';
-import 'package:cart_view/cart_view.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:core/core.dart';
-import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
-import 'package:order_history_view/order_history_view.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

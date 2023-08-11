@@ -24,3 +24,4 @@ export 'repository/orders_repository.dart';
 export 'usecases/get_orders_usecase.dart';
 export 'usecases/update_orders_usecase.dart';
 export 'usecases/usecase.dart';
+export 'model/user_model.dart';

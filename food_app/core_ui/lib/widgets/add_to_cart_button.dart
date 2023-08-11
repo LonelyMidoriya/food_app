@@ -49,6 +49,9 @@ class AddToCartButton extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(
                             theme.colorScheme.primary,
                           ),
+                          foregroundColor: MaterialStateProperty.all(
+                            theme.colorScheme.tertiary,
+                          ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -87,6 +90,9 @@ class AddToCartButton extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(
                             theme.colorScheme.primary,
                           ),
+                          foregroundColor: MaterialStateProperty.all(
+                            theme.colorScheme.tertiary,
+                          ),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
@@ -112,6 +118,9 @@ class AddToCartButton extends StatelessWidget {
                       );
                     },
                     style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(
+                        theme.colorScheme.tertiary,
+                      ),
                       backgroundColor: MaterialStateProperty.all(
                         theme.colorScheme.primary,
                       ),

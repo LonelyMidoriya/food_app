@@ -13,16 +13,22 @@ part 'app_router.gr.dart';
 
 @AdaptiveAutoRouter(
   routes: <AutoRoute>[
-    AutoRoute(
+    CustomRoute(
       page: SignupScreen,
+      transitionsBuilder: TransitionsBuilders.slideTop,
+      durationInMilliseconds: 300,
     ),
-    AutoRoute(
+    CustomRoute(
       page: LoginScreen,
       initial: true,
+      transitionsBuilder: TransitionsBuilders.slideTop,
+      durationInMilliseconds: 300,
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/',
       page: HomePage,
+      transitionsBuilder: TransitionsBuilders.slideTop,
+      durationInMilliseconds: 300,
       children: [
         AutoRoute(
           page: DishesViewScreen,
@@ -38,8 +44,10 @@ part 'app_router.gr.dart';
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
       page: DishDescriptionPage,
+      transitionsBuilder: TransitionsBuilders.slideTop,
+      durationInMilliseconds: 300,
     ),
   ],
 )

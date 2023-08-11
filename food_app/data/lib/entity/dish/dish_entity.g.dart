@@ -22,13 +22,14 @@ class DishEntityAdapter extends TypeAdapter<DishEntity> {
       cost: fields[2] as double,
       type: fields[3] as String,
       description: fields[4] as String,
+      stats: fields[5] as Map<dynamic, dynamic>,
     );
   }
 
   @override
   void write(BinaryWriter writer, DishEntity obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class DishEntityAdapter extends TypeAdapter<DishEntity> {
       ..writeByte(3)
       ..write(obj.type)
       ..writeByte(4)
-      ..write(obj.description);
+      ..write(obj.description)
+      ..writeByte(5)
+      ..write(obj.stats);
   }
 
   @override
@@ -63,6 +66,7 @@ _$_DishEntity _$$_DishEntityFromJson(Map<String, dynamic> json) =>
       cost: (json['cost'] as num).toDouble(),
       type: json['type'] as String,
       description: json['description'] as String,
+      stats: Map<dynamic, dynamic>.from(json['stats'] as Map),
     );
 
 Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
@@ -72,4 +76,5 @@ Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
       'cost': instance.cost,
       'type': instance.type,
       'description': instance.description,
+      'stats': instance.stats,
     };
