@@ -12,7 +12,7 @@ class UserSignupWithEmailAndPasswordEvent implements AuthViewEvent {
   final String email;
   final String password;
 
-  UserSignupWithEmailAndPasswordEvent({
+  const UserSignupWithEmailAndPasswordEvent({
     required this.email,
     required this.password,
   });
@@ -22,7 +22,7 @@ class UserLogInEvent implements AuthViewEvent {
   final String email;
   final String password;
 
-  UserLogInEvent({
+  const UserLogInEvent({
     required this.email,
     required this.password,
   });

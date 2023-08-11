@@ -1,9 +1,9 @@
 import 'cart_model.dart';
 
-class OrdersModel {
+class OrderHistoryModel {
   final List<CartModel> carts;
 
-  OrdersModel({
+  const OrderHistoryModel({
     required this.carts,
   });
 }

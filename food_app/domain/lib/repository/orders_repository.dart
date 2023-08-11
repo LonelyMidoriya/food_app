@@ -1,7 +1,7 @@
-import '../model/orders_model.dart';
+import '../model/order_history_model.dart';
 
 abstract class OrdersRepository {
-  Future<OrdersModel> getOrders();
+  Future<OrderHistoryModel> getOrders();
 
-  Future<void> updateOrders({required OrdersModel cart});
+  Future<void> updateOrders({required OrderHistoryModel orders});
 }

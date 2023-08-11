@@ -16,7 +16,7 @@ class SettingsViewBloc extends Bloc<SettingsViewEvent, SettingsViewState> {
   })  : _getTextSizeUseCase = getTextSizeUseCase,
         _saveTextSizeUseCase = saveTextSizeUseCase,
         super(
-          SettingsViewState.empty(),
+          const SettingsViewState.empty(),
         ) {
     on<InitEvent>(_init);
     on<ChangeTextSizeEvent>(_changeTextSize);

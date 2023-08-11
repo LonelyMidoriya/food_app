@@ -5,14 +5,16 @@ import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
 class CartListViewItem extends StatelessWidget {
-  final CartItemModel itemModel;
-  final double cost;
+  final CartItemModel _itemModel;
+  final double _cost;
 
   const CartListViewItem({
     Key? key,
-    required this.itemModel,
-    required this.cost,
-  }) : super(key: key);
+    required CartItemModel itemModel,
+    required double cost,
+  })  : _cost = cost,
+        _itemModel = itemModel,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class CartListViewItem extends StatelessWidget {
           CachedNetworkImage(
             width: 150,
             height: 150,
-            imageUrl: itemModel.imageUrl,
+            imageUrl: _itemModel.imageUrl,
             placeholder: (_, __) => const AppLoaderCenterWidget(),
             errorWidget: (_, __, ___) => const Center(
               child: Text('Error'),
@@ -50,25 +52,26 @@ class CartListViewItem extends StatelessWidget {
           Column(
             children: <Widget>[
               CustomText(
-                text: itemModel.name,
+                text: _itemModel.name,
                 fontWeight: FontWeight.w800,
               ),
               const SizedBox(
                 height: 7,
               ),
               CustomText(
-                text: '${itemModel.count} * ${itemModel.cost} = ${double.parse(
-                  cost.toStringAsFixed(2),
+                text:
+                    '${_itemModel.count} * ${_itemModel.cost} = ${double.parse(
+                  _cost.toStringAsFixed(2),
                 )}',
                 fontWeight: FontWeight.w500,
               ),
               AddToCartButton(
                 model: DishModel(
-                  name: itemModel.name,
-                  imageUrl: itemModel.imageUrl,
-                  cost: itemModel.cost,
-                  type: itemModel.type,
-                  description: itemModel.description,
+                  name: _itemModel.name,
+                  imageUrl: _itemModel.imageUrl,
+                  cost: _itemModel.cost,
+                  type: _itemModel.type,
+                  description: _itemModel.description,
                   stats: {},
                 ),
               )

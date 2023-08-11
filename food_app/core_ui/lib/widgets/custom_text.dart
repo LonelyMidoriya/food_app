@@ -3,16 +3,18 @@ import 'package:settings_view/settings_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
-  final String text;
-  final FontWeight fontWeight;
-  final Color? textColor;
+  final String _text;
+  final FontWeight _fontWeight;
+  final Color _textColor;
 
   const CustomText({
     super.key,
-    required this.text,
-    required this.fontWeight,
-    this.textColor,
-  });
+    required String text,
+    required FontWeight fontWeight,
+    Color textColor = Colors.transparent,
+  })  : _textColor = textColor,
+        _fontWeight = fontWeight,
+        _text = text;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +26,15 @@ class CustomText extends StatelessWidget {
           data: theme,
           child: AnimatedDefaultTextStyle(
             style: TextStyle(
-              fontWeight: fontWeight,
+              fontWeight: _fontWeight,
               fontSize: state.fontSize,
-              color: textColor ?? theme.colorScheme.tertiary,
+              color: _textColor == Colors.transparent
+                  ? theme.colorScheme.tertiary
+                  : _textColor,
             ),
             duration: const Duration(milliseconds: 400),
             child: Text(
-              text,
+              _text,
               textAlign: TextAlign.center,
             ),
           ),

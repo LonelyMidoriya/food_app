@@ -7,12 +7,12 @@ import 'package:settings_view/settings_view.dart';
 import 'app_loader_center_widget.dart';
 
 class DishDescription extends StatelessWidget {
-  final DishModel model;
+  final DishModel _dish;
 
-  const DishDescription(
-    this.model, {
+  const DishDescription({
+    required DishModel dish,
     super.key,
-  });
+  }) : _dish = dish;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class DishDescription extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   CachedNetworkImage(
-                    imageUrl: model.imageUrl,
+                    imageUrl: _dish.imageUrl,
                     width: dishDescriptionImageSize,
                     height: dishDescriptionImageSize,
                     placeholder: (_, __) => const AppLoaderCenterWidget(),
@@ -62,7 +62,7 @@ class DishDescription extends StatelessWidget {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            model.name,
+                            _dish.name,
                             style: TextStyle(
                               fontSize: state.fontSize,
                               fontWeight: FontWeight.w800,
@@ -74,7 +74,7 @@ class DishDescription extends StatelessWidget {
                         ),
                         Center(
                           child: Text(
-                            '${model.cost}\$',
+                            '${_dish.cost}\$',
                             style: TextStyle(
                               fontSize: state.fontSize,
                               fontWeight: FontWeight.w500,
@@ -86,7 +86,7 @@ class DishDescription extends StatelessWidget {
                         ),
                         Center(
                           child: Text(
-                            model.description,
+                            _dish.description,
                             style: TextStyle(
                               fontSize: state.fontSize,
                               fontWeight: FontWeight.w500,
@@ -96,25 +96,23 @@ class DishDescription extends StatelessWidget {
                         const SizedBox(
                           height: 12,
                         ),
-                        CustomProgressIndicator(
-                          end: model.stats['kcal']! / 1000,
-                          stat: 'KCal',
-                          statValue: model.stats['kcal']!,
-                        ),
-                        CustomProgressIndicator(
-                          end: model.stats['proteins']! / 100,
-                          stat: 'PRT',
-                          statValue: model.stats['proteins']!,
-                        ),
-                        CustomProgressIndicator(
-                          end: model.stats['fats']! / 100,
-                          stat: 'Fats',
-                          statValue: model.stats['fats']!,
-                        ),
-                        CustomProgressIndicator(
-                          end: model.stats['carbohydrates']! / 100,
-                          stat: 'CHO',
-                          statValue: model.stats['carbohydrates']!,
+                        Column(
+                          children: _dish.stats.entries.map(
+                            (MapEntry<dynamic, dynamic> entry) {
+                              if (entry.key == 'kcal') {
+                                return CustomProgressIndicator(
+                                  end: entry.value / 1000,
+                                  stat: getStatShortForm(entry.key),
+                                  statValue: entry.value,
+                                );
+                              }
+                              return CustomProgressIndicator(
+                                end: entry.value / 100,
+                                stat: getStatShortForm(entry.key),
+                                statValue: entry.value,
+                              );
+                            },
+                          ).toList(),
                         ),
                       ],
                     ),
@@ -129,5 +127,19 @@ class DishDescription extends StatelessWidget {
         );
       },
     );
+  }
+
+  String getStatShortForm(String stat) {
+    if (stat == 'carbohydrates') {
+      return 'CHO';
+    } else if (stat == 'fats') {
+      return 'Fats';
+    } else if (stat == 'proteins') {
+      return 'PRT';
+    } else if (stat == 'kcal') {
+      return 'KCal';
+    } else {
+      return 'Error';
+    }
   }
 }

@@ -6,14 +6,14 @@ class AuthViewState {
   final bool isError;
   final Object errorMessage;
 
-  AuthViewState({
+  const AuthViewState({
     required this.isLoaded,
     required this.isLoggedIn,
     required this.isError,
     required this.errorMessage,
   });
 
-  AuthViewState.empty()
+  const AuthViewState.empty()
       : isLoaded = false,
         isLoggedIn = false,
         isError = false,

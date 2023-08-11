@@ -2,22 +2,22 @@ part of 'bloc.dart';
 
 abstract class OrdersViewEvent {}
 
-class AddToOrdersEvent extends OrdersViewEvent {
+class AddToOrdersEvent implements OrdersViewEvent {
   final CartModel cartModel;
   final double cost;
 
-  AddToOrdersEvent({
+  const AddToOrdersEvent({
     required this.cartModel,
     required this.cost,
   });
 }
 
-class SetInternetOrdersEvent extends OrdersViewEvent {
+class SetInternetOrdersEvent implements OrdersViewEvent {
   final bool hasInternet;
 
-  SetInternetOrdersEvent({
+  const SetInternetOrdersEvent({
     required this.hasInternet,
   });
 }
 
-class InitOrdersEvent extends OrdersViewEvent {}
+class InitOrdersEvent implements OrdersViewEvent {}

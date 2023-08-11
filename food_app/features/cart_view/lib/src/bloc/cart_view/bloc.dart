@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
@@ -24,16 +26,14 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     on<DeleteFromCartEvent>(_deleteFromCart);
     on<SetInternetCartEvent>(_setInternet);
     on<ClearCartEvent>(_clearCart);
-    final listener = internetConnection.onStatusChange.listen(
-      (InternetStatus status) {
-        switch (status) {
-          case InternetStatus.connected:
-            add(SetInternetCartEvent(hasInternet: true));
-            add(InitCartEvent());
-            break;
-          case InternetStatus.disconnected:
-            add(SetInternetCartEvent(hasInternet: false));
-            break;
+    final StreamSubscription<InternetStatus> listener =
+    _internetConnection.onStatusChange.listen(
+          (InternetStatus status) {
+        if (status == InternetStatus.connected) {
+          add(const SetInternetCartEvent(hasInternet: true));
+          add(InitCartEvent());
+        } else {
+          add(const SetInternetCartEvent(hasInternet: false));
         }
       },
     );

@@ -8,7 +8,7 @@ class CartViewState {
   final Object errorMessage;
   final bool hasInternet;
 
-  CartViewState({
+  const CartViewState({
     required this.cost,
     required this.cart,
     required this.isLoaded,
@@ -19,12 +19,7 @@ class CartViewState {
 
   CartViewState.empty()
       : cost = 0,
-        cart = CartModel(
-          cartItems: [],
-          cost: 0,
-          id: 0,
-          date: '',
-        ),
+        cart = CartModel.empty(),
         isLoaded = false,
         isError = false,
         errorMessage = '',

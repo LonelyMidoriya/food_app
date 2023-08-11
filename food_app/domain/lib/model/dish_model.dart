@@ -6,7 +6,7 @@ class DishModel {
   final String description;
   final Map<dynamic, dynamic> stats;
 
-  DishModel({
+  const DishModel({
     required this.name,
     required this.imageUrl,
     required this.cost,

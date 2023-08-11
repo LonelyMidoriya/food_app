@@ -6,7 +6,7 @@ class CartItemModel {
   final String description;
   final int count;
 
-  CartItemModel({
+  const CartItemModel({
     required this.name,
     required this.imageUrl,
     required this.cost,

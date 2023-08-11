@@ -6,12 +6,12 @@ import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
 class DishGridItem extends StatelessWidget {
-  final DishModel dish;
+  final DishModel _dish;
 
   const DishGridItem({
     super.key,
-    required this.dish,
-  });
+    required DishModel dish,
+  }) : _dish = dish;
 
   @override
   Widget build(BuildContext context) {
@@ -42,22 +42,22 @@ class DishGridItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             CachedNetworkImage(
-              imageUrl: dish.imageUrl,
+              imageUrl: _dish.imageUrl,
               placeholder: (_, __) => const AppLoaderCenterWidget(),
               errorWidget: (_, __, ___) => const Center(
                 child: Text('Error'),
               ),
             ),
             CustomText(
-              text: dish.name,
+              text: _dish.name,
               fontWeight: FontWeight.w800,
             ),
             CustomText(
-              text: '${dish.cost}\$',
+              text: '${_dish.cost}\$',
               fontWeight: FontWeight.w500,
             ),
             AddToCartButton(
-              model: dish,
+              model: _dish,
             ),
           ],
         ),

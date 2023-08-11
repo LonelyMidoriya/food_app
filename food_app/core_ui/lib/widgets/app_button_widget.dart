@@ -2,19 +2,21 @@ import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
 class AppButtonWidget extends StatelessWidget {
-  final VoidCallback? onTap;
-  final String label;
+  final VoidCallback? _onTap;
+  final String _label;
 
   const AppButtonWidget({
     Key? key,
-    this.onTap,
-    required this.label,
-  }) : super(key: key);
+    void Function()? onTap,
+    required String label,
+  })  : _label = label,
+        _onTap = onTap,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onTap,
+      onPressed: _onTap,
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -22,7 +24,7 @@ class AppButtonWidget extends StatelessWidget {
         ),
       ),
       child: CustomText(
-        text: label,
+        text: _label,
         fontWeight: FontWeight.bold,
       ),
     );

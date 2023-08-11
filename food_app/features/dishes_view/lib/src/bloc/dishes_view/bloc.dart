@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +32,13 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
 
     on<LoadDishesByTypeEvent>(_selectType);
     on<SetInternetDishesEvent>(_setInternet);
-    final listener = _internetConnection.onStatusChange.listen(
-      (InternetStatus status) {
-        switch (status) {
-          case InternetStatus.connected:
-            add(SetInternetDishesEvent(hasInternet: true));
-            break;
-          case InternetStatus.disconnected:
-            add(SetInternetDishesEvent(hasInternet: false));
-            break;
+    final StreamSubscription<InternetStatus> listener =
+    _internetConnection.onStatusChange.listen(
+          (InternetStatus status) {
+        if (status == InternetStatus.connected) {
+          add(const SetInternetDishesEvent(hasInternet: true));
+        } else {
+          add(const SetInternetDishesEvent(hasInternet: false));
         }
       },
     );

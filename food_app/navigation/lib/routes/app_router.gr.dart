@@ -53,7 +53,7 @@ class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: DishDescriptionPage(
           key: args.key,
-          model: args.model,
+          dish: args.model,
         ),
         transitionsBuilder: TransitionsBuilders.slideTop,
         durationInMilliseconds: 300,

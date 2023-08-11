@@ -9,21 +9,21 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
   final LogInUsecase _logInUsecase;
   final SignOutUsecase _signOutUsecase;
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
-  final InitUserUsecase _initUserUsecase;
+  final CheckIfLoggedInUsecase _initUserUsecase;
 
   AuthViewBloc({
     required SignUpWithEmailAndPasswordUsecase signUpUsecase,
     required LogInUsecase logInUsecase,
     required SignOutUsecase signOutUsecase,
     required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
-    required InitUserUsecase initUserUsecase,
+    required CheckIfLoggedInUsecase initUserUsecase,
   })  : _signUpUsecase = signUpUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
         _initUserUsecase = initUserUsecase,
         super(
-          AuthViewState.empty(),
+          const AuthViewState.empty(),
         ) {
     on<AuthInitEvent>(_init);
     on<UserSignupWithEmailAndPasswordEvent>(_signUpWithEmailAndPassword);
@@ -99,9 +99,11 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      final UserModel user =
-          UserModel(email: event.email, password: event.password);
-      await _signUpUsecase.execute(user);
+      final Credentials credentials = Credentials(
+        email: event.email,
+        password: event.password,
+      );
+      await _signUpUsecase.execute(credentials);
 
       emit(
         state.copyWith(
@@ -125,9 +127,11 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      final UserModel user =
-          UserModel(email: event.email, password: event.password);
-      await _logInUsecase.execute(user);
+      final Credentials credentials = Credentials(
+        email: event.email,
+        password: event.password,
+      );
+      await _logInUsecase.execute(credentials);
       await appLocator.get<SharedPreferences>().setBool(
             'isLoggedIn',
             true,

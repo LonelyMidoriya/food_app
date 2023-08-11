@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
@@ -17,21 +19,19 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
         _updateOrdersUseCase = updateOrdersUseCase,
         _internetConnection = internetConnection,
         super(
-          OrdersViewState.empty(),
+          const OrdersViewState.empty(),
         ) {
     on<InitOrdersEvent>(_init);
     on<AddToOrdersEvent>(_addToOrders);
     on<SetInternetOrdersEvent>(_setInternet);
-    final listener = _internetConnection.onStatusChange.listen(
+    final StreamSubscription<InternetStatus> listener =
+        _internetConnection.onStatusChange.listen(
       (InternetStatus status) {
-        switch (status) {
-          case InternetStatus.connected:
-            add(SetInternetOrdersEvent(hasInternet: true));
-            add(InitOrdersEvent());
-            break;
-          case InternetStatus.disconnected:
-            add(SetInternetOrdersEvent(hasInternet: false));
-            break;
+        if (status == InternetStatus.connected) {
+          add(const SetInternetOrdersEvent(hasInternet: true));
+          add(InitOrdersEvent());
+        } else {
+          add(const SetInternetOrdersEvent(hasInternet: false));
         }
       },
     );
@@ -54,7 +54,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
       state.copyWith(
         isLoaded: false,
         isError: false,
-        orders: OrdersModel(
+        orders: OrderHistoryModel(
           carts: [],
         ),
         errorMessage: '',
@@ -63,7 +63,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
 
     if (state.hasInternet) {
       try {
-        final OrdersModel ordersModel =
+        final OrderHistoryModel ordersModel =
             await _getOrdersUseCase.execute(const NoParams());
 
         emit(state.copyWith(
@@ -95,7 +95,8 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
             id: 1,
             date: date,
           );
-          final OrdersModel newModel = OrdersModel(carts: [newCartModel]);
+          final OrderHistoryModel newModel =
+              OrderHistoryModel(carts: [newCartModel]);
           _updateOrdersUseCase.execute(newModel);
           emit(
             state.copyWith(
@@ -105,7 +106,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
             ),
           );
         } else {
-          final OrdersModel newModel = state.orders;
+          final OrderHistoryModel newModel = state.orders;
 
           final String date = DateTime.now().toString();
           final CartModel newCartModel = event.cartModel.copyWith(

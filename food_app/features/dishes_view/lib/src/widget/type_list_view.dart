@@ -15,20 +15,20 @@ class TypeListView extends StatelessWidget {
         builder: (BuildContext context, DishesViewState state) {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: typesOfFood.length,
+            itemCount: TypeOfFood.values.length,
             shrinkWrap: true,
-            itemBuilder: (context, index) => GestureDetector(
+            itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
                 BlocProvider.of<DishesViewBloc>(context).add(
                   LoadDishesByTypeEvent(
-                    type: typesOfFood[index],
+                    type: TypeOfFood.values[index].toString().split('.').last,
                     selectedType: index,
                   ),
                 );
               },
               child: TypeListTile(
                 isSelected: state.selectedType == index,
-                type: typesOfFood[index],
+                type: TypeOfFood.values[index].toString().split('.').last,
               ),
             ),
           );

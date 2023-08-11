@@ -10,6 +10,6 @@ class GetDishesByTypeUseCase
 
   @override
   Future<List<DishModel>> execute(String input) async {
-    return _dishesRepository.getAllDishesByType(type: input);
+    return _dishesRepository.getAllDishesByType(dishType: input);
   }
 }

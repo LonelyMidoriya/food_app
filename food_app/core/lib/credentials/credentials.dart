@@ -1,8 +1,8 @@
-class UserModel {
+class Credentials {
   final String email;
   final String password;
 
-  UserModel({
+  Credentials({
     required this.email,
     required this.password,
   });

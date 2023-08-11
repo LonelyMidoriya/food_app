@@ -6,7 +6,7 @@ class CartModel {
   final String date;
   final List<CartItemModel> cartItems;
 
-  CartModel({
+  const CartModel({
     required this.cost,
     required this.id,
     required this.date,

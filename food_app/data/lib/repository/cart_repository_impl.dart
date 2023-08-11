@@ -3,40 +3,41 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class CartRepositoryImpl implements CartRepository {
-  final FirestoreProvider firestoreProvider;
-  final CartMapper cartMapper;
-  final SharedPreferences sharedPreferences;
+  final FirestoreProvider _firestoreProvider;
+  final CartMapper _cartMapper;
+  final SharedPreferences _sharedPreferences;
 
-  CartRepositoryImpl({
-    required this.firestoreProvider,
-    required this.cartMapper,
-    required this.sharedPreferences,
-  });
+  const CartRepositoryImpl({
+    required FirestoreProvider firestoreProvider,
+    required CartMapper cartMapper,
+    required SharedPreferences sharedPreferences,
+  })  : _sharedPreferences = sharedPreferences,
+        _cartMapper = cartMapper,
+        _firestoreProvider = firestoreProvider;
 
   @override
   Future<CartModel> getCart() async {
     final CartEntity cartEntity;
-    final Map<String, dynamic>? cartJson = await firestoreProvider
+    final Map<String, dynamic>? cartJson = await _firestoreProvider
         .getCart(
           collection: 'cart',
-          userId: sharedPreferences.getString('uid')!,
-        )
-        .then((value) => value.data());
+          userId: _sharedPreferences.getString('uid')!,
+        ).then((value) => value.data());
     if (cartJson == null) {
       return CartModel.empty();
     }
     cartEntity = CartEntity.fromJson(cartJson);
-    return cartMapper.toModel(cartEntity);
+    return _cartMapper.toModel(cartEntity);
   }
 
   @override
   Future<void> updateCart({
     required CartModel cart,
   }) async {
-    await firestoreProvider.updateCart(
-      cart: cartMapper.toEntity(cart).toJson(),
+    await _firestoreProvider.updateCart(
+      cart: _cartMapper.toEntity(cart).toJson(),
       collection: 'cart',
-      userId: sharedPreferences.getString('uid')!,
+      userId: _sharedPreferences.getString('uid')!,
     );
   }
 }

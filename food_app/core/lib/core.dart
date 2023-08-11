@@ -23,3 +23,4 @@ export 'package:adaptive_theme/adaptive_theme.dart';
 export 'constants/urls.dart';
 export 'constants/types_of_food.dart';
 export 'package:rive/rive.dart';
+export 'credentials/credentials.dart';

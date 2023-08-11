@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
             logInUsecase: appLocator.get<LogInUsecase>(),
             signOutUsecase: appLocator.get<SignOutUsecase>(),
             signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
-            initUserUsecase: appLocator.get<InitUserUsecase>(),
+            initUserUsecase: appLocator.get<CheckIfLoggedInUsecase>(),
           )..add(
               AuthInitEvent(),
             ),

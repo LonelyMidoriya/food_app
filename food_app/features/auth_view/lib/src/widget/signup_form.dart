@@ -6,18 +6,22 @@ import 'package:flutter/material.dart';
 import '../../auth_view.dart';
 
 class SignUpForm extends StatelessWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-  final GlobalKey<FormState> formKey;
+  final TextEditingController _emailController;
+  final TextEditingController _passwordController;
+  final TextEditingController _confirmPasswordController;
+  final GlobalKey<FormState> _formKey;
 
   const SignUpForm({
     Key? key,
-    required this.emailController,
-    required this.passwordController,
-    required this.confirmPasswordController,
-    required this.formKey,
-  }) : super(key: key);
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+    required TextEditingController confirmPasswordController,
+    required GlobalKey<FormState> formKey,
+  })  : _formKey = formKey,
+        _confirmPasswordController = confirmPasswordController,
+        _passwordController = passwordController,
+        _emailController = emailController,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class SignUpForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
-            controller: emailController,
+            controller: _emailController,
             validator: emailValidator,
             decoration: inputDecoration("Email"),
           ),
@@ -41,7 +45,7 @@ class SignUpForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
               obscureText: true,
-              controller: passwordController,
+              controller: _passwordController,
               validator: passwordValidator,
               decoration: inputDecoration("Password")),
         ),
@@ -52,7 +56,7 @@ class SignUpForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
             obscureText: true,
-            controller: confirmPasswordController,
+            controller: _confirmPasswordController,
             validator: passwordValidator,
             decoration: inputDecoration("Confirm Password"),
           ),
@@ -64,13 +68,13 @@ class SignUpForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: InkWell(
             onTap: () {
-              if (formKey.currentState?.validate() == true) {
-                if (passwordController.text.trim() ==
-                    confirmPasswordController.text.trim()) {
+              if (_formKey.currentState?.validate() == true) {
+                if (_passwordController.text.trim() ==
+                    _confirmPasswordController.text.trim()) {
                   BlocProvider.of<AuthViewBloc>(context).add(
                     UserSignupWithEmailAndPasswordEvent(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
                     ),
                   );
                 } else {

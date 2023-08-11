@@ -1,13 +1,13 @@
 part of 'bloc.dart';
 
 class OrdersViewState {
-  final OrdersModel orders;
+  final OrderHistoryModel orders;
   final bool isLoaded;
   final bool isError;
   final Object errorMessage;
   final bool hasInternet;
 
-  OrdersViewState({
+  const OrdersViewState({
     required this.orders,
     required this.isLoaded,
     required this.isError,
@@ -15,8 +15,8 @@ class OrdersViewState {
     required this.hasInternet,
   });
 
-  OrdersViewState.empty()
-      : orders = OrdersModel(
+  const OrdersViewState.empty()
+      : orders = const OrderHistoryModel(
           carts: [],
         ),
         isLoaded = false,
@@ -25,7 +25,7 @@ class OrdersViewState {
         hasInternet = true;
 
   OrdersViewState copyWith({
-    OrdersModel? orders,
+    OrderHistoryModel? orders,
     bool? isLoaded,
     bool? isError,
     Object? errorMessage,

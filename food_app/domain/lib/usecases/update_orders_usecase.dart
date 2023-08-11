@@ -1,9 +1,9 @@
 import 'package:domain/usecases/usecase.dart';
 
-import '../model/orders_model.dart';
+import '../model/order_history_model.dart';
 import '../repository/orders_repository.dart';
 
-class UpdateOrdersUseCase implements FutureUseCase<OrdersModel, void> {
+class UpdateOrdersUseCase implements FutureUseCase<OrderHistoryModel, void> {
   final OrdersRepository _ordersRepository;
 
   const UpdateOrdersUseCase({
@@ -11,7 +11,7 @@ class UpdateOrdersUseCase implements FutureUseCase<OrdersModel, void> {
   }) : _ordersRepository = ordersRepository;
 
   @override
-  Future<void> execute(OrdersModel input) async {
-    _ordersRepository.updateOrders(cart: input);
+  Future<void> execute(OrderHistoryModel input) async {
+    _ordersRepository.updateOrders(orders: input);
   }
 }

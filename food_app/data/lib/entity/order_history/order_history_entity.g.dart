@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'orders_entity.dart';
+part of 'order_history_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

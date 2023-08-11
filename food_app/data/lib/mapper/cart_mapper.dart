@@ -2,14 +2,15 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class CartMapper {
-  final CartItemMapper cartItemMapper;
+  final CartItemMapper _cartItemMapper;
 
-  CartMapper({required this.cartItemMapper});
+  const CartMapper({required CartItemMapper cartItemMapper})
+      : _cartItemMapper = cartItemMapper;
 
   CartEntity toEntity(CartModel model) {
     final List<CartItemEntity> cartItems = model.cartItems
         .map(
-          (CartItemModel model) => cartItemMapper.toEntity(model),
+          (CartItemModel model) => _cartItemMapper.toEntity(model),
         )
         .toList();
 
@@ -24,7 +25,7 @@ class CartMapper {
   CartModel toModel(CartEntity entity) {
     final List<CartItemModel> cartItems = entity.cartItems
         .map(
-          (CartItemEntity entity) => cartItemMapper.toModel(entity),
+          (CartItemEntity entity) => _cartItemMapper.toModel(entity),
         )
         .toList();
 

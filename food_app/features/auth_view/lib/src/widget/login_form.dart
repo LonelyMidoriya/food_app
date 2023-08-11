@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import '../../auth_view.dart';
 
 class LogInForm extends StatelessWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
+  final TextEditingController _emailController;
+  final TextEditingController _passwordController;
 
   const LogInForm({
     Key? key,
-    required this.emailController,
-    required this.passwordController,
-  }) : super(key: key);
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+  })  : _passwordController = passwordController,
+        _emailController = emailController,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class LogInForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
-            controller: emailController,
+            controller: _emailController,
             validator: emailValidator,
             decoration: inputDecoration("Email"),
           ),
@@ -36,7 +38,7 @@ class LogInForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
               obscureText: true,
-              controller: passwordController,
+              controller: _passwordController,
               validator: passwordValidator,
               decoration: inputDecoration("Password")),
         ),
@@ -49,8 +51,8 @@ class LogInForm extends StatelessWidget {
             onTap: () {
               BlocProvider.of<AuthViewBloc>(context).add(
                 UserLogInEvent(
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
                 ),
               );
             },

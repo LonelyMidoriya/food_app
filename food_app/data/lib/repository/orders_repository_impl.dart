@@ -1,45 +1,47 @@
 import 'package:core/core.dart';
 import 'package:data/data.dart';
-import 'package:domain/model/orders_model.dart';
+import 'package:domain/model/order_history_model.dart';
 import 'package:domain/repository/orders_repository.dart';
 
 class OrdersRepositoryImpl implements OrdersRepository {
-  final FirestoreProvider firestoreProvider;
-  final OrdersMapper ordersMapper;
-  final SharedPreferences sharedPreferences;
+  final FirestoreProvider _firestoreProvider;
+  final OrderHistoryMapper _ordersMapper;
+  final SharedPreferences _sharedPreferences;
 
-  OrdersRepositoryImpl({
-    required this.firestoreProvider,
-    required this.ordersMapper,
-    required this.sharedPreferences,
-  });
+  const OrdersRepositoryImpl({
+    required FirestoreProvider firestoreProvider,
+    required OrderHistoryMapper ordersMapper,
+    required SharedPreferences sharedPreferences,
+  })  : _sharedPreferences = sharedPreferences,
+        _ordersMapper = ordersMapper,
+        _firestoreProvider = firestoreProvider;
 
   @override
-  Future<OrdersModel> getOrders() async {
-    final OrdersEntity ordersEntity;
-    final Map<String, dynamic>? ordersJson = await firestoreProvider
+  Future<OrderHistoryModel> getOrders() async {
+    final OrderHistoryEntity ordersEntity;
+    final Map<String, dynamic>? ordersJson = await _firestoreProvider
         .getCart(
           collection: 'orders',
-          userId: sharedPreferences.getString('uid')!,
-        )
-        .then((value) => value.data());
+          userId: _sharedPreferences.getString('uid')!,
+        ).then((value) => value.data());
+
     if (ordersJson == null) {
-      return OrdersModel(
+      return const OrderHistoryModel(
         carts: [],
       );
     }
-    ordersEntity = OrdersEntity.fromJson(ordersJson);
-    return ordersMapper.toModel(ordersEntity);
+    ordersEntity = OrderHistoryEntity.fromJson(ordersJson);
+    return _ordersMapper.toModel(ordersEntity);
   }
 
   @override
   Future<void> updateOrders({
-    required OrdersModel cart,
+    required OrderHistoryModel orders,
   }) async {
-    await firestoreProvider.updateCart(
-      cart: ordersMapper.toEntity(cart).toJson(),
+    await _firestoreProvider.updateCart(
+      cart: _ordersMapper.toEntity(orders).toJson(),
       collection: 'orders',
-      userId: sharedPreferences.getString('uid')!,
+      userId: _sharedPreferences.getString('uid')!,
     );
   }
 }

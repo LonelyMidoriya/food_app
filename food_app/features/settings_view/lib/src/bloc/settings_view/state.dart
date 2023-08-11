@@ -3,11 +3,11 @@ part of 'bloc.dart';
 class SettingsViewState {
   final double fontSize;
 
-  SettingsViewState({
+  const SettingsViewState({
     required this.fontSize,
   });
 
-  SettingsViewState.empty() : fontSize = 18;
+  const SettingsViewState.empty() : fontSize = 18;
 
   SettingsViewState copyWith({
     double? fontSize,

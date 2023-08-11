@@ -1,1 +1,7 @@
-const List<String> typesOfFood = ['all', 'burger', 'chicken', 'fries', 'sauce'];
+enum TypeOfFood {
+  all,
+  burger,
+  chicken,
+  fries,
+  sauce,
+}

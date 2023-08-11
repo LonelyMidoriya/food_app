@@ -57,8 +57,8 @@ class DataDI {
     appLocator.registerLazySingleton<CartItemMapper>(
       () => CartItemMapper(),
     );
-    appLocator.registerLazySingleton<OrdersMapper>(
-      () => OrdersMapper(
+    appLocator.registerLazySingleton<OrderHistoryMapper>(
+      () => OrderHistoryMapper(
         cartMapper: appLocator.get<CartMapper>(),
       ),
     );
@@ -144,8 +144,8 @@ class DataDI {
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<InitUserUsecase>(
-      () => InitUserUsecase(
+    appLocator.registerLazySingleton<CheckIfLoggedInUsecase>(
+      () => CheckIfLoggedInUsecase(
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
@@ -191,7 +191,7 @@ class DataDI {
     appLocator.registerLazySingleton<OrdersRepository>(
       () => OrdersRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
-        ordersMapper: appLocator.get<OrdersMapper>(),
+        ordersMapper: appLocator.get<OrderHistoryMapper>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
