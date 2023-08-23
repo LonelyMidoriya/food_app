@@ -6,14 +6,17 @@ class CustomText extends StatelessWidget {
   final String _text;
   final FontWeight _fontWeight;
   final Color _textColor;
+  final TextAlign _textAlign;
 
   const CustomText({
     super.key,
     required String text,
     required FontWeight fontWeight,
     Color textColor = Colors.transparent,
+    TextAlign textAlign = TextAlign.center,
   })  : _textColor = textColor,
         _fontWeight = fontWeight,
+        _textAlign = textAlign,
         _text = text;
 
   @override
@@ -33,9 +36,10 @@ class CustomText extends StatelessWidget {
                   : _textColor,
             ),
             duration: const Duration(milliseconds: 400),
-            child: Text(
+            child: AutoSizeText(
               _text,
-              textAlign: TextAlign.center,
+              textAlign: _textAlign,
+              maxLines: 2,
             ),
           ),
         );

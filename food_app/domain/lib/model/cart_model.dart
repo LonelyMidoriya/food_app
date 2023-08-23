@@ -18,6 +18,7 @@ class CartModel {
     int? id,
     String? date,
     List<CartItemModel>? cartItems,
+    String? email,
   }) =>
       CartModel(
         cost: cost ?? this.cost,

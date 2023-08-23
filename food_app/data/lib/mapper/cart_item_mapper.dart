@@ -2,24 +2,21 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class CartItemMapper {
+  final DishMapper _dishMapper;
+  CartItemMapper({
+    required DishMapper dishMapper,
+  }) : _dishMapper = dishMapper;
+
   CartItemEntity toEntity(CartItemModel model) {
     return CartItemEntity(
-      name: model.name,
-      imageUrl: model.imageUrl,
-      cost: model.cost,
-      type: model.type,
-      description: model.description,
+      dish: _dishMapper.toEntity(model.dish),
       count: model.count,
     );
   }
 
   CartItemModel toModel(CartItemEntity entity) {
     return CartItemModel(
-      name: entity.name,
-      imageUrl: entity.imageUrl,
-      cost: entity.cost,
-      type: entity.type,
-      description: entity.description,
+      dish: _dishMapper.toModel(entity.dish),
       count: entity.count,
     );
   }

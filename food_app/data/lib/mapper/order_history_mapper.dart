@@ -19,6 +19,7 @@ class OrderHistoryMapper {
 
     return OrderHistoryEntity(
       carts: carts,
+      email: model.email,
     );
   }
 
@@ -31,6 +32,7 @@ class OrderHistoryMapper {
 
     return OrderHistoryModel(
       carts: carts,
+      email: entity.email,
     );
   }
 }

@@ -36,8 +36,9 @@ class ThemeListTile extends StatelessWidget {
             ),
           ),
           CustomText(
-              text: AdaptiveTheme.of(context).mode.modeName,
-              fontWeight: FontWeight.w500),
+            text: AdaptiveTheme.of(context).mode.modeName,
+            fontWeight: FontWeight.w500,
+          ),
         ],
       ),
       children: <Widget>[

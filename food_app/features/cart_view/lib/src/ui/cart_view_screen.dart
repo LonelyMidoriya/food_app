@@ -87,11 +87,26 @@ class CartViewScreen extends StatelessWidget {
                           addRepaintBoundaries: false,
                           itemCount: state.cart.cartItems.length,
                           itemBuilder: (context, index) {
-                            return CartListViewItem(
-                              itemModel: state.cart.cartItems[index],
-                              cost: state.cart.cartItems[index].count *
-                                  state.cart.cartItems[index].cost,
-                            );
+                            if (index == state.cart.cartItems.length - 1) {
+                              return Column(
+                                children: [
+                                  CartListViewItem(
+                                    itemModel: state.cart.cartItems[index],
+                                    cost: state.cart.cartItems[index].count *
+                                        state.cart.cartItems[index].dish.cost,
+                                  ),
+                                  const SizedBox(
+                                    height: 70,
+                                  )
+                                ],
+                              );
+                            } else {
+                              return CartListViewItem(
+                                itemModel: state.cart.cartItems[index],
+                                cost: state.cart.cartItems[index].count *
+                                    state.cart.cartItems[index].dish.cost,
+                              );
+                            }
                           },
                           separatorBuilder: (BuildContext context, int index) =>
                               const Divider(),

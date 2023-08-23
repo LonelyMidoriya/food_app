@@ -18,11 +18,11 @@ class SettingsViewBloc extends Bloc<SettingsViewEvent, SettingsViewState> {
         super(
           const SettingsViewState.empty(),
         ) {
-    on<InitEvent>(_init);
+    on<GetTextSizeEvent>(_init);
     on<ChangeTextSizeEvent>(_changeTextSize);
   }
 
-  Future<void> _init(InitEvent event, Emitter<SettingsViewState> emit) async {
+  Future<void> _init(GetTextSizeEvent event, Emitter<SettingsViewState> emit) async {
     final double? textSize =
         await _getTextSizeUseCase.execute(const NoParams());
     emit(

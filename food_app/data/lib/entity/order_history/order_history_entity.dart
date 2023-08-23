@@ -6,11 +6,12 @@ part 'order_history_entity.freezed.dart';
 part 'order_history_entity.g.dart';
 
 @freezed
-class OrderHistoryEntity with _$OrdersEntity {
+class OrderHistoryEntity with _$OrderHistoryEntity {
   factory OrderHistoryEntity({
     required List<CartEntity> carts,
-  }) = _OrdersEntity;
+    required String email,
+  }) = _OrderHistoryEntity;
 
   factory OrderHistoryEntity.fromJson(Map<String, Object?> json) =>
-      _$OrdersEntityFromJson(json);
+      _$OrderHistoryEntityFromJson(json);
 }

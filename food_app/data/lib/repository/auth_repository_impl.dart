@@ -20,11 +20,11 @@ class AuthRepositoryImpl implements AuthRepository {
     _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -35,14 +35,15 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signUpWithGoogle() async {
     await _authProvider.singUpWithGoogle();
+    _authProvider.firebaseAuth.currentUser;
     _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -76,11 +77,11 @@ class AuthRepositoryImpl implements AuthRepository {
     _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -92,7 +93,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> checkIfLoggedIn() async {
     final bool isLoggedIn;
 
-    if (firebaseAuth.currentUser == null) {
+    if (_authProvider.firebaseAuth.currentUser == null) {
       _sharedPreferences
         ..setBool(
           'isLoggedIn',

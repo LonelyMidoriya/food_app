@@ -1,7 +1,11 @@
 import 'package:core/core.dart';
-import 'package:core_ui/core_ui.dart';
+import 'package:core_ui/widgets/app_button_widget.dart';
+import 'package:core_ui/widgets/app_loader_center_widget.dart';
+import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:order_history_view/src/widget/order_item.dart';
+
+import '../../order_history_view.dart';
+import '../widget/order_item.dart';
 
 class OrdersViewScreen extends StatelessWidget {
   const OrdersViewScreen({Key? key}) : super(key: key);

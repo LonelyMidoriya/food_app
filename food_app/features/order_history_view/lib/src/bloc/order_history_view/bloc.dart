@@ -10,20 +10,28 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
   final GetOrdersUseCase _getOrdersUseCase;
   final UpdateOrdersUseCase _updateOrdersUseCase;
   final InternetConnection _internetConnection;
+  final GetAllUsersOrdersUseCase _getAllUsersOrdersUseCase;
+  final GetSearchedUsersOrdersUseCase _getSearchedUsersOrdersUseCase;
 
   OrdersViewBloc({
     required GetOrdersUseCase getOrdersUseCase,
     required UpdateOrdersUseCase updateOrdersUseCase,
     required InternetConnection internetConnection,
+    required GetAllUsersOrdersUseCase getAllUsersOrdersUseCase,
+    required GetSearchedUsersOrdersUseCase getSearchedUsersOrdersUseCase,
   })  : _getOrdersUseCase = getOrdersUseCase,
         _updateOrdersUseCase = updateOrdersUseCase,
         _internetConnection = internetConnection,
+        _getAllUsersOrdersUseCase = getAllUsersOrdersUseCase,
+        _getSearchedUsersOrdersUseCase = getSearchedUsersOrdersUseCase,
         super(
-          const OrdersViewState.empty(),
+          OrdersViewState.empty(),
         ) {
     on<InitOrdersEvent>(_init);
     on<AddToOrdersEvent>(_addToOrders);
     on<SetInternetOrdersEvent>(_setInternet);
+    on<InitAdminOrdersEvent>(_initAdmin);
+    on<InitAdminSearchedOrdersEvent>(_initAdminSearched);
     final StreamSubscription<InternetStatus> listener =
         _internetConnection.onStatusChange.listen(
       (InternetStatus status) {
@@ -46,6 +54,78 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
     );
   }
 
+  Future<void> _initAdminSearched(
+    InitAdminSearchedOrdersEvent event,
+    Emitter<OrdersViewState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isLoaded: false,
+        isError: false,
+        allUsersOrders: [],
+        errorMessage: '',
+      ),
+    );
+
+    if (state.hasInternet) {
+      try {
+        final List<OrderHistoryModel> orders =
+            await _getSearchedUsersOrdersUseCase.execute(event.searchQuery);
+
+        emit(
+          state.copyWith(
+            isLoaded: true,
+            allUsersOrders: orders,
+          ),
+        );
+      } catch (e, _) {
+        emit(
+          state.copyWith(
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _initAdmin(
+    InitAdminOrdersEvent event,
+    Emitter<OrdersViewState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isLoaded: false,
+        isError: false,
+        allUsersOrders: [],
+        errorMessage: '',
+      ),
+    );
+
+    if (state.hasInternet) {
+      try {
+        final List<OrderHistoryModel> orders =
+            await _getAllUsersOrdersUseCase.execute(const NoParams());
+
+        emit(
+          state.copyWith(
+            isLoaded: true,
+            allUsersOrders: orders,
+          ),
+        );
+      } catch (e, _) {
+        emit(
+          state.copyWith(
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _init(
     InitOrdersEvent event,
     Emitter<OrdersViewState> emit,
@@ -54,8 +134,9 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
       state.copyWith(
         isLoaded: false,
         isError: false,
-        orders: OrderHistoryModel(
+        orders: const OrderHistoryModel(
           carts: [],
+          email: '',
         ),
         errorMessage: '',
       ),
@@ -95,8 +176,10 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
             id: 1,
             date: date,
           );
-          final OrderHistoryModel newModel =
-              OrderHistoryModel(carts: [newCartModel]);
+          final OrderHistoryModel newModel = OrderHistoryModel(
+            carts: [newCartModel],
+            email: event.email,
+          );
           _updateOrdersUseCase.execute(newModel);
           emit(
             state.copyWith(

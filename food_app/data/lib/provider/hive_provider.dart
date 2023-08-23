@@ -13,6 +13,12 @@ class HiveProvider {
     }
   }
 
+  Future<void> clearDishes() async {
+    final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
+
+    await dishesBox.clear();
+  }
+
   Future<List<DishEntity>> getDishes() async {
     final Box<DishEntity> dishesBox = await Hive.openBox('dishes');
     final List<DishEntity> entities = dishesBox.values.toList();

@@ -1,9 +1,10 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:dishes_view/src/widget/type_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:navigation/routes/app_router.dart';
 
 import '../bloc/bloc.dart';
 import '../widget/dish_grid_item.dart';
@@ -68,6 +69,13 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                       return Center(
                         child: Text(state.errorMessage.toString()),
                       );
+                    } else if (state.dishes.isEmpty) {
+                      return const Center(
+                        child: CustomText(
+                          text: 'Nothing here',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
                     } else if (state.isLoaded) {
                       return LiquidPullToRefresh(
                         color: theme.colorScheme.primary,
@@ -85,11 +93,9 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                           ),
                           itemCount: state.dishes.length,
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () =>
-                                BlocProvider.of<DishesViewBloc>(context).add(
-                              NavigateToDetailsEvent(
-                                context: context,
-                                model: state.dishes[index],
+                            onTap: () => appRouter.navigate(
+                              DishDescriptionPageRoute(
+                                dish: state.dishes[index],
                               ),
                             ),
                             child: DishGridItem(

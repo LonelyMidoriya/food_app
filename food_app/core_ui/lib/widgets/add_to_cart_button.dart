@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:settings_view/settings_view.dart';
 
 class AddToCartButton extends StatelessWidget {
-  final DishModel _model;
+  final DishModel _dish;
 
   const AddToCartButton({
     Key? key,
-    required DishModel model,
-  })  : _model = model,
+    required DishModel dish,
+  })  : _dish = dish,
         super(key: key);
 
   Iterable<CartItemModel> _findCartItem(CartViewState state) {
     return state.cart.cartItems.where(
-      (element) => element.name == _model.name,
+      (element) => element.dish.name == _dish.name,
     );
   }
 
@@ -41,7 +41,7 @@ class AddToCartButton extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<CartViewBloc>(context).add(
                             DeleteFromCartEvent(
-                              dishModel: _model,
+                              dishModel: _dish,
                               count: _findCartItem(state).first.count - 1,
                             ),
                           );
@@ -82,7 +82,7 @@ class AddToCartButton extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<CartViewBloc>(context).add(
                             AddToCartEvent(
-                              dishModel: _model,
+                              dishModel: _dish,
                               count: _findCartItem(state).first.count + 1,
                             ),
                           );
@@ -113,7 +113,7 @@ class AddToCartButton extends StatelessWidget {
                     onPressed: () {
                       BlocProvider.of<CartViewBloc>(context).add(
                         AddToCartEvent(
-                          dishModel: _model,
+                          dishModel: _dish,
                           count: 1,
                         ),
                       );

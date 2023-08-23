@@ -2,6 +2,15 @@ import 'package:core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData darkTheme = ThemeData(
+  inputDecorationTheme: const InputDecorationTheme(
+    filled: true,
+    fillColor: blackColor,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      iconColor: MaterialStateProperty.all(Colors.white),
+    ),
+  ),
   brightness: Brightness.dark,
   colorScheme: const ColorScheme.dark(
     brightness: Brightness.dark,

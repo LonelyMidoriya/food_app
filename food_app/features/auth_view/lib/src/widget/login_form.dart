@@ -7,12 +7,15 @@ import '../../auth_view.dart';
 class LogInForm extends StatelessWidget {
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
+  final GlobalKey<FormState> _formKey;
 
   const LogInForm({
     Key? key,
     required TextEditingController emailController,
     required TextEditingController passwordController,
+    required GlobalKey<FormState> formKey,
   })  : _passwordController = passwordController,
+        _formKey = formKey,
         _emailController = emailController,
         super(key: key);
 
@@ -37,10 +40,11 @@ class LogInForm extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
-              obscureText: true,
-              controller: _passwordController,
-              validator: passwordValidator,
-              decoration: inputDecoration("Password")),
+            obscureText: true,
+            controller: _passwordController,
+            validator: passwordValidator,
+            decoration: inputDecoration("Password"),
+          ),
         ),
         const SizedBox(
           height: 14,
@@ -49,12 +53,14 @@ class LogInForm extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: InkWell(
             onTap: () {
-              BlocProvider.of<AuthViewBloc>(context).add(
-                UserLogInEvent(
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                ),
-              );
+              if (_formKey.currentState?.validate() == true) {
+                BlocProvider.of<AuthViewBloc>(context).add(
+                  UserLogInEvent(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim(),
+                  ),
+                );
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(16),

@@ -9,6 +9,8 @@ class SignUpWithSocials extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+
     return Column(
       children: <Widget>[
         const Padding(
@@ -30,8 +32,8 @@ class SignUpWithSocials extends StatelessWidget {
             child: Image.network(
               googleUrl,
               fit: BoxFit.scaleDown,
-              height: googleImageSize,
-              width: googleImageSize,
+              height: size.width / 10,
+              width: size.width / 10,
             ),
           ),
         ),

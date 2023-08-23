@@ -15,3 +15,6 @@ export 'repository/dishes_repository_impl.dart';
 export 'repository/settings_repository_impl.dart';
 export 'entity/order_history/order_history_entity.dart';
 export 'mapper/order_history_mapper.dart';
+export 'entity/user/user_entity.dart';
+export 'mapper/user_mapper.dart';
+export 'repository/user_repository_impl.dart';

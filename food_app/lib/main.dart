@@ -1,4 +1,3 @@
-import 'package:auth_view/auth_view.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
@@ -38,7 +37,9 @@ class _MyAppState extends State<MyApp> {
             logInUsecase: appLocator.get<LogInUsecase>(),
             signOutUsecase: appLocator.get<SignOutUsecase>(),
             signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
-            initUserUsecase: appLocator.get<CheckIfLoggedInUsecase>(),
+            checkIfLoggedInUsecase: appLocator.get<CheckIfLoggedInUsecase>(),
+            addUserUsecase: appLocator.get<AddUserUseCase>(),
+            getUserUseCase: appLocator.get<GetUserUseCase>(),
           )..add(
               AuthInitEvent(),
             ),
@@ -49,6 +50,9 @@ class _MyAppState extends State<MyApp> {
             getNextDishesUseCase: appLocator.get<GetNextDishesUseCase>(),
             getDishesByTypeUseCase: appLocator.get<GetDishesByTypeUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
+            deleteDishUseCase: appLocator.get<DeleteDishUseCase>(),
+            addDishUseCase: appLocator.get<AddDishUseCase>(),
+            updateDishUseCase: appLocator.get<UpdateDishUseCase>(),
           )..add(
               InitDishesEvent(),
             ),
@@ -65,6 +69,10 @@ class _MyAppState extends State<MyApp> {
             getOrdersUseCase: appLocator.get<GetOrdersUseCase>(),
             updateOrdersUseCase: appLocator.get<UpdateOrdersUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
+            getAllUsersOrdersUseCase:
+                appLocator.get<GetAllUsersOrdersUseCase>(),
+            getSearchedUsersOrdersUseCase:
+                appLocator.get<GetSearchedUsersOrdersUseCase>(),
           ),
         ),
         BlocProvider<SettingsViewBloc>(
@@ -72,8 +80,16 @@ class _MyAppState extends State<MyApp> {
             getTextSizeUseCase: appLocator.get<GetTextSizeUseCase>(),
             saveTextSizeUseCase: appLocator.get<SaveTextSizeUseCase>(),
           )..add(
-              InitEvent(),
+              GetTextSizeEvent(),
             ),
+        ),
+        BlocProvider<AdminControlPanelBloc>(
+          create: (_) => AdminControlPanelBloc(
+            getAllUsersUseCase: appLocator.get<GetAllUsersUseCase>(),
+            getSearchedUsersUseCase: appLocator.get<GetSearchedUsersUseCase>(),
+            updateUserUseCase: appLocator.get<UpdateUserUseCase>(),
+            internetConnection: appLocator.get<InternetConnection>(),
+          ),
         ),
       ],
       child: AdaptiveTheme(

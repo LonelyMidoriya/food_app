@@ -17,6 +17,16 @@ class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    StartingPageRoute.name: (routeData) {
+      return CustomPage<dynamic>(
+        routeData: routeData,
+        child: const StartingPage(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     SignupScreenRoute.name: (routeData) {
       return CustomPage<dynamic>(
         routeData: routeData,
@@ -47,13 +57,47 @@ class _$AppRouter extends RootStackRouter {
         barrierDismissible: false,
       );
     },
+    SuperAdminHomePageRoute.name: (routeData) {
+      return CustomPage<dynamic>(
+        routeData: routeData,
+        child: const SuperAdminHomePage(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    AdminHomePageRoute.name: (routeData) {
+      return CustomPage<dynamic>(
+        routeData: routeData,
+        child: const AdminHomePage(),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     DishDescriptionPageRoute.name: (routeData) {
       final args = routeData.argsAs<DishDescriptionPageRouteArgs>();
       return CustomPage<dynamic>(
         routeData: routeData,
         child: DishDescriptionPage(
           key: args.key,
-          dish: args.model,
+          dish: args.dish,
+        ),
+        transitionsBuilder: TransitionsBuilders.slideTop,
+        durationInMilliseconds: 300,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    AdminDishDescriptionPageRoute.name: (routeData) {
+      final args = routeData.argsAs<AdminDishDescriptionPageRouteArgs>();
+      return CustomPage<dynamic>(
+        routeData: routeData,
+        child: AdminDishDescriptionPage(
+          key: args.key,
+          dish: args.dish,
         ),
         transitionsBuilder: TransitionsBuilders.slideTop,
         durationInMilliseconds: 300,
@@ -85,21 +129,43 @@ class _$AppRouter extends RootStackRouter {
         child: const SettingsViewScreen(),
       );
     },
+    AdminDishesViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const AdminDishesViewScreen(),
+      );
+    },
+    AdminOrdersViewScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const AdminOrdersViewScreen(),
+      );
+    },
+    AdminControlPanelScreenRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+        routeData: routeData,
+        child: const AdminControlPanelScreen(),
+      );
+    },
   };
 
   @override
   List<RouteConfig> get routes => [
+        RouteConfig(
+          StartingPageRoute.name,
+          path: '/',
+        ),
         RouteConfig(
           SignupScreenRoute.name,
           path: '/signup-screen',
         ),
         RouteConfig(
           LoginScreenRoute.name,
-          path: '/',
+          path: '/login-screen',
         ),
         RouteConfig(
           HomePageRoute.name,
-          path: '/',
+          path: '/home-page',
           children: [
             RouteConfig(
               DishesViewScreenRoute.name,
@@ -124,10 +190,73 @@ class _$AppRouter extends RootStackRouter {
           ],
         ),
         RouteConfig(
+          SuperAdminHomePageRoute.name,
+          path: '/super-admin-home-page',
+          children: [
+            RouteConfig(
+              AdminDishesViewScreenRoute.name,
+              path: 'admin-dishes-view-screen',
+              parent: SuperAdminHomePageRoute.name,
+            ),
+            RouteConfig(
+              AdminOrdersViewScreenRoute.name,
+              path: 'admin-orders-view-screen',
+              parent: SuperAdminHomePageRoute.name,
+            ),
+            RouteConfig(
+              AdminControlPanelScreenRoute.name,
+              path: 'admin-control-panel-screen',
+              parent: SuperAdminHomePageRoute.name,
+            ),
+            RouteConfig(
+              SettingsViewScreenRoute.name,
+              path: 'settings-view-screen',
+              parent: SuperAdminHomePageRoute.name,
+            ),
+          ],
+        ),
+        RouteConfig(
+          AdminHomePageRoute.name,
+          path: '/admin-home-page',
+          children: [
+            RouteConfig(
+              AdminDishesViewScreenRoute.name,
+              path: 'admin-dishes-view-screen',
+              parent: AdminHomePageRoute.name,
+            ),
+            RouteConfig(
+              AdminOrdersViewScreenRoute.name,
+              path: 'admin-orders-view-screen',
+              parent: AdminHomePageRoute.name,
+            ),
+            RouteConfig(
+              SettingsViewScreenRoute.name,
+              path: 'settings-view-screen',
+              parent: AdminHomePageRoute.name,
+            ),
+          ],
+        ),
+        RouteConfig(
           DishDescriptionPageRoute.name,
           path: '/dish-description-page',
         ),
+        RouteConfig(
+          AdminDishDescriptionPageRoute.name,
+          path: '/admin-dish-description-page',
+        ),
       ];
+}
+
+/// generated route for
+/// [StartingPage]
+class StartingPageRoute extends PageRouteInfo<void> {
+  const StartingPageRoute()
+      : super(
+          StartingPageRoute.name,
+          path: '/',
+        );
+
+  static const String name = 'StartingPageRoute';
 }
 
 /// generated route for
@@ -148,7 +277,7 @@ class LoginScreenRoute extends PageRouteInfo<void> {
   const LoginScreenRoute()
       : super(
           LoginScreenRoute.name,
-          path: '/',
+          path: '/login-screen',
         );
 
   static const String name = 'LoginScreenRoute';
@@ -160,11 +289,37 @@ class HomePageRoute extends PageRouteInfo<void> {
   const HomePageRoute({List<PageRouteInfo>? children})
       : super(
           HomePageRoute.name,
-          path: '/',
+          path: '/home-page',
           initialChildren: children,
         );
 
   static const String name = 'HomePageRoute';
+}
+
+/// generated route for
+/// [SuperAdminHomePage]
+class SuperAdminHomePageRoute extends PageRouteInfo<void> {
+  const SuperAdminHomePageRoute({List<PageRouteInfo>? children})
+      : super(
+          SuperAdminHomePageRoute.name,
+          path: '/super-admin-home-page',
+          initialChildren: children,
+        );
+
+  static const String name = 'SuperAdminHomePageRoute';
+}
+
+/// generated route for
+/// [AdminHomePage]
+class AdminHomePageRoute extends PageRouteInfo<void> {
+  const AdminHomePageRoute({List<PageRouteInfo>? children})
+      : super(
+          AdminHomePageRoute.name,
+          path: '/admin-home-page',
+          initialChildren: children,
+        );
+
+  static const String name = 'AdminHomePageRoute';
 }
 
 /// generated route for
@@ -173,13 +328,13 @@ class DishDescriptionPageRoute
     extends PageRouteInfo<DishDescriptionPageRouteArgs> {
   DishDescriptionPageRoute({
     Key? key,
-    required DishModel model,
+    required DishModel dish,
   }) : super(
           DishDescriptionPageRoute.name,
           path: '/dish-description-page',
           args: DishDescriptionPageRouteArgs(
             key: key,
-            model: model,
+            dish: dish,
           ),
         );
 
@@ -189,16 +344,51 @@ class DishDescriptionPageRoute
 class DishDescriptionPageRouteArgs {
   const DishDescriptionPageRouteArgs({
     this.key,
-    required this.model,
+    required this.dish,
   });
 
   final Key? key;
 
-  final DishModel model;
+  final DishModel dish;
 
   @override
   String toString() {
-    return 'DishDescriptionPageRouteArgs{key: $key, model: $model}';
+    return 'DishDescriptionPageRouteArgs{key: $key, dish: $dish}';
+  }
+}
+
+/// generated route for
+/// [AdminDishDescriptionPage]
+class AdminDishDescriptionPageRoute
+    extends PageRouteInfo<AdminDishDescriptionPageRouteArgs> {
+  AdminDishDescriptionPageRoute({
+    Key? key,
+    required DishModel dish,
+  }) : super(
+          AdminDishDescriptionPageRoute.name,
+          path: '/admin-dish-description-page',
+          args: AdminDishDescriptionPageRouteArgs(
+            key: key,
+            dish: dish,
+          ),
+        );
+
+  static const String name = 'AdminDishDescriptionPageRoute';
+}
+
+class AdminDishDescriptionPageRouteArgs {
+  const AdminDishDescriptionPageRouteArgs({
+    this.key,
+    required this.dish,
+  });
+
+  final Key? key;
+
+  final DishModel dish;
+
+  @override
+  String toString() {
+    return 'AdminDishDescriptionPageRouteArgs{key: $key, dish: $dish}';
   }
 }
 
@@ -248,4 +438,40 @@ class SettingsViewScreenRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SettingsViewScreenRoute';
+}
+
+/// generated route for
+/// [AdminDishesViewScreen]
+class AdminDishesViewScreenRoute extends PageRouteInfo<void> {
+  const AdminDishesViewScreenRoute()
+      : super(
+          AdminDishesViewScreenRoute.name,
+          path: 'admin-dishes-view-screen',
+        );
+
+  static const String name = 'AdminDishesViewScreenRoute';
+}
+
+/// generated route for
+/// [AdminOrdersViewScreen]
+class AdminOrdersViewScreenRoute extends PageRouteInfo<void> {
+  const AdminOrdersViewScreenRoute()
+      : super(
+          AdminOrdersViewScreenRoute.name,
+          path: 'admin-orders-view-screen',
+        );
+
+  static const String name = 'AdminOrdersViewScreenRoute';
+}
+
+/// generated route for
+/// [AdminControlPanelScreen]
+class AdminControlPanelScreenRoute extends PageRouteInfo<void> {
+  const AdminControlPanelScreenRoute()
+      : super(
+          AdminControlPanelScreenRoute.name,
+          path: 'admin-control-panel-screen',
+        );
+
+  static const String name = 'AdminControlPanelScreenRoute';
 }

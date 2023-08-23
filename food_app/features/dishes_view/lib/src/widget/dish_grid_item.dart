@@ -57,7 +57,7 @@ class DishGridItem extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             AddToCartButton(
-              model: _dish,
+              dish: _dish,
             ),
           ],
         ),

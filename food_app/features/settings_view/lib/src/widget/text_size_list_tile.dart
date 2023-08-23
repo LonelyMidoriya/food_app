@@ -38,7 +38,7 @@ class TextSizeListTile extends StatelessWidget {
                 ),
               ),
               CustomText(
-                text: '${state.fontSize}',
+                text: '${state.fontSize.toInt()}',
                 fontWeight: FontWeight.w500,
               ),
             ],
@@ -56,7 +56,7 @@ class TextSizeListTile extends StatelessWidget {
                   : null,
               onTap: () {
                 BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 14),
+                  const ChangeTextSizeEvent(textSize: 14),
                 );
               },
             ),
@@ -72,7 +72,7 @@ class TextSizeListTile extends StatelessWidget {
                   : null,
               onTap: () {
                 BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 18),
+                  const ChangeTextSizeEvent(textSize: 18),
                 );
               },
             ),
@@ -88,7 +88,7 @@ class TextSizeListTile extends StatelessWidget {
                   : null,
               onTap: () {
                 BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 22),
+                  const ChangeTextSizeEvent(textSize: 22),
                 );
               },
             ),

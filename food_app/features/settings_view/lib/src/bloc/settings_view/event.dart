@@ -2,7 +2,7 @@ part of 'bloc.dart';
 
 abstract class SettingsViewEvent {}
 
-class InitEvent implements SettingsViewEvent {}
+class GetTextSizeEvent implements SettingsViewEvent {}
 
 class ChangeTextSizeEvent implements SettingsViewEvent {
   final double textSize;

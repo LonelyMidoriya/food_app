@@ -29,3 +29,13 @@ String? passwordValidator(String? content) {
     return null;
   }
 }
+
+String? textValidator(String? content) {
+  if (content == null) {
+    return "Unknown error";
+  } else if (content.isEmpty) {
+    return "This field cannot be empty";
+  } else {
+    return null;
+  }
+}

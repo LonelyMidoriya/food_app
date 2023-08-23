@@ -44,10 +44,11 @@ class SignUpForm extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
-              obscureText: true,
-              controller: _passwordController,
-              validator: passwordValidator,
-              decoration: inputDecoration("Password")),
+            obscureText: true,
+            controller: _passwordController,
+            validator: passwordValidator,
+            decoration: inputDecoration("Password"),
+          ),
         ),
         const SizedBox(
           height: 14,

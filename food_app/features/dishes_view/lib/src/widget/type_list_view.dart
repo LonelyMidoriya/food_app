@@ -21,14 +21,13 @@ class TypeListView extends StatelessWidget {
               onTap: () {
                 BlocProvider.of<DishesViewBloc>(context).add(
                   LoadDishesByTypeEvent(
-                    type: TypeOfFood.values[index].toString().split('.').last,
                     selectedType: index,
                   ),
                 );
               },
               child: TypeListTile(
                 isSelected: state.selectedType == index,
-                type: TypeOfFood.values[index].toString().split('.').last,
+                type: TypeOfFood.values[index].name,
               ),
             ),
           );

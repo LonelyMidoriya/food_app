@@ -1,4 +1,3 @@
-import 'package:auth_view/auth_view.dart';
 import 'package:auth_view/src/widget/login_form.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
@@ -26,17 +25,35 @@ class _LoginScreenState extends State<LoginScreen> {
     return WillPopScope(
       onWillPop: () async => false,
       child: BlocConsumer<AuthViewBloc, AuthViewState>(
-        listener: (context, state) {
+        listener: (BuildContext context, AuthViewState state) {
           if (state.isLoggedIn) {
-            BlocProvider.of<CartViewBloc>(context).add(
-              InitCartEvent(),
-            );
-            BlocProvider.of<OrdersViewBloc>(context).add(
-              InitOrdersEvent(),
-            );
-            appRouter.navigate(
-              const HomePageRoute(),
-            );
+            if (state.user.isAdmin) {
+              BlocProvider.of<OrdersViewBloc>(context).add(
+                InitAdminOrdersEvent(),
+              );
+              if (state.user.isSuperAdmin) {
+                BlocProvider.of<AdminControlPanelBloc>(context).add(
+                  AdminControlPanelInitEvent(),
+                );
+                appRouter.navigate(
+                  const SuperAdminHomePageRoute(),
+                );
+              } else {
+                appRouter.navigate(
+                  const AdminHomePageRoute(),
+                );
+              }
+            } else {
+              BlocProvider.of<OrdersViewBloc>(context).add(
+                InitOrdersEvent(),
+              );
+              BlocProvider.of<CartViewBloc>(context).add(
+                InitCartEvent(),
+              );
+              appRouter.navigate(
+                const HomePageRoute(),
+              );
+            }
           }
           if (state.isError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -45,8 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 elevation: 50,
                 backgroundColor: Colors.teal,
                 content: CustomText(
-                  text: state.errorMessage.toString(),
+                  text: state.errorMessage.toString().split('] ').last,
                   fontWeight: FontWeight.w800,
+                  textColor: theme.colorScheme.tertiary,
                 ),
                 duration: const Duration(seconds: 2),
                 margin: const EdgeInsets.symmetric(
@@ -55,19 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             );
-          } else if (state.isLoaded) {
-            BlocProvider.of<CartViewBloc>(context).add(
-              InitCartEvent(),
-            );
-            BlocProvider.of<OrdersViewBloc>(context).add(
-              InitOrdersEvent(),
-            );
-            appRouter.navigate(
-              const HomePageRoute(),
-            );
           }
         },
-        builder: (context, state) {
+        builder: (BuildContext context, AuthViewState state) {
           return AnimatedTheme(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
@@ -99,8 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: EdgeInsets.symmetric(horizontal: 24.0),
                             child: Center(
                               child: CustomText(
-                                text:
-                                    'Please enter in your account to use our services.',
+                                text: 'Please log in to use our services.',
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
@@ -111,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           LogInForm(
                             emailController: emailController,
                             passwordController: passwordController,
+                            formKey: _formKey,
                           ),
                           const SizedBox(
                             height: 24,
@@ -123,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               const Text(
-                                "Don\'t have an account? ",
+                                "Don't have an account? ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

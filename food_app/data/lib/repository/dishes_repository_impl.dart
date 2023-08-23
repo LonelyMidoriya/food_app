@@ -32,7 +32,8 @@ class DishesRepositoryImpl implements DishesRepository {
           .getFirstDocs(
         collection: _collection,
         limit: pageCount,
-      ).then(
+      )
+          .then(
         (QuerySnapshot<Map<String, dynamic>> value) {
           _lastVisible = value.docs[value.size - 1];
           for (QueryDocumentSnapshot<Map<String, dynamic>> result
@@ -47,6 +48,8 @@ class DishesRepositoryImpl implements DishesRepository {
           }
         },
       );
+
+      await _hiveProvider.clearDishes();
 
       for (DishModel model in models) {
         entities.add(_dishMapper.toEntity(model));
@@ -73,8 +76,9 @@ class DishesRepositoryImpl implements DishesRepository {
         .getNextDocs(
       collection: _collection,
       limit: pageCount,
-      lastVisible: _lastVisible!,
-    ).then(
+      lastVisible: _lastVisible,
+    )
+        .then(
       (QuerySnapshot<Map<String, dynamic>> value) {
         _lastVisible = value.docs[value.size - 1];
         for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
@@ -112,7 +116,8 @@ class DishesRepositoryImpl implements DishesRepository {
           .getAllByType(
         collection: _collection,
         type: dishType,
-      ).then(
+      )
+          .then(
         (QuerySnapshot<Map<String, dynamic>> value) {
           for (QueryDocumentSnapshot<Map<String, dynamic>> result
               in value.docs) {
@@ -140,5 +145,32 @@ class DishesRepositoryImpl implements DishesRepository {
       }
     }
     return models;
+  }
+
+  @override
+  Future<void> addDish({required DishModel dish}) async {
+    await _firestoreProvider.addDish(
+      dish: _dishMapper.toEntity(dish).toJson(),
+      collection: _collection,
+    );
+  }
+
+  @override
+  Future<void> updateDish({required List<DishModel> dishes}) async {
+    await _firestoreProvider.updateDish(
+      dishes: [
+        _dishMapper.toEntity(dishes[0]).toJson(),
+        _dishMapper.toEntity(dishes[1]).toJson()
+      ],
+      collection: _collection,
+    );
+  }
+
+  @override
+  Future<void> deleteDish({required DishModel dish}) async {
+    await _firestoreProvider.deleteDish(
+      dish: _dishMapper.toEntity(dish).toJson(),
+      collection: _collection,
+    );
   }
 }

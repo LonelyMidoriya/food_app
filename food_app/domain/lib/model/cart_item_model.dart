@@ -1,34 +1,20 @@
+import 'dish_model.dart';
+
 class CartItemModel {
-  final String name;
-  final String imageUrl;
-  final double cost;
-  final String type;
-  final String description;
+  final DishModel dish;
   final int count;
 
   const CartItemModel({
-    required this.name,
-    required this.imageUrl,
-    required this.cost,
-    required this.type,
-    required this.description,
+    required this.dish,
     required this.count,
   });
 
   CartItemModel copyWith({
-    String? name,
-    String? imageUrl,
-    double? cost,
-    String? type,
-    String? description,
+    DishModel? dish,
     int? count,
   }) =>
       CartItemModel(
-        name: name ?? this.name,
-        imageUrl: imageUrl ?? this.imageUrl,
-        cost: cost ?? this.cost,
-        type: type ?? this.type,
-        description: description ?? this.description,
+        dish: dish ?? this.dish,
         count: count ?? this.count,
       );
 }

@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
 import 'package:data/data.dart';
-import 'package:data/repository/orders_repository_impl.dart';
+import 'package:data/repository/order_history_repository_impl.dart';
 import 'package:domain/domain.dart';
 
 final DataDI dataDI = DataDI();
@@ -27,7 +27,7 @@ class DataDI {
 
   void _initFirestore() {
     appLocator.registerLazySingleton<FirestoreProvider>(
-      () => FirestoreProvider(),
+      () => FirestoreProvider(FirebaseFirestore.instance),
     );
   }
 
@@ -35,6 +35,7 @@ class DataDI {
     appLocator.registerLazySingleton<AuthProvider>(
       () => AuthProvider(
         googleSignIn: appLocator.get<GoogleSignIn>(),
+        firebaseAuth: FirebaseAuth.instance,
       ),
     );
   }
@@ -55,7 +56,12 @@ class DataDI {
       ),
     );
     appLocator.registerLazySingleton<CartItemMapper>(
-      () => CartItemMapper(),
+      () => CartItemMapper(
+        dishMapper: appLocator.get<DishMapper>(),
+      ),
+    );
+    appLocator.registerLazySingleton<UserMapper>(
+      () => UserMapper(),
     );
     appLocator.registerLazySingleton<OrderHistoryMapper>(
       () => OrderHistoryMapper(
@@ -89,9 +95,34 @@ class DataDI {
   }
 
   void _initUsecases() {
+    appLocator.registerLazySingleton<AddDishUseCase>(
+      () => AddDishUseCase(
+        dishesRepository: appLocator.get<DishesRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<UpdateDishUseCase>(
+          () => UpdateDishUseCase(
+        dishesRepository: appLocator.get<DishesRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<DeleteDishUseCase>(
+      () => DeleteDishUseCase(
+        dishesRepository: appLocator.get<DishesRepository>(),
+      ),
+    );
     appLocator.registerLazySingleton<GetDishesByTypeUseCase>(
       () => GetDishesByTypeUseCase(
         dishesRepository: appLocator.get<DishesRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<GetAllUsersOrdersUseCase>(
+      () => GetAllUsersOrdersUseCase(
+        orderHistoryRepository: appLocator.get<OrderHistoryRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<GetSearchedUsersOrdersUseCase>(
+      () => GetSearchedUsersOrdersUseCase(
+        orderHistoryRepository: appLocator.get<OrderHistoryRepository>(),
       ),
     );
     appLocator.registerLazySingleton<GetInitDishesUseCase>(
@@ -151,12 +182,37 @@ class DataDI {
     );
     appLocator.registerLazySingleton<GetOrdersUseCase>(
       () => GetOrdersUseCase(
-        ordersRepository: appLocator.get<OrdersRepository>(),
+        ordersRepository: appLocator.get<OrderHistoryRepository>(),
       ),
     );
     appLocator.registerLazySingleton<UpdateOrdersUseCase>(
       () => UpdateOrdersUseCase(
-        ordersRepository: appLocator.get<OrdersRepository>(),
+        ordersRepository: appLocator.get<OrderHistoryRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<AddUserUseCase>(
+      () => AddUserUseCase(
+        userRepository: appLocator.get<UserRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<GetUserUseCase>(
+      () => GetUserUseCase(
+        userRepository: appLocator.get<UserRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<GetAllUsersUseCase>(
+      () => GetAllUsersUseCase(
+        userRepository: appLocator.get<UserRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<GetSearchedUsersUseCase>(
+      () => GetSearchedUsersUseCase(
+        userRepository: appLocator.get<UserRepository>(),
+      ),
+    );
+    appLocator.registerLazySingleton<UpdateUserUseCase>(
+      () => UpdateUserUseCase(
+        userRepository: appLocator.get<UserRepository>(),
       ),
     );
   }
@@ -188,8 +244,15 @@ class DataDI {
         sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
-    appLocator.registerLazySingleton<OrdersRepository>(
-      () => OrdersRepositoryImpl(
+    appLocator.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(
+        firestoreProvider: appLocator.get<FirestoreProvider>(),
+        sharedPreferences: appLocator.get<SharedPreferences>(),
+        userMapper: appLocator.get<UserMapper>(),
+      ),
+    );
+    appLocator.registerLazySingleton<OrderHistoryRepository>(
+      () => OrderHistoryRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
         ordersMapper: appLocator.get<OrderHistoryMapper>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),

@@ -19,11 +19,12 @@ class CustomProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final Size size = MediaQuery.sizeOf(context);
 
     return Row(
       children: <Widget>[
         SizedBox(
-          width: 60,
+          width: size.width / 6,
           child: CustomText(
             text: _stat,
             fontWeight: FontWeight.w500,
@@ -50,7 +51,7 @@ class CustomProgressIndicator extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 50,
+          width: size.width / 7,
           child: CustomText(
             text: _statValue.toString(),
             fontWeight: FontWeight.w500,

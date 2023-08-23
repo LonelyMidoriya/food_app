@@ -7,23 +7,29 @@ part 'state.dart';
 class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
   final SignUpWithEmailAndPasswordUsecase _signUpUsecase;
   final LogInUsecase _logInUsecase;
+  final AddUserUseCase _addUserUsecase;
+  final GetUserUseCase _getUserUseCase;
   final SignOutUsecase _signOutUsecase;
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
-  final CheckIfLoggedInUsecase _initUserUsecase;
+  final CheckIfLoggedInUsecase _checkIfLoggedInUsecase;
 
   AuthViewBloc({
     required SignUpWithEmailAndPasswordUsecase signUpUsecase,
     required LogInUsecase logInUsecase,
     required SignOutUsecase signOutUsecase,
     required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
-    required CheckIfLoggedInUsecase initUserUsecase,
+    required CheckIfLoggedInUsecase checkIfLoggedInUsecase,
+    required AddUserUseCase addUserUsecase,
+    required GetUserUseCase getUserUseCase,
   })  : _signUpUsecase = signUpUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
-        _initUserUsecase = initUserUsecase,
+        _checkIfLoggedInUsecase = checkIfLoggedInUsecase,
+        _addUserUsecase = addUserUsecase,
+        _getUserUseCase = getUserUseCase,
         super(
-          const AuthViewState.empty(),
+          AuthViewState.empty(),
         ) {
     on<AuthInitEvent>(_init);
     on<UserSignupWithEmailAndPasswordEvent>(_signUpWithEmailAndPassword);
@@ -36,14 +42,41 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     AuthInitEvent event,
     Emitter<AuthViewState> emit,
   ) async {
-    final bool isLoggedIn = await _initUserUsecase.execute(const NoParams());
+    try {
+      final bool isLoggedIn =
+          await _checkIfLoggedInUsecase.execute(const NoParams());
 
-    emit(
-      state.copyWith(
-        isLoggedIn: isLoggedIn,
-        isError: false,
-      ),
-    );
+      if (isLoggedIn) {
+        UserModel user = await _getUserUseCase.execute(const NoParams());
+
+        if (user.email == '') {
+          await _addUserUsecase.execute(const NoParams());
+          user = await _getUserUseCase.execute(const NoParams());
+        }
+
+        emit(
+          state.copyWith(
+            isLoggedIn: true,
+            isError: false,
+            user: user,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isLoggedIn: isLoggedIn,
+            isError: false,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isError: true,
+          errorMessage: e,
+        ),
+      );
+    }
   }
 
   Future<void> _signUpWithGoogle(
@@ -53,11 +86,19 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     try {
       await _signUpWithGoogleUsecase.execute(const NoParams());
 
+      UserModel user = await _getUserUseCase.execute(const NoParams());
+
+      if (user.email == '') {
+        await _addUserUsecase.execute(const NoParams());
+        user = await _getUserUseCase.execute(const NoParams());
+      }
+
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {
@@ -82,6 +123,7 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
           isLoggedIn: false,
           isLoaded: false,
           isError: false,
+          user: UserModel.empty(),
         ),
       );
     } catch (e) {
@@ -105,11 +147,19 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
       );
       await _signUpUsecase.execute(credentials);
 
+      UserModel user = await _getUserUseCase.execute(const NoParams());
+
+      if (user.email == '') {
+        await _addUserUsecase.execute(const NoParams());
+        user = await _getUserUseCase.execute(const NoParams());
+      }
+
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {
@@ -132,23 +182,20 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
         password: event.password,
       );
       await _logInUsecase.execute(credentials);
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            true,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            firebaseAuth.currentUser!.uid,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            firebaseAuth.currentUser!.email!,
-          );
+
+      UserModel user = await _getUserUseCase.execute(const NoParams());
+
+      if (user.email == '') {
+        await _addUserUsecase.execute(const NoParams());
+        user = await _getUserUseCase.execute(const NoParams());
+      }
+
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {

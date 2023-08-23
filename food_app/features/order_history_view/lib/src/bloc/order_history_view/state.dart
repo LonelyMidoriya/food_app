@@ -6,6 +6,7 @@ class OrdersViewState {
   final bool isError;
   final Object errorMessage;
   final bool hasInternet;
+  final List<OrderHistoryModel> allUsersOrders;
 
   const OrdersViewState({
     required this.orders,
@@ -13,15 +14,18 @@ class OrdersViewState {
     required this.isError,
     required this.errorMessage,
     required this.hasInternet,
+    required this.allUsersOrders,
   });
 
-  const OrdersViewState.empty()
+  OrdersViewState.empty()
       : orders = const OrderHistoryModel(
           carts: [],
+          email: '',
         ),
         isLoaded = false,
         isError = false,
         errorMessage = '',
+        allUsersOrders = [],
         hasInternet = true;
 
   OrdersViewState copyWith({
@@ -30,6 +34,7 @@ class OrdersViewState {
     bool? isError,
     Object? errorMessage,
     bool? hasInternet,
+    List<OrderHistoryModel>? allUsersOrders,
   }) =>
       OrdersViewState(
         orders: orders ?? this.orders,
@@ -37,5 +42,6 @@ class OrdersViewState {
         isError: isError ?? this.isError,
         errorMessage: errorMessage ?? this.errorMessage,
         hasInternet: hasInternet ?? this.hasInternet,
+        allUsersOrders: allUsersOrders ?? this.allUsersOrders,
       );
 }

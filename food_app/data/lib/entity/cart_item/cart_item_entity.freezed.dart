@@ -20,11 +20,7 @@ CartItemEntity _$CartItemEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartItemEntity {
-  String get name => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
-  double get cost => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  DishEntity get dish => throw _privateConstructorUsedError;
   int get count => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,13 +35,9 @@ abstract class $CartItemEntityCopyWith<$Res> {
           CartItemEntity value, $Res Function(CartItemEntity) then) =
       _$CartItemEntityCopyWithImpl<$Res, CartItemEntity>;
   @useResult
-  $Res call(
-      {String name,
-      String imageUrl,
-      double cost,
-      String type,
-      String description,
-      int count});
+  $Res call({DishEntity dish, int count});
+
+  $DishEntityCopyWith<$Res> get dish;
 }
 
 /// @nodoc
@@ -61,39 +53,27 @@ class _$CartItemEntityCopyWithImpl<$Res, $Val extends CartItemEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? imageUrl = null,
-    Object? cost = null,
-    Object? type = null,
-    Object? description = null,
+    Object? dish = null,
     Object? count = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      cost: null == cost
-          ? _value.cost
-          : cost // ignore: cast_nullable_to_non_nullable
-              as double,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
+      dish: null == dish
+          ? _value.dish
+          : dish // ignore: cast_nullable_to_non_nullable
+              as DishEntity,
       count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DishEntityCopyWith<$Res> get dish {
+    return $DishEntityCopyWith<$Res>(_value.dish, (value) {
+      return _then(_value.copyWith(dish: value) as $Val);
+    });
   }
 }
 
@@ -105,13 +85,10 @@ abstract class _$$_CartItemEntityCopyWith<$Res>
       __$$_CartItemEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String name,
-      String imageUrl,
-      double cost,
-      String type,
-      String description,
-      int count});
+  $Res call({DishEntity dish, int count});
+
+  @override
+  $DishEntityCopyWith<$Res> get dish;
 }
 
 /// @nodoc
@@ -125,34 +102,14 @@ class __$$_CartItemEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? imageUrl = null,
-    Object? cost = null,
-    Object? type = null,
-    Object? description = null,
+    Object? dish = null,
     Object? count = null,
   }) {
     return _then(_$_CartItemEntity(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
-      cost: null == cost
-          ? _value.cost
-          : cost // ignore: cast_nullable_to_non_nullable
-              as double,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
+      dish: null == dish
+          ? _value.dish
+          : dish // ignore: cast_nullable_to_non_nullable
+              as DishEntity,
       count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -164,33 +121,19 @@ class __$$_CartItemEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CartItemEntity implements _CartItemEntity {
-  _$_CartItemEntity(
-      {required this.name,
-      required this.imageUrl,
-      required this.cost,
-      required this.type,
-      required this.description,
-      required this.count});
+  _$_CartItemEntity({required this.dish, required this.count});
 
   factory _$_CartItemEntity.fromJson(Map<String, dynamic> json) =>
       _$$_CartItemEntityFromJson(json);
 
   @override
-  final String name;
-  @override
-  final String imageUrl;
-  @override
-  final double cost;
-  @override
-  final String type;
-  @override
-  final String description;
+  final DishEntity dish;
   @override
   final int count;
 
   @override
   String toString() {
-    return 'CartItemEntity(name: $name, imageUrl: $imageUrl, cost: $cost, type: $type, description: $description, count: $count)';
+    return 'CartItemEntity(dish: $dish, count: $count)';
   }
 
   @override
@@ -198,20 +141,13 @@ class _$_CartItemEntity implements _CartItemEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CartItemEntity &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
-            (identical(other.cost, cost) || other.cost == cost) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            (identical(other.dish, dish) || other.dish == dish) &&
             (identical(other.count, count) || other.count == count));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, imageUrl, cost, type, description, count);
+  int get hashCode => Object.hash(runtimeType, dish, count);
 
   @JsonKey(ignore: true)
   @override
@@ -229,26 +165,14 @@ class _$_CartItemEntity implements _CartItemEntity {
 
 abstract class _CartItemEntity implements CartItemEntity {
   factory _CartItemEntity(
-      {required final String name,
-      required final String imageUrl,
-      required final double cost,
-      required final String type,
-      required final String description,
+      {required final DishEntity dish,
       required final int count}) = _$_CartItemEntity;
 
   factory _CartItemEntity.fromJson(Map<String, dynamic> json) =
       _$_CartItemEntity.fromJson;
 
   @override
-  String get name;
-  @override
-  String get imageUrl;
-  @override
-  double get cost;
-  @override
-  String get type;
-  @override
-  String get description;
+  DishEntity get dish;
   @override
   int get count;
   @override
