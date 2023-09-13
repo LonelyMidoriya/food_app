@@ -3,14 +3,16 @@ import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
 class TypeListTile extends StatelessWidget {
-  final bool isSelected;
-  final String type;
+  final bool _isSelected;
+  final String _type;
 
   const TypeListTile({
     Key? key,
-    required this.isSelected,
-    required this.type,
-  }) : super(key: key);
+    required bool isSelected,
+    required String type,
+  })  : _type = type,
+        _isSelected = isSelected,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +23,10 @@ class TypeListTile extends StatelessWidget {
         return SizedBox(
           width: state.fontSize * 6,
           child: ListTile(
-            selected: isSelected,
+            selected: _isSelected,
             selectedTileColor: theme.colorScheme.primary,
             title: CustomText(
-              text: type,
+              text: _type,
               fontWeight: FontWeight.w500,
             ),
           ),

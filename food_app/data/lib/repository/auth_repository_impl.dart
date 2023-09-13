@@ -2,28 +2,29 @@ import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
-class AuthRepositoryImpl extends AuthRepository {
-  final AuthProvider authProvider;
-  final SharedPreferences sharedPreferences;
+class AuthRepositoryImpl implements AuthRepository {
+  final AuthProvider _authProvider;
+  final SharedPreferences _sharedPreferences;
 
-  AuthRepositoryImpl({
-    required this.authProvider,
-    required this.sharedPreferences,
-  });
+  const AuthRepositoryImpl({
+    required AuthProvider authProvider,
+    required SharedPreferences sharedPreferences,
+  })  : _sharedPreferences = sharedPreferences,
+        _authProvider = authProvider;
 
   @override
-  Future<void> logIn({
-    required UserModel user,
-  }) async {
-    await authProvider.logIn(user: user);
-    sharedPreferences
+  Future<void> logIn(
+    Credentials credentials,
+  ) async {
+    await _authProvider.logIn(credentials);
+    _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -33,15 +34,16 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> signUpWithGoogle() async {
-    await authProvider.singUpWithGoogle();
-    sharedPreferences
+    await _authProvider.singUpWithGoogle();
+    _authProvider.firebaseAuth.currentUser;
+    _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -51,8 +53,8 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> signOut() async {
-    await authProvider.singOut();
-    sharedPreferences
+    await _authProvider.singOut();
+    _sharedPreferences
       ..setBool(
         'isLoggedIn',
         false,
@@ -68,18 +70,18 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signUpWithEmailAndPassword({
-    required UserModel user,
-  }) async {
-    await authProvider.singUpWithEmailAndPassword(user: user);
-    sharedPreferences
+  Future<void> signUpWithEmailAndPassword(
+    Credentials credentials,
+  ) async {
+    await _authProvider.singUpWithEmailAndPassword(credentials);
+    _sharedPreferences
       ..setString(
         'uid',
-        firebaseAuth.currentUser!.uid,
+        _authProvider.firebaseAuth.currentUser!.uid,
       )
       ..setString(
         'email',
-        firebaseAuth.currentUser!.email!,
+        _authProvider.firebaseAuth.currentUser!.email!,
       )
       ..setBool(
         'isLoggedIn',
@@ -88,11 +90,11 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<bool> init() async {
+  Future<bool> checkIfLoggedIn() async {
     final bool isLoggedIn;
 
-    if (firebaseAuth.currentUser == null) {
-      sharedPreferences
+    if (_authProvider.firebaseAuth.currentUser == null) {
+      _sharedPreferences
         ..setBool(
           'isLoggedIn',
           false,
@@ -107,9 +109,20 @@ class AuthRepositoryImpl extends AuthRepository {
         );
       isLoggedIn = false;
     } else {
-      isLoggedIn = sharedPreferences.getBool(
-        'isLoggedIn',
-      )!;
+      isLoggedIn = true;
+      _sharedPreferences
+        ..setString(
+          'uid',
+          _authProvider.firebaseAuth.currentUser!.uid,
+        )
+        ..setString(
+          'email',
+          _authProvider.firebaseAuth.currentUser!.email!,
+        )
+        ..setBool(
+          'isLoggedIn',
+          true,
+        );
     }
     return isLoggedIn;
   }

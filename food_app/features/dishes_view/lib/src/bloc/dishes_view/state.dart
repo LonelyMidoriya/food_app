@@ -1,15 +1,15 @@
 part of 'bloc.dart';
 
 class DishesViewState {
-  List<DishModel> dishes;
-  bool isLastPage;
-  bool isLoaded;
-  bool isError;
-  Object errorMessage;
-  bool hasInternet;
-  int selectedType;
+  final List<DishModel> dishes;
+  final bool isLastPage;
+  final bool isLoaded;
+  final bool isError;
+  final Object errorMessage;
+  final bool hasInternet;
+  final int selectedType;
 
-  DishesViewState({
+  const DishesViewState({
     required this.dishes,
     required this.isLastPage,
     required this.isLoaded,

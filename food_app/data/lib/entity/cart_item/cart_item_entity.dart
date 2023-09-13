@@ -1,6 +1,5 @@
-
-
 import 'package:core/core.dart';
+import 'package:data/data.dart';
 
 part 'cart_item_entity.freezed.dart';
 part 'cart_item_entity.g.dart';
@@ -8,11 +7,7 @@ part 'cart_item_entity.g.dart';
 @freezed
 class CartItemEntity with _$CartItemEntity {
   factory CartItemEntity({
-    required String name,
-    required String imageUrl,
-    required double cost,
-    required String type,
-    required String description,
+    required DishEntity dish,
     required int count,
   }) = _CartItemEntity;
 

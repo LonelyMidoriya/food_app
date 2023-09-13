@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
@@ -5,15 +7,15 @@ part 'event.dart';
 part 'state.dart';
 
 class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
-  final GetCartUseCase _getCartUseCase;
+  final FetchCartUseCase _fetchCartUseCase;
   final UpdateCartUseCase _updateCartUseCase;
   final InternetConnection _internetConnection;
 
   CartViewBloc({
-    required GetCartUseCase getCartUseCase,
+    required FetchCartUseCase fetchCartUseCase,
     required UpdateCartUseCase updateCartUseCase,
     required InternetConnection internetConnection,
-  })  : _getCartUseCase = getCartUseCase,
+  })  : _fetchCartUseCase = fetchCartUseCase,
         _updateCartUseCase = updateCartUseCase,
         _internetConnection = internetConnection,
         super(
@@ -24,16 +26,14 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     on<DeleteFromCartEvent>(_deleteFromCart);
     on<SetInternetCartEvent>(_setInternet);
     on<ClearCartEvent>(_clearCart);
-    final listener = internetConnection.onStatusChange.listen(
+    final StreamSubscription<InternetStatus> listener =
+        _internetConnection.onStatusChange.listen(
       (InternetStatus status) {
-        switch (status) {
-          case InternetStatus.connected:
-            add(SetInternetCartEvent(hasInternet: true));
-            add(InitCartEvent());
-            break;
-          case InternetStatus.disconnected:
-            add(SetInternetCartEvent(hasInternet: false));
-            break;
+        if (status == InternetStatus.connected) {
+          add(const SetInternetCartEvent(hasInternet: true));
+          add(InitCartEvent());
+        } else {
+          add(const SetInternetCartEvent(hasInternet: false));
         }
       },
     );
@@ -89,11 +89,11 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     if (state.hasInternet) {
       try {
         final CartModel cartModel =
-            await _getCartUseCase.execute(const NoParams());
+            await _fetchCartUseCase.execute(const NoParams());
         double cost = 0;
         if (cartModel.cartItems.isNotEmpty) {
           for (CartItemModel cartItem in cartModel.cartItems) {
-            cost += cartItem.cost * cartItem.count;
+            cost += cartItem.dish.cost * cartItem.count;
           }
         }
         emit(
@@ -123,11 +123,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
       try {
         if (state.cart.cartItems.isEmpty) {
           final CartItemModel cartItemModel = CartItemModel(
-            name: event.dishModel.name,
-            imageUrl: event.dishModel.imageUrl,
-            cost: event.dishModel.cost,
-            type: event.dishModel.type,
-            description: event.dishModel.description,
+            dish: event.dishModel,
             count: event.count,
           );
           final CartModel newCartModel = CartModel(
@@ -139,7 +135,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
           _updateCartUseCase.execute(newCartModel);
           emit(
             state.copyWith(
-              cost: cartItemModel.cost,
+              cost: cartItemModel.dish.cost,
               cart: newCartModel,
               isLoaded: true,
               isError: false,
@@ -147,14 +143,14 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
           );
         } else {
           if (state.cart.cartItems
-              .where((element) => element.name == event.dishModel.name)
+              .where((element) => element.dish.name == event.dishModel.name)
               .isNotEmpty) {
             final CartModel newCart;
             newCart = state.cart;
             final int index = newCart.cartItems
-                .indexWhere((element) => element.name == event.dishModel.name);
+                .indexWhere((element) => element.dish.name == event.dishModel.name);
             newCart.cartItems[index] = newCart.cartItems
-                .singleWhere((element) => element.name == event.dishModel.name)
+                .singleWhere((element) => element.dish.name == event.dishModel.name)
                 .copyWith(count: event.count);
 
             _updateCartUseCase.execute(newCart);
@@ -166,9 +162,9 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
                 cost: state.cost +
                     newCart.cartItems
                         .singleWhere(
-                          (element) => element.name == event.dishModel.name,
+                          (element) => element.dish.name == event.dishModel.name,
                         )
-                        .cost,
+                        .dish.cost,
                 cart: newCart,
               ),
             );
@@ -176,11 +172,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
             final CartModel newCart;
             newCart = state.cart;
             final CartItemModel cartItemModel = CartItemModel(
-              name: event.dishModel.name,
-              imageUrl: event.dishModel.imageUrl,
-              cost: event.dishModel.cost,
-              type: event.dishModel.type,
-              description: event.dishModel.description,
+              dish: event.dishModel,
               count: event.count,
             );
             newCart.cartItems.add(cartItemModel);
@@ -189,7 +181,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
               state.copyWith(
                 isLoaded: true,
                 isError: false,
-                cost: state.cost + cartItemModel.cost,
+                cost: state.cost + cartItemModel.dish.cost,
                 cart: newCart,
               ),
             );
@@ -217,7 +209,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
           final CartModel newCart;
           newCart = state.cart;
           newCart.cartItems
-              .removeWhere((element) => element.name == event.dishModel.name);
+              .removeWhere((element) => element.dish.name == event.dishModel.name);
           _updateCartUseCase.execute(newCart);
           emit(
             state.copyWith(
@@ -231,9 +223,9 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
           final CartModel newCart;
           newCart = state.cart;
           final int index = newCart.cartItems
-              .indexWhere((element) => element.name == event.dishModel.name);
+              .indexWhere((element) => element.dish.name == event.dishModel.name);
           newCart.cartItems[index] = newCart.cartItems
-              .singleWhere((element) => element.name == event.dishModel.name)
+              .singleWhere((element) => element.dish.name == event.dishModel.name)
               .copyWith(count: event.count);
           _updateCartUseCase.execute(newCart);
           emit(

@@ -6,7 +6,7 @@ class CartModel {
   final String date;
   final List<CartItemModel> cartItems;
 
-  CartModel({
+  const CartModel({
     required this.cost,
     required this.id,
     required this.date,
@@ -18,6 +18,7 @@ class CartModel {
     int? id,
     String? date,
     List<CartItemModel>? cartItems,
+    String? email,
   }) =>
       CartModel(
         cost: cost ?? this.cost,

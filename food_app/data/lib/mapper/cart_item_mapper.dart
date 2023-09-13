@@ -1,25 +1,17 @@
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
-class CartItemMapper {
-  CartItemEntity toEntity(CartItemModel model) {
+abstract class CartItemMapper {
+  static CartItemEntity toEntity(CartItemModel model) {
     return CartItemEntity(
-      name: model.name,
-      imageUrl: model.imageUrl,
-      cost: model.cost,
-      type: model.type,
-      description: model.description,
+      dish: DishMapper.toEntity(model.dish),
       count: model.count,
     );
   }
 
-  CartItemModel toModel(CartItemEntity entity) {
+  static CartItemModel toModel(CartItemEntity entity) {
     return CartItemModel(
-      name: entity.name,
-      imageUrl: entity.imageUrl,
-      cost: entity.cost,
-      type: entity.type,
-      description: entity.description,
+      dish: DishMapper.toModel(entity.dish),
       count: entity.count,
     );
   }

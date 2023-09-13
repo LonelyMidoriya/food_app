@@ -2,34 +2,48 @@ part of 'bloc.dart';
 
 abstract class DishesViewEvent {}
 
-class LoadDishesEvent extends DishesViewEvent {}
+class LoadDishesEvent implements DishesViewEvent {}
 
-class InitDishesEvent extends DishesViewEvent {}
+class InitDishesEvent implements DishesViewEvent {}
 
-class LoadDishesByTypeEvent extends DishesViewEvent {
-  final String type;
+class LoadDishesByTypeEvent implements DishesViewEvent {
   final int selectedType;
 
-  LoadDishesByTypeEvent({
-    required this.type,
+  const LoadDishesByTypeEvent({
     required this.selectedType,
   });
 }
 
-class SetInternetDishesEvent extends DishesViewEvent {
+class SetInternetDishesEvent implements DishesViewEvent {
   final bool hasInternet;
 
-  SetInternetDishesEvent({
+  const SetInternetDishesEvent({
     required this.hasInternet,
-});
+  });
 }
 
-class NavigateToDetailsEvent extends DishesViewEvent {
-  final DishModel model;
-  final BuildContext context;
+class AddDishEvent implements DishesViewEvent {
+  final DishModel dish;
 
-  NavigateToDetailsEvent({
-    required this.model,
-    required this.context,
+  const AddDishEvent({
+    required this.dish,
+  });
+}
+
+class DeleteDishEvent implements DishesViewEvent {
+  final DishModel dish;
+
+  const DeleteDishEvent({
+    required this.dish,
+  });
+}
+
+class UpdateDishEvent implements DishesViewEvent {
+  final DishModel dish;
+  final DishModel newDish;
+
+  const UpdateDishEvent({
+    required this.dish,
+    required this.newDish,
   });
 }

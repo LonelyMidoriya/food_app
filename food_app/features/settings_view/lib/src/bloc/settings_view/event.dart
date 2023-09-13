@@ -2,12 +2,12 @@ part of 'bloc.dart';
 
 abstract class SettingsViewEvent {}
 
-class InitEvent extends SettingsViewEvent {}
+class GetTextSizeEvent implements SettingsViewEvent {}
 
-class ChangeTextSizeEvent extends SettingsViewEvent {
+class ChangeTextSizeEvent implements SettingsViewEvent {
   final double textSize;
 
-  ChangeTextSizeEvent({
+  const ChangeTextSizeEvent({
     required this.textSize,
   });
 }

@@ -9,8 +9,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  liquid_pull_to_refresh: ^3.0.1
-
   domain:
     path: ../../domain
   core:

@@ -1,5 +1,3 @@
-import 'package:cart_view/src/widget/cart_list_view_item.dart';
-import 'package:cart_view/src/widget/order_button.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 
@@ -11,6 +9,7 @@ class CartViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final CartViewBloc cartViewBloc = BlocProvider.of<CartViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -87,11 +86,26 @@ class CartViewScreen extends StatelessWidget {
                           addRepaintBoundaries: false,
                           itemCount: state.cart.cartItems.length,
                           itemBuilder: (context, index) {
-                            return CartListViewItem(
-                              itemModel: state.cart.cartItems[index],
-                              cost: state.cart.cartItems[index].count *
-                                  state.cart.cartItems[index].cost,
-                            );
+                            if (index == state.cart.cartItems.length - 1) {
+                              return Column(
+                                children: [
+                                  CartListViewItem(
+                                    itemModel: state.cart.cartItems[index],
+                                    cost: state.cart.cartItems[index].count *
+                                        state.cart.cartItems[index].dish.cost,
+                                  ),
+                                  const SizedBox(
+                                    height: 70,
+                                  )
+                                ],
+                              );
+                            } else {
+                              return CartListViewItem(
+                                itemModel: state.cart.cartItems[index],
+                                cost: state.cart.cartItems[index].count *
+                                    state.cart.cartItems[index].dish.cost,
+                              );
+                            }
                           },
                           separatorBuilder: (BuildContext context, int index) =>
                               const Divider(),
@@ -115,9 +129,9 @@ class CartViewScreen extends StatelessWidget {
                         height: 10,
                       ),
                       AppButtonWidget(
-                        label: 'Refresh'.trim(),
+                        label: 'Refresh',
                         onTap: () {
-                          BlocProvider.of<CartViewBloc>(context).add(
+                          cartViewBloc.add(
                             InitCartEvent(),
                           );
                         },

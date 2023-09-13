@@ -2,34 +2,34 @@ part of 'bloc.dart';
 
 abstract class CartViewEvent {}
 
-class AddToCartEvent extends CartViewEvent {
+class AddToCartEvent implements CartViewEvent {
   final DishModel dishModel;
   final int count;
 
-  AddToCartEvent({
+  const AddToCartEvent({
     required this.dishModel,
     required this.count,
   });
 }
 
-class SetInternetCartEvent extends CartViewEvent {
+class SetInternetCartEvent implements CartViewEvent {
   final bool hasInternet;
 
-  SetInternetCartEvent({
+  const SetInternetCartEvent({
     required this.hasInternet,
   });
 }
 
-class ClearCartEvent extends CartViewEvent {}
+class ClearCartEvent implements CartViewEvent {}
 
-class DeleteFromCartEvent extends CartViewEvent {
+class DeleteFromCartEvent implements CartViewEvent {
   final DishModel dishModel;
   final int count;
 
-  DeleteFromCartEvent({
+  const DeleteFromCartEvent({
     required this.dishModel,
     required this.count,
   });
 }
 
-class InitCartEvent extends CartViewEvent {}
+class InitCartEvent implements CartViewEvent {}

@@ -9,26 +9,28 @@ class TypeListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+
     return SizedBox(
       height: 55,
       child: BlocBuilder<DishesViewBloc, DishesViewState>(
         builder: (BuildContext context, DishesViewState state) {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: typesOfFood.length,
+            itemCount: TypeOfFood.values.length,
             shrinkWrap: true,
-            itemBuilder: (context, index) => GestureDetector(
+            itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
-                BlocProvider.of<DishesViewBloc>(context).add(
+                dishesViewBloc.add(
                   LoadDishesByTypeEvent(
-                    type: typesOfFood[index],
                     selectedType: index,
                   ),
                 );
               },
               child: TypeListTile(
                 isSelected: state.selectedType == index,
-                type: typesOfFood[index],
+                type: TypeOfFood.values[index].name,
               ),
             ),
           );

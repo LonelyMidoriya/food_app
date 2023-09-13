@@ -4,6 +4,7 @@ import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
 import 'package:settings_view/src/widget/about_us_tile.dart';
+import 'package:settings_view/src/widget/sign_out_dialog.dart';
 import 'package:settings_view/src/widget/text_size_list_tile.dart';
 import 'package:settings_view/src/widget/theme_list_tile.dart';
 
@@ -13,6 +14,7 @@ class SettingsViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -25,7 +27,7 @@ class SettingsViewScreen extends StatelessWidget {
               builder: (BuildContext context, AuthViewState state) {
                 if (state.isLoggedIn) {
                   return CustomText(
-                    text: firebaseAuth.currentUser!.email!,
+                    text: state.user.email,
                     fontWeight: FontWeight.w500,
                   );
                 } else {
@@ -41,11 +43,13 @@ class SettingsViewScreen extends StatelessWidget {
                 if (state.isLoggedIn) {
                   return IconButton(
                     onPressed: () {
-                      BlocProvider.of<AuthViewBloc>(context).add(
-                        UserSignoutEvent(),
-                      );
-                      appRouter.navigate(
-                        const LoginScreenRoute(),
+                      showAnimatedDialog(
+                        animationType: DialogTransitionType.fadeScale,
+                        duration: const Duration(milliseconds: 500),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const SignOutDialog();
+                        },
                       );
                     },
                     icon: const Icon(
@@ -54,11 +58,11 @@ class SettingsViewScreen extends StatelessWidget {
                   );
                 } else {
                   return IconButton(
-                    onPressed: () {
-                      appRouter.navigate(
-                        const LoginScreenRoute(),
-                      );
-                    },
+                    onPressed: () => authViewBloc.add(
+                      const NavigateToPageEvent(
+                        route: LoginScreenRoute(),
+                      ),
+                    ),
                     icon: const Icon(
                       Icons.account_box,
                     ),

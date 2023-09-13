@@ -9,6 +9,6 @@ class UpdateCartUseCase implements FutureUseCase<CartModel, void> {
 
   @override
   Future<void> execute(CartModel input) async {
-    _cartRepository.updateCart(cart: input);
+    _cartRepository.updateCart(input);
   }
 }

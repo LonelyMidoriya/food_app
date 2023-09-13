@@ -8,6 +8,8 @@ class TextSizeListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final SettingsViewBloc settingsViewBloc =
+        BlocProvider.of<SettingsViewBloc>(context);
 
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
       builder: (BuildContext context, SettingsViewState state) {
@@ -38,7 +40,7 @@ class TextSizeListTile extends StatelessWidget {
                 ),
               ),
               CustomText(
-                text: '${state.fontSize}',
+                text: '${state.fontSize.toInt()}',
                 fontWeight: FontWeight.w500,
               ),
             ],
@@ -55,8 +57,8 @@ class TextSizeListTile extends StatelessWidget {
                     )
                   : null,
               onTap: () {
-                BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 14),
+                settingsViewBloc.add(
+                  const ChangeTextSizeEvent(textSize: 14),
                 );
               },
             ),
@@ -71,8 +73,8 @@ class TextSizeListTile extends StatelessWidget {
                     )
                   : null,
               onTap: () {
-                BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 18),
+                settingsViewBloc.add(
+                  const ChangeTextSizeEvent(textSize: 18),
                 );
               },
             ),
@@ -87,8 +89,8 @@ class TextSizeListTile extends StatelessWidget {
                     )
                   : null,
               onTap: () {
-                BlocProvider.of<SettingsViewBloc>(context).add(
-                  ChangeTextSizeEvent(textSize: 22),
+                settingsViewBloc.add(
+                  const ChangeTextSizeEvent(textSize: 22),
                 );
               },
             ),

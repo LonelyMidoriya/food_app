@@ -1,5 +1,3 @@
-
-
 import 'package:core/core.dart';
 
 import '../cart_item/cart_item_entity.dart';

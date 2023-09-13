@@ -1,4 +1,3 @@
-import 'package:auth_view/auth_view.dart';
 import 'package:auth_view/src/widget/signup_form.dart';
 import 'package:auth_view/src/widget/signup_with_socials.dart';
 import 'package:core_ui/core_ui.dart';
@@ -23,51 +22,11 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return WillPopScope(
       onWillPop: () async => false,
-      child: BlocConsumer<AuthViewBloc, AuthViewState>(
-        listener: (context, state) {
-          if (state.isLoggedIn) {
-            BlocProvider.of<CartViewBloc>(context).add(
-              InitCartEvent(),
-            );
-            BlocProvider.of<OrdersViewBloc>(context).add(
-              InitOrdersEvent(),
-            );
-            appRouter.navigate(
-              const HomePageRoute(),
-            );
-          }
-          if (state.isError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                elevation: 50,
-                backgroundColor: Colors.teal,
-                content: CustomText(
-                  text: state.errorMessage.toString(),
-                  fontWeight: FontWeight.w800,
-                ),
-                duration: const Duration(seconds: 2),
-                margin: const EdgeInsets.symmetric(
-                  vertical: 60,
-                  horizontal: 30,
-                ),
-              ),
-            );
-          } else if (state.isLoaded) {
-            BlocProvider.of<CartViewBloc>(context).add(
-              InitCartEvent(),
-            );
-            BlocProvider.of<OrdersViewBloc>(context).add(
-              InitOrdersEvent(),
-            );
-            appRouter.navigate(
-              const HomePageRoute(),
-            );
-          }
-        },
+      child: BlocBuilder<AuthViewBloc, AuthViewState>(
         builder: (context, state) {
           return AnimatedTheme(
             duration: const Duration(milliseconds: 200),
@@ -131,11 +90,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  appRouter.navigate(
-                                    const LoginScreenRoute(),
-                                  );
-                                },
+                                onTap: () => authViewBloc.add(
+                                  const NavigateToPageEvent(
+                                    route: LoginScreenRoute(),
+                                  ),
+                                ),
                                 child: const Text(
                                   "Login Now",
                                   style: TextStyle(

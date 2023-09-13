@@ -1,27 +1,16 @@
 library domain;
 
-export 'package:domain/usecases/get_dishes_by_type_usecase.dart';
-export 'package:domain/usecases/get_init_dishes_usecase.dart';
-export 'package:domain/usecases/get_next_dishes_usecase.dart';
-export 'usecases/get_cart_usecase.dart';
-export 'usecases/get_text_size_usecase.dart';
-export 'usecases/log_in_usecase.dart';
-export 'usecases/save_text_size_usecase.dart';
-export 'usecases/sign_out_usecase.dart';
-export 'usecases/sign_up_with_email_and_password_usecase.dart';
-export 'usecases/sign_up_with_google_usecase.dart';
-export 'usecases/update_cart_usecase.dart';
 export 'model/cart_item_model.dart';
 export 'model/cart_model.dart';
 export 'model/dish_model.dart';
+export 'model/order_history_model.dart';
+export 'model/user_model.dart';
+
 export 'repository/auth_repository.dart';
 export 'repository/cart_repository.dart';
 export 'repository/dishes_repository.dart';
 export 'repository/settings_repository.dart';
-export 'usecases/init_user_usecase.dart';
-export 'model/orders_model.dart';
-export 'repository/orders_repository.dart';
-export 'usecases/get_orders_usecase.dart';
-export 'usecases/update_orders_usecase.dart';
-export 'usecases/usecase.dart';
-export 'model/user_model.dart';
+export 'repository/order_history_repository.dart';
+export 'repository/user_repository.dart';
+
+export 'usecases/export_usecases.dart';

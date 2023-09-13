@@ -1,12 +1,8 @@
 import 'package:core/core.dart';
-import 'package:core_ui/widgets/app_button_widget.dart';
-import 'package:core_ui/widgets/app_loader_center_widget.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:dishes_view/src/widget/type_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-
-import '../bloc/bloc.dart';
-import '../widget/dish_grid_item.dart';
+import 'package:navigation/routes/app_router.dart';
 
 class DishesViewScreen extends StatefulWidget {
   const DishesViewScreen({Key? key}) : super(key: key);
@@ -25,13 +21,15 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   }
 
   void _onScroll() {
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+
     if (!_scrollController.hasClients) return;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
-    if (currentScroll == maxScroll &&
-        !BlocProvider.of<DishesViewBloc>(context).state.isLastPage) {
-      if (BlocProvider.of<DishesViewBloc>(context).state.hasInternet) {
-        BlocProvider.of<DishesViewBloc>(context).add(
+    if (currentScroll == maxScroll && !dishesViewBloc.state.isLastPage) {
+      if (dishesViewBloc.state.hasInternet) {
+        dishesViewBloc.add(
           LoadDishesEvent(),
         );
       }
@@ -47,6 +45,9 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -68,6 +69,13 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                       return Center(
                         child: Text(state.errorMessage.toString()),
                       );
+                    } else if (state.dishes.isEmpty) {
+                      return const Center(
+                        child: CustomText(
+                          text: 'Nothing here',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
                     } else if (state.isLoaded) {
                       return LiquidPullToRefresh(
                         color: theme.colorScheme.primary,
@@ -85,11 +93,11 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                           ),
                           itemCount: state.dishes.length,
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () =>
-                                BlocProvider.of<DishesViewBloc>(context).add(
-                              NavigateToDetailsEvent(
-                                context: context,
-                                model: state.dishes[index],
+                            onTap: () => authViewBloc.add(
+                              NavigateToPageEvent(
+                                route: DishDescriptionPageRoute(
+                                  dish: state.dishes[index],
+                                ),
                               ),
                             ),
                             child: DishGridItem(
@@ -101,9 +109,9 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
                     } else {
                       return Center(
                         child: AppButtonWidget(
-                          label: 'load'.trim(),
+                          label: 'load',
                           onTap: () {
-                            BlocProvider.of<DishesViewBloc>(context).add(
+                            dishesViewBloc.add(
                               InitDishesEvent(),
                             );
                           },

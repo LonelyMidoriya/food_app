@@ -1,27 +1,36 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:navigation/navigation.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
-  final SignUpWithEmailAndPasswordUsecase _signUpUsecase;
+  final SignUpWithEmailAndPasswordUsecase _signUpWithEmailAndPasswordUsecase;
   final LogInUsecase _logInUsecase;
+  final AddUserUseCase _addUserUsecase;
+  final FetchUserUseCase _fetchUserUseCase;
   final SignOutUsecase _signOutUsecase;
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
-  final InitUserUsecase _initUserUsecase;
+  final CheckIfLoggedInUsecase _checkIfLoggedInUsecase;
 
   AuthViewBloc({
-    required SignUpWithEmailAndPasswordUsecase signUpUsecase,
+    required SignUpWithEmailAndPasswordUsecase
+        signUpWithEmailAndPasswordUsecase,
     required LogInUsecase logInUsecase,
     required SignOutUsecase signOutUsecase,
     required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
-    required InitUserUsecase initUserUsecase,
-  })  : _signUpUsecase = signUpUsecase,
+    required CheckIfLoggedInUsecase checkIfLoggedInUsecase,
+    required AddUserUseCase addUserUsecase,
+    required FetchUserUseCase fetchUserUseCase,
+  })  : _signUpWithEmailAndPasswordUsecase = signUpWithEmailAndPasswordUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
-        _initUserUsecase = initUserUsecase,
+        _checkIfLoggedInUsecase = checkIfLoggedInUsecase,
+        _addUserUsecase = addUserUsecase,
+        _fetchUserUseCase = fetchUserUseCase,
         super(
           AuthViewState.empty(),
         ) {
@@ -30,20 +39,50 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     on<UserSignupWithGoogleEvent>(_signUpWithGoogle);
     on<UserSignoutEvent>(_signOut);
     on<UserLogInEvent>(_logIn);
+    on<NavigateToPageEvent>(_navigateTo);
+    on<PopUntilPageEvent>(_popUntil);
+    on<PopToPreviousPageEvent>(_popToPage);
   }
 
   Future<void> _init(
     AuthInitEvent event,
     Emitter<AuthViewState> emit,
   ) async {
-    final bool isLoggedIn = await _initUserUsecase.execute(const NoParams());
+    try {
+      final bool isLoggedIn =
+          await _checkIfLoggedInUsecase.execute(const NoParams());
 
-    emit(
-      state.copyWith(
-        isLoggedIn: isLoggedIn,
-        isError: false,
-      ),
-    );
+      if (isLoggedIn) {
+        UserModel user = await _fetchUserUseCase.execute(const NoParams());
+
+        if (user.email.isEmpty) {
+          await _addUserUsecase.execute(const NoParams());
+          user = await _fetchUserUseCase.execute(const NoParams());
+        }
+
+        emit(
+          state.copyWith(
+            isLoggedIn: true,
+            isError: false,
+            user: user,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isLoggedIn: isLoggedIn,
+            isError: false,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          isError: true,
+          errorMessage: e,
+        ),
+      );
+    }
   }
 
   Future<void> _signUpWithGoogle(
@@ -53,11 +92,19 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     try {
       await _signUpWithGoogleUsecase.execute(const NoParams());
 
+      UserModel user = await _fetchUserUseCase.execute(const NoParams());
+
+      if (user.email.isEmpty) {
+        await _addUserUsecase.execute(const NoParams());
+        user = await _fetchUserUseCase.execute(const NoParams());
+      }
+
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {
@@ -82,6 +129,7 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
           isLoggedIn: false,
           isLoaded: false,
           isError: false,
+          user: UserModel.empty(),
         ),
       );
     } catch (e) {
@@ -99,15 +147,21 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      final UserModel user =
-          UserModel(email: event.email, password: event.password);
-      await _signUpUsecase.execute(user);
+      final Credentials credentials = Credentials(
+        email: event.email,
+        password: event.password,
+      );
+      await _signUpWithEmailAndPasswordUsecase.execute(credentials);
+
+      await _addUserUsecase.execute(const NoParams());
+      final UserModel user = await _fetchUserUseCase.execute(const NoParams());
 
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {
@@ -120,31 +174,55 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     }
   }
 
+  Future<void> _navigateTo(
+    NavigateToPageEvent event,
+    Emitter<AuthViewState> emit,
+  ) async {
+    appRouter.navigate(
+      event.route,
+    );
+  }
+
+  Future<void> _popToPage(
+      PopToPreviousPageEvent event,
+      Emitter<AuthViewState> emit,
+      ) async {
+    appRouter.pop();
+  }
+
+  Future<void> _popUntil(
+      PopUntilPageEvent event,
+      Emitter<AuthViewState> emit,
+      ) async {
+    appRouter.popUntilRouteWithName(
+      event.route,
+    );
+  }
+
   Future<void> _logIn(
     UserLogInEvent event,
     Emitter<AuthViewState> emit,
   ) async {
     try {
-      final UserModel user =
-          UserModel(email: event.email, password: event.password);
-      await _logInUsecase.execute(user);
-      await appLocator.get<SharedPreferences>().setBool(
-            'isLoggedIn',
-            true,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'uid',
-            firebaseAuth.currentUser!.uid,
-          );
-      await appLocator.get<SharedPreferences>().setString(
-            'email',
-            firebaseAuth.currentUser!.email!,
-          );
+      final Credentials credentials = Credentials(
+        email: event.email,
+        password: event.password,
+      );
+      await _logInUsecase.execute(credentials);
+
+      UserModel user = await _fetchUserUseCase.execute(const NoParams());
+
+      if (user.email.isEmpty) {
+        await _addUserUsecase.execute(const NoParams());
+        user = await _fetchUserUseCase.execute(const NoParams());
+      }
+
       emit(
         state.copyWith(
           isLoggedIn: true,
           isLoaded: true,
           isError: false,
+          user: user,
         ),
       );
     } catch (e) {

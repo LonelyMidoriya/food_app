@@ -6,11 +6,13 @@ class AppLoaderCenterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final Size size = MediaQuery.sizeOf(context);
+
+    return Center(
       child: SizedBox(
-        height: 120,
-        width: 120,
-        child: RiveAnimation.asset(
+        height: size.width / 4,
+        width: size.width / 4,
+        child: const RiveAnimation.asset(
           circularProgressIndicatorUrl,
         ),
       ),

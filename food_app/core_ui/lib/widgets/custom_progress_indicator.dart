@@ -2,27 +2,30 @@ import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
 class CustomProgressIndicator extends StatelessWidget {
-  final double end;
-  final String stat;
-  final int statValue;
+  final double _end;
+  final String _stat;
+  final int _statValue;
 
   const CustomProgressIndicator({
-    Key? key,
-    required this.end,
-    required this.stat,
-    required this.statValue,
-  }) : super(key: key);
+    required double end,
+    required String stat,
+    required int statValue,
+    super.key,
+  })  : _statValue = statValue,
+        _stat = stat,
+        _end = end;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final Size size = MediaQuery.sizeOf(context);
 
     return Row(
       children: <Widget>[
         SizedBox(
-          width: 60,
+          width: size.width / 6,
           child: CustomText(
-            text: stat,
+            text: _stat,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -32,11 +35,11 @@ class CustomProgressIndicator extends StatelessWidget {
             curve: Curves.easeInOut,
             tween: Tween<double>(
               begin: 0,
-              end: end,
+              end: _end,
             ),
-            builder: (context, value, _) => LinearProgressIndicator(
+            builder: (_, double value, __) => LinearProgressIndicator(
               value: value,
-              semanticsValue: end.toString(),
+              semanticsValue: _end.toString(),
               minHeight: 10,
               color: theme.colorScheme.primary,
               backgroundColor: Colors.white,
@@ -47,9 +50,9 @@ class CustomProgressIndicator extends StatelessWidget {
           width: 10,
         ),
         SizedBox(
-          width: 50,
+          width: size.width / 7,
           child: CustomText(
-            text: statValue.toString(),
+            text: _statValue.toString(),
             fontWeight: FontWeight.w500,
           ),
         ),

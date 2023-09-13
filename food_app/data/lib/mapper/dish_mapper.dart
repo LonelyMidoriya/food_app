@@ -1,8 +1,8 @@
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
-class DishMapper {
-  DishEntity toEntity(DishModel model) {
+abstract class DishMapper {
+  static DishEntity toEntity(DishModel model) {
     return DishEntity(
       name: model.name,
       imageUrl: model.imageUrl,
@@ -13,7 +13,7 @@ class DishMapper {
     );
   }
 
-  DishModel toModel(DishEntity entity) {
+  static DishModel toModel(DishEntity entity) {
     return DishModel(
       name: entity.name,
       imageUrl: entity.imageUrl,

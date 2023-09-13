@@ -9,6 +9,9 @@ class SignUpWithSocials extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
+
     return Column(
       children: <Widget>[
         const Padding(
@@ -23,15 +26,15 @@ class SignUpWithSocials extends StatelessWidget {
         Center(
           child: MaterialButton(
             onPressed: () {
-              BlocProvider.of<AuthViewBloc>(context).add(
+              authViewBloc.add(
                 UserSignupWithGoogleEvent(),
               );
             },
             child: Image.network(
               googleUrl,
               fit: BoxFit.scaleDown,
-              height: googleImageSize,
-              width: googleImageSize,
+              height: size.width / 10,
+              width: size.width / 10,
             ),
           ),
         ),

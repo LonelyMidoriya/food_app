@@ -1,15 +1,16 @@
 import 'package:core_ui/widgets/add_to_cart_button.dart';
-import 'package:core_ui/widgets/dish_description.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
+import '../widget/dish_description.dart';
+
 class DishDescriptionPage extends StatelessWidget {
-  final DishModel model;
+  final DishModel _dish;
 
   const DishDescriptionPage({
     super.key,
-    required this.model,
-  });
+    required DishModel dish,
+  }) : _dish = dish;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class DishDescriptionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             AddToCartButton(
-              model: model,
+              dish: _dish,
             ),
           ],
         ),
@@ -31,7 +32,7 @@ class DishDescriptionPage extends StatelessWidget {
           centerTitle: true,
           title: const Text('Description'),
         ),
-        body: DishDescription(model),
+        body: DishDescription(dish: _dish),
       ),
     );
   }

@@ -6,22 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:settings_view/settings_view.dart';
 
 class AddToCartButton extends StatelessWidget {
-  final DishModel model;
+  final DishModel _dish;
 
   const AddToCartButton({
-    Key? key,
-    required this.model,
-  }) : super(key: key);
+    required DishModel dish,
+    super.key,
+  })  : _dish = dish;
 
   Iterable<CartItemModel> _findCartItem(CartViewState state) {
     return state.cart.cartItems.where(
-      (element) => element.name == model.name,
+      (CartItemModel element) => element.dish.name == _dish.name,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final CartViewBloc cartViewBloc = BlocProvider.of<CartViewBloc>(context);
 
     return AnimatedTheme(
       data: theme,
@@ -38,9 +39,9 @@ class AddToCartButton extends StatelessWidget {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
-                          BlocProvider.of<CartViewBloc>(context).add(
+                          cartViewBloc.add(
                             DeleteFromCartEvent(
-                              dishModel: model,
+                              dishModel: _dish,
                               count: _findCartItem(state).first.count - 1,
                             ),
                           );
@@ -79,9 +80,9 @@ class AddToCartButton extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          BlocProvider.of<CartViewBloc>(context).add(
+                          cartViewBloc.add(
                             AddToCartEvent(
-                              dishModel: model,
+                              dishModel: _dish,
                               count: _findCartItem(state).first.count + 1,
                             ),
                           );
@@ -110,9 +111,9 @@ class AddToCartButton extends StatelessWidget {
                 } else {
                   return ElevatedButton(
                     onPressed: () {
-                      BlocProvider.of<CartViewBloc>(context).add(
+                      cartViewBloc.add(
                         AddToCartEvent(
-                          dishModel: model,
+                          dishModel: _dish,
                           count: 1,
                         ),
                       );
