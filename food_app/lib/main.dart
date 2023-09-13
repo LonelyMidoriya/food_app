@@ -33,22 +33,22 @@ class _MyAppState extends State<MyApp> {
       providers: <BlocProvider>[
         BlocProvider<AuthViewBloc>(
           create: (_) => AuthViewBloc(
-            signUpUsecase: appLocator.get<SignUpWithEmailAndPasswordUsecase>(),
+            signUpWithEmailAndPasswordUsecase: appLocator.get<SignUpWithEmailAndPasswordUsecase>(),
             logInUsecase: appLocator.get<LogInUsecase>(),
             signOutUsecase: appLocator.get<SignOutUsecase>(),
             signUpWithGoogleUsecase: appLocator.get<SignUpWithGoogleUsecase>(),
             checkIfLoggedInUsecase: appLocator.get<CheckIfLoggedInUsecase>(),
             addUserUsecase: appLocator.get<AddUserUseCase>(),
-            getUserUseCase: appLocator.get<GetUserUseCase>(),
+            fetchUserUseCase: appLocator.get<FetchUserUseCase>(),
           )..add(
               AuthInitEvent(),
             ),
         ),
         BlocProvider<DishesViewBloc>(
           create: (_) => DishesViewBloc(
-            getInitDishesUseCase: appLocator.get<GetInitDishesUseCase>(),
-            getNextDishesUseCase: appLocator.get<GetNextDishesUseCase>(),
-            getDishesByTypeUseCase: appLocator.get<GetDishesByTypeUseCase>(),
+            fetchInitDishesUseCase: appLocator.get<FetchInitDishesUseCase>(),
+            fetchNextDishesUseCase: appLocator.get<FetchNextDishesUseCase>(),
+            fetchDishesByTypeUseCase: appLocator.get<FetchDishesByTypeUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
             deleteDishUseCase: appLocator.get<DeleteDishUseCase>(),
             addDishUseCase: appLocator.get<AddDishUseCase>(),
@@ -59,25 +59,25 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<CartViewBloc>(
           create: (_) => CartViewBloc(
-            getCartUseCase: appLocator.get<GetCartUseCase>(),
+            fetchCartUseCase: appLocator.get<FetchCartUseCase>(),
             updateCartUseCase: appLocator.get<UpdateCartUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
           ),
         ),
         BlocProvider<OrdersViewBloc>(
           create: (_) => OrdersViewBloc(
-            getOrdersUseCase: appLocator.get<GetOrdersUseCase>(),
+            fetchOrdersUseCase: appLocator.get<FetchOrdersUseCase>(),
             updateOrdersUseCase: appLocator.get<UpdateOrdersUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
             getAllUsersOrdersUseCase:
                 appLocator.get<GetAllUsersOrdersUseCase>(),
             getSearchedUsersOrdersUseCase:
-                appLocator.get<GetSearchedUsersOrdersUseCase>(),
+                appLocator.get<FetchSearchedUsersOrdersUseCase>(),
           ),
         ),
         BlocProvider<SettingsViewBloc>(
           create: (_) => SettingsViewBloc(
-            getTextSizeUseCase: appLocator.get<GetTextSizeUseCase>(),
+            fetchTextSizeUseCase: appLocator.get<FetchTextSizeUseCase>(),
             saveTextSizeUseCase: appLocator.get<SaveTextSizeUseCase>(),
           )..add(
               GetTextSizeEvent(),
@@ -85,8 +85,8 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<AdminControlPanelBloc>(
           create: (_) => AdminControlPanelBloc(
-            getAllUsersUseCase: appLocator.get<GetAllUsersUseCase>(),
-            getSearchedUsersUseCase: appLocator.get<GetSearchedUsersUseCase>(),
+            fetchAllUsersUseCase: appLocator.get<FetchAllUsersUseCase>(),
+            getSearchedUsersUseCase: appLocator.get<FetchSearchedUsersUseCase>(),
             updateUserUseCase: appLocator.get<UpdateUserUseCase>(),
             internetConnection: appLocator.get<InternetConnection>(),
           ),

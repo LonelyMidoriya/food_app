@@ -10,8 +10,6 @@ class LogInUsecase implements FutureUseCase<Credentials, void> {
 
   @override
   Future<void> execute(Credentials input) async {
-    return _authRepository.logIn(
-      credentials: input,
-    );
+    return _authRepository.logIn(input);
   }
 }

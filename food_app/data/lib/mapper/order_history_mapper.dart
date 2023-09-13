@@ -4,16 +4,11 @@ import '../entity/cart/cart_entity.dart';
 import '../entity/order_history/order_history_entity.dart';
 import 'cart_mapper.dart';
 
-class OrderHistoryMapper {
-  final CartMapper _cartMapper;
-
-  const OrderHistoryMapper({required CartMapper cartMapper})
-      : _cartMapper = cartMapper;
-
-  OrderHistoryEntity toEntity(OrderHistoryModel model) {
+abstract class OrderHistoryMapper {
+  static OrderHistoryEntity toEntity(OrderHistoryModel model) {
     final List<CartEntity> carts = model.carts
         .map(
-          (CartModel model) => _cartMapper.toEntity(model),
+          (CartModel model) => CartMapper.toEntity(model),
         )
         .toList();
 
@@ -23,10 +18,10 @@ class OrderHistoryMapper {
     );
   }
 
-  OrderHistoryModel toModel(OrderHistoryEntity entity) {
+  static OrderHistoryModel toModel(OrderHistoryEntity entity) {
     final List<CartModel> carts = entity.carts
         .map(
-          (CartEntity entity) => _cartMapper.toModel(entity),
+          (CartEntity entity) => CartMapper.toModel(entity),
         )
         .toList();
 

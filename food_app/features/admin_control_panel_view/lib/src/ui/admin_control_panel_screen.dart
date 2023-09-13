@@ -20,6 +20,8 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AdminControlPanelBloc adminControlPanelBloc =
+        BlocProvider.of<AdminControlPanelBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -29,19 +31,19 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
         child: Scaffold(
           backgroundColor: theme.colorScheme.background,
           body: Column(
-            children: [
+            children: <Widget>[
               TextField(
                 style: const TextStyle(fontSize: 20),
                 showCursor: false,
                 onChanged: (String text) {
-                  if (text != '') {
-                    BlocProvider.of<AdminControlPanelBloc>(context).add(
+                  if (text.isNotEmpty) {
+                    adminControlPanelBloc.add(
                       GetSearchedUsersEvent(
                         searchQuery: textEditingController.text,
                       ),
                     );
                   } else {
-                    BlocProvider.of<AdminControlPanelBloc>(context).add(
+                    adminControlPanelBloc.add(
                       AdminControlPanelInitEvent(),
                     );
                   }
@@ -61,12 +63,12 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
                 child: LiquidPullToRefresh(
                   showChildOpacityTransition: false,
                   onRefresh: () async {
-                    if (textEditingController.text == '') {
-                      BlocProvider.of<AdminControlPanelBloc>(context).add(
+                    if (textEditingController.text.isEmpty) {
+                      adminControlPanelBloc.add(
                         AdminControlPanelInitEvent(),
                       );
                     } else {
-                      BlocProvider.of<AdminControlPanelBloc>(context).add(
+                      adminControlPanelBloc.add(
                         GetSearchedUsersEvent(
                           searchQuery: textEditingController.text,
                         ),
@@ -76,8 +78,7 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
                   color: theme.colorScheme.primary,
                   child: BlocBuilder<AdminControlPanelBloc,
                       AdminControlPanelState>(
-                    builder:
-                        (BuildContext context, AdminControlPanelState state) {
+                    builder: (BuildContext _, AdminControlPanelState state) {
                       if (!state.isError &&
                           !state.isLoaded &&
                           state.hasInternet) {
@@ -129,7 +130,7 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
                                 height: 10,
                               ),
                               AppButtonWidget(
-                                label: 'Refresh'.trim(),
+                                label: 'Refresh',
                                 onTap: () {
                                   if (!state.hasInternet) {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -150,9 +151,7 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
                                       ),
                                     );
                                   }
-                                  BlocProvider.of<AdminControlPanelBloc>(
-                                          context)
-                                      .add(
+                                  adminControlPanelBloc.add(
                                     AdminControlPanelInitEvent(),
                                   );
                                   textEditingController.clear();

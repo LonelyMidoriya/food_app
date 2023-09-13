@@ -14,6 +14,7 @@ class SettingsViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -57,11 +58,11 @@ class SettingsViewScreen extends StatelessWidget {
                   );
                 } else {
                   return IconButton(
-                    onPressed: () {
-                      appRouter.navigate(
-                        const LoginScreenRoute(),
-                      );
-                    },
+                    onPressed: () => authViewBloc.add(
+                      const NavigateToPageEvent(
+                        route: LoginScreenRoute(),
+                      ),
+                    ),
                     icon: const Icon(
                       Icons.account_box,
                     ),

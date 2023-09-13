@@ -13,10 +13,10 @@ class AuthRepositoryImpl implements AuthRepository {
         _authProvider = authProvider;
 
   @override
-  Future<void> logIn({
-    required Credentials credentials,
-  }) async {
-    await _authProvider.logIn(credentials: credentials);
+  Future<void> logIn(
+    Credentials credentials,
+  ) async {
+    await _authProvider.logIn(credentials);
     _sharedPreferences
       ..setString(
         'uid',
@@ -70,10 +70,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signUpWithEmailAndPassword({
-    required Credentials credentials,
-  }) async {
-    await _authProvider.singUpWithEmailAndPassword(credentials: credentials);
+  Future<void> signUpWithEmailAndPassword(
+    Credentials credentials,
+  ) async {
+    await _authProvider.singUpWithEmailAndPassword(credentials);
     _sharedPreferences
       ..setString(
         'uid',
@@ -109,9 +109,20 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       isLoggedIn = false;
     } else {
-      isLoggedIn = _sharedPreferences.getBool(
-        'isLoggedIn',
-      )!;
+      isLoggedIn = true;
+      _sharedPreferences
+        ..setString(
+          'uid',
+          _authProvider.firebaseAuth.currentUser!.uid,
+        )
+        ..setString(
+          'email',
+          _authProvider.firebaseAuth.currentUser!.email!,
+        )
+        ..setBool(
+          'isLoggedIn',
+          true,
+        );
     }
     return isLoggedIn;
   }

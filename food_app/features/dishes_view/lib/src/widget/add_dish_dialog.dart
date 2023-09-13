@@ -1,9 +1,8 @@
 import 'package:core/core.dart';
-import 'package:core_ui/widgets/custom_text.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../dishes_view.dart';
 
 class AddDishDialog extends StatefulWidget {
   const AddDishDialog({
@@ -35,6 +34,8 @@ class _AddDishDialogState extends State<AddDishDialog> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    final DishesViewBloc dishesViewBloc = BlocProvider.of<DishesViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AlertDialog(
       insetPadding: EdgeInsets.only(
@@ -175,7 +176,7 @@ class _AddDishDialogState extends State<AddDishDialog> {
           child: ElevatedButton(
             onPressed: () {
               if (_formKey.currentState?.validate() == true) {
-                BlocProvider.of<DishesViewBloc>(context).add(
+                dishesViewBloc.add(
                   AddDishEvent(
                     dish: DishModel(
                       name: nameController.text,
@@ -193,7 +194,9 @@ class _AddDishDialogState extends State<AddDishDialog> {
                     ),
                   ),
                 );
-                appRouter.pop();
+                authViewBloc.add(
+                  PopToPreviousPageEvent(),
+                );
               }
             },
             child: const CustomText(
@@ -206,9 +209,9 @@ class _AddDishDialogState extends State<AddDishDialog> {
           width: size.width / 3,
           height: size.height / 15,
           child: ElevatedButton(
-            onPressed: () {
-              appRouter.pop();
-            },
+            onPressed: () => authViewBloc.add(
+              PopToPreviousPageEvent(),
+            ),
             child: const CustomText(
               text: 'Cancel',
               fontWeight: FontWeight.w500,

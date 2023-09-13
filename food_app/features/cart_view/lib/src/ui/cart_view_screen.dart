@@ -1,5 +1,3 @@
-import 'package:cart_view/src/widget/cart_list_view_item.dart';
-import 'package:cart_view/src/widget/order_button.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 
@@ -11,6 +9,7 @@ class CartViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final CartViewBloc cartViewBloc = BlocProvider.of<CartViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -130,9 +129,9 @@ class CartViewScreen extends StatelessWidget {
                         height: 10,
                       ),
                       AppButtonWidget(
-                        label: 'Refresh'.trim(),
+                        label: 'Refresh',
                         onTap: () {
-                          BlocProvider.of<CartViewBloc>(context).add(
+                          cartViewBloc.add(
                             InitCartEvent(),
                           );
                         },

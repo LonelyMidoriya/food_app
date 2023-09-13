@@ -7,6 +7,9 @@ class OrderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CartViewBloc cartViewBloc = BlocProvider.of<CartViewBloc>(context);
+    final OrdersViewBloc ordersViewBloc = BlocProvider.of<OrdersViewBloc>(context);
+
     return BlocBuilder<AuthViewBloc, AuthViewState>(
       builder: (BuildContext context, AuthViewState authState) {
         return BlocBuilder<CartViewBloc, CartViewState>(
@@ -16,14 +19,14 @@ class OrderButton extends StatelessWidget {
             } else {
               return AppButtonWidget(
                 onTap: () async {
-                  BlocProvider.of<OrdersViewBloc>(context).add(
+                  ordersViewBloc.add(
                     AddToOrdersEvent(
                       cartModel: state.cart,
                       cost: state.cost,
                       email: authState.user.email,
                     ),
                   );
-                  BlocProvider.of<CartViewBloc>(context).add(
+                  cartViewBloc.add(
                     ClearCartEvent(),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(

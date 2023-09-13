@@ -3,15 +3,16 @@ import 'package:domain/usecases/usecase.dart';
 import '../model/user_model.dart';
 import '../repository/user_repository.dart';
 
-class GetSearchedUsersUseCase implements FutureUseCase<String, List<UserModel>> {
+class FetchAllUsersUseCase
+    implements FutureUseCase<NoParams, List<UserModel>> {
   final UserRepository _userRepository;
 
-  const GetSearchedUsersUseCase({
+  const FetchAllUsersUseCase({
     required UserRepository userRepository,
   }) : _userRepository = userRepository;
 
   @override
-  Future<List<UserModel>> execute(String input) async {
-    return _userRepository.getSearchedUsers(input);
+  Future<List<UserModel>> execute(NoParams input) async {
+    return _userRepository.fetchUsers();
   }
 }

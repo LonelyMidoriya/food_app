@@ -9,6 +9,6 @@ class AddDishUseCase implements FutureUseCase<DishModel, void> {
 
   @override
   Future<void> execute(DishModel input) async {
-    _dishesRepository.addDish(dish: input);
+    _dishesRepository.addDish(input);
   }
 }

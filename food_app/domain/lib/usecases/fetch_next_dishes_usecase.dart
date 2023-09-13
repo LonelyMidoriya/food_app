@@ -1,14 +1,14 @@
 import 'package:domain/domain.dart';
 
-class GetInitDishesUseCase implements FutureUseCase<NoParams, List<DishModel>> {
+class FetchNextDishesUseCase implements FutureUseCase<NoParams, List<DishModel>> {
   final DishesRepository _dishesRepository;
 
-  const GetInitDishesUseCase({
+  const FetchNextDishesUseCase({
     required DishesRepository dishesRepository,
   }) : _dishesRepository = dishesRepository;
 
   @override
   Future<List<DishModel>> execute(NoParams input) async {
-    return _dishesRepository.getFirstDishes();
+    return _dishesRepository.fetchNextDishes();
   }
 }

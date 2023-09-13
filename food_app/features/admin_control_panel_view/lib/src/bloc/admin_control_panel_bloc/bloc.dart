@@ -8,17 +8,17 @@ part 'state.dart';
 
 class AdminControlPanelBloc
     extends Bloc<AdminControlPanelEvent, AdminControlPanelState> {
-  final GetAllUsersUseCase _getAllUsersUseCase;
-  final GetSearchedUsersUseCase _getSearchedUsersUseCase;
+  final FetchAllUsersUseCase _fetchAllUsersUseCase;
+  final FetchSearchedUsersUseCase _getSearchedUsersUseCase;
   final UpdateUserUseCase _updateUserUseCase;
   final InternetConnection _internetConnection;
 
   AdminControlPanelBloc({
-    required GetAllUsersUseCase getAllUsersUseCase,
-    required GetSearchedUsersUseCase getSearchedUsersUseCase,
+    required FetchAllUsersUseCase fetchAllUsersUseCase,
+    required FetchSearchedUsersUseCase getSearchedUsersUseCase,
     required UpdateUserUseCase updateUserUseCase,
     required InternetConnection internetConnection,
-  })  : _getAllUsersUseCase = getAllUsersUseCase,
+  })  : _fetchAllUsersUseCase = fetchAllUsersUseCase,
         _getSearchedUsersUseCase = getSearchedUsersUseCase,
         _updateUserUseCase = updateUserUseCase,
         _internetConnection = internetConnection,
@@ -57,10 +57,10 @@ class AdminControlPanelBloc
   ) async {
     try {
       final List<UserModel> users =
-          await _getAllUsersUseCase.execute(const NoParams());
+          await _fetchAllUsersUseCase.execute(const NoParams());
 
       users.sort(
-        (a, b) {
+        (UserModel a, UserModel b) {
           if (a.isAdmin == b.isAdmin) {
             return a.email.compareTo(b.email);
           } else {
@@ -115,7 +115,7 @@ class AdminControlPanelBloc
       );
 
       newUsers.sort(
-        (a, b) {
+        (UserModel a, UserModel b) {
           if (a.isAdmin == b.isAdmin) {
             return a.email.compareTo(b.email);
           } else {
@@ -170,7 +170,7 @@ class AdminControlPanelBloc
       );
 
       newUsers.sort(
-        (a, b) {
+        (UserModel a, UserModel b) {
           if (a.isAdmin == b.isAdmin) {
             return a.email.compareTo(b.email);
           } else {
@@ -208,7 +208,7 @@ class AdminControlPanelBloc
           await _getSearchedUsersUseCase.execute(event.searchQuery);
 
       users.sort(
-        (a, b) {
+        (UserModel a, UserModel b) {
           if (a.isAdmin == b.isAdmin) {
             return a.email.compareTo(b.email);
           } else {

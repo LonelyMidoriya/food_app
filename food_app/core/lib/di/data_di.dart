@@ -8,7 +8,6 @@ final DataDI dataDI = DataDI();
 class DataDI {
   Future<void> initDependencies() async {
     _initFirestore();
-    _initMappers();
     _initRepositories();
     _initUsecases();
     _initAdapter();
@@ -43,30 +42,6 @@ class DataDI {
   void _initInternetConnection() {
     appLocator.registerLazySingleton<InternetConnection>(
       () => InternetConnection(),
-    );
-  }
-
-  void _initMappers() {
-    appLocator.registerLazySingleton<DishMapper>(
-      () => DishMapper(),
-    );
-    appLocator.registerLazySingleton<CartMapper>(
-      () => CartMapper(
-        cartItemMapper: appLocator.get<CartItemMapper>(),
-      ),
-    );
-    appLocator.registerLazySingleton<CartItemMapper>(
-      () => CartItemMapper(
-        dishMapper: appLocator.get<DishMapper>(),
-      ),
-    );
-    appLocator.registerLazySingleton<UserMapper>(
-      () => UserMapper(),
-    );
-    appLocator.registerLazySingleton<OrderHistoryMapper>(
-      () => OrderHistoryMapper(
-        cartMapper: appLocator.get<CartMapper>(),
-      ),
     );
   }
 
@@ -110,8 +85,8 @@ class DataDI {
         dishesRepository: appLocator.get<DishesRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetDishesByTypeUseCase>(
-      () => GetDishesByTypeUseCase(
+    appLocator.registerLazySingleton<FetchDishesByTypeUseCase>(
+      () => FetchDishesByTypeUseCase(
         dishesRepository: appLocator.get<DishesRepository>(),
       ),
     );
@@ -120,23 +95,23 @@ class DataDI {
         orderHistoryRepository: appLocator.get<OrderHistoryRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetSearchedUsersOrdersUseCase>(
-      () => GetSearchedUsersOrdersUseCase(
+    appLocator.registerLazySingleton<FetchSearchedUsersOrdersUseCase>(
+      () => FetchSearchedUsersOrdersUseCase(
         orderHistoryRepository: appLocator.get<OrderHistoryRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetInitDishesUseCase>(
-      () => GetInitDishesUseCase(
+    appLocator.registerLazySingleton<FetchInitDishesUseCase>(
+      () => FetchInitDishesUseCase(
         dishesRepository: appLocator.get<DishesRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetNextDishesUseCase>(
-      () => GetNextDishesUseCase(
+    appLocator.registerLazySingleton<FetchNextDishesUseCase>(
+      () => FetchNextDishesUseCase(
         dishesRepository: appLocator.get<DishesRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetCartUseCase>(
-      () => GetCartUseCase(
+    appLocator.registerLazySingleton<FetchCartUseCase>(
+      () => FetchCartUseCase(
         cartRepository: appLocator.get<CartRepository>(),
       ),
     );
@@ -145,8 +120,8 @@ class DataDI {
         cartRepository: appLocator.get<CartRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetTextSizeUseCase>(
-      () => GetTextSizeUseCase(
+    appLocator.registerLazySingleton<FetchTextSizeUseCase>(
+      () => FetchTextSizeUseCase(
         settingsRepository: appLocator.get<SettingsRepository>(),
       ),
     );
@@ -180,8 +155,8 @@ class DataDI {
         authRepository: appLocator.get<AuthRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetOrdersUseCase>(
-      () => GetOrdersUseCase(
+    appLocator.registerLazySingleton<FetchOrdersUseCase>(
+      () => FetchOrdersUseCase(
         ordersRepository: appLocator.get<OrderHistoryRepository>(),
       ),
     );
@@ -195,18 +170,18 @@ class DataDI {
         userRepository: appLocator.get<UserRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetUserUseCase>(
-      () => GetUserUseCase(
+    appLocator.registerLazySingleton<FetchUserUseCase>(
+      () => FetchUserUseCase(
         userRepository: appLocator.get<UserRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetAllUsersUseCase>(
-      () => GetAllUsersUseCase(
+    appLocator.registerLazySingleton<FetchAllUsersUseCase>(
+      () => FetchAllUsersUseCase(
         userRepository: appLocator.get<UserRepository>(),
       ),
     );
-    appLocator.registerLazySingleton<GetSearchedUsersUseCase>(
-      () => GetSearchedUsersUseCase(
+    appLocator.registerLazySingleton<FetchSearchedUsersUseCase>(
+      () => FetchSearchedUsersUseCase(
         userRepository: appLocator.get<UserRepository>(),
       ),
     );
@@ -221,7 +196,6 @@ class DataDI {
     appLocator.registerLazySingleton<DishesRepository>(
       () => DishesRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
-        dishMapper: appLocator.get<DishMapper>(),
         hiveProvider: appLocator.get<HiveProvider>(),
         internetConnection: appLocator.get<InternetConnection>(),
       ),
@@ -229,7 +203,6 @@ class DataDI {
     appLocator.registerLazySingleton<CartRepository>(
       () => CartRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
-        cartMapper: appLocator.get<CartMapper>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );
@@ -248,13 +221,11 @@ class DataDI {
       () => UserRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),
-        userMapper: appLocator.get<UserMapper>(),
       ),
     );
     appLocator.registerLazySingleton<OrderHistoryRepository>(
       () => OrderHistoryRepositoryImpl(
         firestoreProvider: appLocator.get<FirestoreProvider>(),
-        ordersMapper: appLocator.get<OrderHistoryMapper>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );

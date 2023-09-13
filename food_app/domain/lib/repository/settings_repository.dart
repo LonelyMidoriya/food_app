@@ -1,5 +1,5 @@
 abstract class SettingsRepository {
-  Future<double?> getTextSize();
+  Future<double?> fetchTextSize();
 
-  Future<void> saveTextSize({required double textSize});
+  Future<void> saveTextSize(double textSize);
 }

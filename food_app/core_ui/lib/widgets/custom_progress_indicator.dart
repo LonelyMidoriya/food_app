@@ -7,14 +7,13 @@ class CustomProgressIndicator extends StatelessWidget {
   final int _statValue;
 
   const CustomProgressIndicator({
-    Key? key,
     required double end,
     required String stat,
     required int statValue,
+    super.key,
   })  : _statValue = statValue,
         _stat = stat,
-        _end = end,
-        super(key: key);
+        _end = end;
 
   @override
   Widget build(BuildContext context) {

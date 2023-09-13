@@ -12,6 +12,6 @@ class UpdateDishUseCase implements FutureUseCase<List<DishModel>, void> {
 
   @override
   Future<void> execute(List<DishModel> input) async {
-    _dishesRepository.updateDish(dishes: input);
+    _dishesRepository.updateDish(input);
   }
 }

@@ -2,8 +2,8 @@ import 'package:domain/model/user_model.dart';
 
 import '../entity/user/user_entity.dart';
 
-class UserMapper {
-  UserEntity toEntity(UserModel model) {
+abstract class UserMapper {
+  static UserEntity toEntity(UserModel model) {
     return UserEntity(
       email: model.email,
       uid: model.uid,
@@ -12,7 +12,7 @@ class UserMapper {
     );
   }
 
-  UserModel toModel(UserEntity entity) {
+  static UserModel toModel(UserEntity entity) {
     return UserModel(
       email: entity.email,
       uid: entity.uid,

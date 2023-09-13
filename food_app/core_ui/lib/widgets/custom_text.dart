@@ -9,11 +9,11 @@ class CustomText extends StatelessWidget {
   final TextAlign _textAlign;
 
   const CustomText({
-    super.key,
     required String text,
     required FontWeight fontWeight,
     Color textColor = Colors.transparent,
     TextAlign textAlign = TextAlign.center,
+    super.key,
   })  : _textColor = textColor,
         _fontWeight = fontWeight,
         _textAlign = textAlign,

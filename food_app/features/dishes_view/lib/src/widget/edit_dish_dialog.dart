@@ -46,7 +46,9 @@ class _EditDishDialogState extends State<EditDishDialog> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
     return AlertDialog(
       insetPadding: EdgeInsets.only(
         top: size.height / 20,
@@ -92,7 +94,6 @@ class _EditDishDialogState extends State<EditDishDialog> {
                 const SizedBox(
                   height: 15,
                 ),
-
                 TextFormField(
                   validator: textValidator,
                   maxLines: 3,
@@ -186,7 +187,7 @@ class _EditDishDialogState extends State<EditDishDialog> {
           child: ElevatedButton(
             onPressed: () {
               if (_formKey.currentState?.validate() == true) {
-                BlocProvider.of<DishesViewBloc>(context).add(
+                dishesViewBloc.add(
                   UpdateDishEvent(
                     newDish: DishModel(
                       name: nameController.text,
@@ -205,13 +206,18 @@ class _EditDishDialogState extends State<EditDishDialog> {
                     dish: widget._dish,
                   ),
                 );
-                if (BlocProvider.of<AuthViewBloc>(context)
-                    .state
-                    .user
-                    .isSuperAdmin) {
-                  appRouter.popUntilRouteWithName(SuperAdminHomePageRoute.name);
+                if (authViewBloc.state.user.isSuperAdmin) {
+                  authViewBloc.add(
+                    const PopUntilPageEvent(
+                      route: SuperAdminHomePageRoute.name,
+                    ),
+                  );
                 } else {
-                  appRouter.popUntilRouteWithName(AdminHomePageRoute.name);
+                  authViewBloc.add(
+                    const PopUntilPageEvent(
+                      route: AdminHomePageRoute.name,
+                    ),
+                  );
                 }
               }
             },
@@ -225,9 +231,9 @@ class _EditDishDialogState extends State<EditDishDialog> {
           width: size.width / 3,
           height: size.height / 15,
           child: ElevatedButton(
-            onPressed: () {
-              appRouter.pop();
-            },
+            onPressed: () => authViewBloc.add(
+              PopToPreviousPageEvent(),
+            ),
             child: const CustomText(
               text: 'Cancel',
               fontWeight: FontWeight.w500,

@@ -21,18 +21,18 @@ void main() {
           );
 
           settingsBloc = SettingsViewBloc(
-            getTextSizeUseCase: GetTextSizeUseCaseMock(),
+            fetchTextSizeUseCase: GetTextSizeUseCaseMock(),
             saveTextSizeUseCase: SaveTextSizeUseCaseMock(),
           );
 
           authBloc = AuthViewBloc(
-            signUpUsecase: SignUpWithEmailAndPasswordUsecaseMock(),
+            signUpWithEmailAndPasswordUsecase: SignUpWithEmailAndPasswordUsecaseMock(),
             logInUsecase: LogInUsecaseMock(),
             signOutUsecase: SignOutUsecaseMock(),
             signUpWithGoogleUsecase: SignUpWithGoogleUsecaseMock(),
             checkIfLoggedInUsecase: CheckIfLoggedInUsecaseMock(),
             addUserUsecase: AddUserUseCaseMock(),
-            getUserUseCase: GetUserUseCaseMock(),
+            fetchUserUseCase: GetUserUseCaseMock(),
           );
         },
       );
@@ -42,9 +42,9 @@ void main() {
         (WidgetTester tester) async {
           await tester.pumpWidget(
             BlocProvider<AuthViewBloc>(
-              create: (context) => authBloc,
+              create: (BuildContext context) => authBloc,
               child: BlocProvider<SettingsViewBloc>(
-                create: (context) => settingsBloc,
+                create: (BuildContext context) => settingsBloc,
                 child: AdaptiveTheme(
                   light: lightTheme,
                   initial: AdaptiveThemeMode.system,
@@ -88,9 +88,9 @@ void main() {
             (WidgetTester tester) async {
           await tester.pumpWidget(
             BlocProvider<AuthViewBloc>(
-              create: (context) => authBloc,
+              create: (BuildContext context) => authBloc,
               child: BlocProvider<SettingsViewBloc>(
-                create: (context) => settingsBloc,
+                create: (BuildContext context) => settingsBloc,
                 child: AdaptiveTheme(
                   light: lightTheme,
                   initial: AdaptiveThemeMode.system,

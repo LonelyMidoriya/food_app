@@ -9,6 +9,9 @@ class TypeListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+
     return SizedBox(
       height: 55,
       child: BlocBuilder<DishesViewBloc, DishesViewState>(
@@ -19,7 +22,7 @@ class TypeListView extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
-                BlocProvider.of<DishesViewBloc>(context).add(
+                dishesViewBloc.add(
                   LoadDishesByTypeEvent(
                     selectedType: index,
                   ),

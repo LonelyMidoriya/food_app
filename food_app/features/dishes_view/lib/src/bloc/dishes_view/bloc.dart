@@ -2,30 +2,31 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:navigation/navigation.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
-  final GetInitDishesUseCase _getInitDishesUseCase;
-  final GetNextDishesUseCase _getNextDishesUseCase;
-  final GetDishesByTypeUseCase _getDishesByTypeUseCase;
+  final FetchInitDishesUseCase _fetchInitDishesUseCase;
+  final FetchNextDishesUseCase _fetchNextDishesUseCase;
+  final FetchDishesByTypeUseCase _fetchDishesByTypeUseCase;
   final DeleteDishUseCase _deleteDishUseCase;
   final AddDishUseCase _addDishUseCase;
   final InternetConnection _internetConnection;
   final UpdateDishUseCase _updateDishUseCase;
 
   DishesViewBloc(
-      {required GetInitDishesUseCase getInitDishesUseCase,
-      required GetNextDishesUseCase getNextDishesUseCase,
-      required GetDishesByTypeUseCase getDishesByTypeUseCase,
+      {required FetchInitDishesUseCase fetchInitDishesUseCase,
+      required FetchNextDishesUseCase fetchNextDishesUseCase,
+      required FetchDishesByTypeUseCase fetchDishesByTypeUseCase,
       required InternetConnection internetConnection,
       required DeleteDishUseCase deleteDishUseCase,
       required AddDishUseCase addDishUseCase,
       required UpdateDishUseCase updateDishUseCase})
-      : _getInitDishesUseCase = getInitDishesUseCase,
-        _getNextDishesUseCase = getNextDishesUseCase,
-        _getDishesByTypeUseCase = getDishesByTypeUseCase,
+      : _fetchInitDishesUseCase = fetchInitDishesUseCase,
+        _fetchNextDishesUseCase = fetchNextDishesUseCase,
+        _fetchDishesByTypeUseCase = fetchDishesByTypeUseCase,
         _internetConnection = internetConnection,
         _deleteDishUseCase = deleteDishUseCase,
         _addDishUseCase = addDishUseCase,
@@ -57,7 +58,7 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     Emitter<DishesViewState> emit,
   ) async {
     try {
-      await _updateDishUseCase.execute([event.dish,event.newDish]);
+      await _updateDishUseCase.execute([event.dish, event.newDish]);
 
       add(
         LoadDishesByTypeEvent(selectedType: state.selectedType),
@@ -131,7 +132,7 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
 
       if (type != 'all') {
         final List<DishModel> loadedDishes =
-            await _getDishesByTypeUseCase.execute(type);
+            await _fetchDishesByTypeUseCase.execute(type);
         emit(
           state.copyWith(
             dishes: loadedDishes,
@@ -173,7 +174,8 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     );
 
     try {
-      final List<DishModel> loadedDishes = await _getNextDishesUseCase.execute(
+      final List<DishModel> loadedDishes =
+          await _fetchNextDishesUseCase.execute(
         const NoParams(),
       );
       final List<DishModel> allDishes = [...state.dishes, ...loadedDishes];
@@ -213,7 +215,7 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
     try {
       if (state.selectedType == 0) {
         final List<DishModel> loadedDishes =
-            await _getInitDishesUseCase.execute(const NoParams());
+            await _fetchInitDishesUseCase.execute(const NoParams());
         bool isLastPage = false;
 
         if (loadedDishes.length < pageCount) {

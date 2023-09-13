@@ -1,5 +1,5 @@
 import 'package:core/core.dart';
-import 'package:domain/usecases/get_text_size_usecase.dart';
+import 'package:domain/usecases/fetch_text_size_usecase.dart';
 import 'package:domain/usecases/save_text_size_usecase.dart';
 import 'package:domain/usecases/usecase.dart';
 
@@ -7,13 +7,13 @@ part 'event.dart';
 part 'state.dart';
 
 class SettingsViewBloc extends Bloc<SettingsViewEvent, SettingsViewState> {
-  final GetTextSizeUseCase _getTextSizeUseCase;
+  final FetchTextSizeUseCase _fetchTextSizeUseCase;
   final SaveTextSizeUseCase _saveTextSizeUseCase;
 
   SettingsViewBloc({
-    required GetTextSizeUseCase getTextSizeUseCase,
+    required FetchTextSizeUseCase fetchTextSizeUseCase,
     required SaveTextSizeUseCase saveTextSizeUseCase,
-  })  : _getTextSizeUseCase = getTextSizeUseCase,
+  })  : _fetchTextSizeUseCase = fetchTextSizeUseCase,
         _saveTextSizeUseCase = saveTextSizeUseCase,
         super(
           const SettingsViewState.empty(),
@@ -24,7 +24,7 @@ class SettingsViewBloc extends Bloc<SettingsViewEvent, SettingsViewState> {
 
   Future<void> _init(GetTextSizeEvent event, Emitter<SettingsViewState> emit) async {
     final double? textSize =
-        await _getTextSizeUseCase.execute(const NoParams());
+        await _fetchTextSizeUseCase.execute(const NoParams());
     emit(
       state.copyWith(fontSize: textSize),
     );

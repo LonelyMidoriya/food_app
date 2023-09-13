@@ -9,6 +9,6 @@ class DeleteDishUseCase implements FutureUseCase<DishModel, void> {
 
   @override
   Future<void> execute(DishModel input) async {
-    _dishesRepository.deleteDish(dish: input);
+    _dishesRepository.deleteDish(input);
   }
 }

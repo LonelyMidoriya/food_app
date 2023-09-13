@@ -1,11 +1,11 @@
 import '../model/order_history_model.dart';
 
 abstract class OrderHistoryRepository {
-  Future<OrderHistoryModel> getOrders();
+  Future<OrderHistoryModel> fetchOrders();
 
-  Future<List<OrderHistoryModel>> getAllUsersOrders();
+  Future<List<OrderHistoryModel>> fetchAllUsersOrders();
 
-  Future<void> updateOrders({required OrderHistoryModel orders});
+  Future<void> updateOrders(OrderHistoryModel orders);
 
-  Future<List<OrderHistoryModel>> getSearchedUsersOrders(String searchQuery);
+  Future<List<OrderHistoryModel>> fetchSearchedUsersOrders(String searchQuery);
 }

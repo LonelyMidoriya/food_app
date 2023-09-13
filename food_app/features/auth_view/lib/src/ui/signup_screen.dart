@@ -22,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -89,11 +90,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  appRouter.navigate(
-                                    const LoginScreenRoute(),
-                                  );
-                                },
+                                onTap: () => authViewBloc.add(
+                                  const NavigateToPageEvent(
+                                    route: LoginScreenRoute(),
+                                  ),
+                                ),
                                 child: const Text(
                                   "Login Now",
                                   style: TextStyle(

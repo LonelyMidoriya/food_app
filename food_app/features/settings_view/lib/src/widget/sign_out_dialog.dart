@@ -9,6 +9,7 @@ class SignOutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -43,11 +44,13 @@ class SignOutDialog extends StatelessWidget {
           height: size.height / 15,
           child: ElevatedButton(
             onPressed: () {
-              BlocProvider.of<AuthViewBloc>(context).add(
+              authViewBloc.add(
                 UserSignoutEvent(),
               );
-              appRouter.popUntilRouteWithName(
-                StartingPageRoute.name,
+              authViewBloc.add(
+                const PopUntilPageEvent(
+                  route: StartingPageRoute.name,
+                ),
               );
             },
             child: const CustomText(
@@ -60,9 +63,9 @@ class SignOutDialog extends StatelessWidget {
           width: size.width / 3,
           height: size.height / 15,
           child: ElevatedButton(
-            onPressed: () {
-              appRouter.pop();
-            },
+            onPressed: () => authViewBloc.add(
+              PopToPreviousPageEvent(),
+            ),
             child: const CustomText(
               text: 'No',
               fontWeight: FontWeight.w500,

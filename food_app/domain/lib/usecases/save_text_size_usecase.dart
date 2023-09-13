@@ -9,8 +9,6 @@ class SaveTextSizeUseCase implements FutureUseCase<double, void> {
 
   @override
   Future<void> execute(double input) async {
-    _settingsRepository.saveTextSize(
-      textSize: input,
-    );
+    _settingsRepository.saveTextSize(input);
   }
 }

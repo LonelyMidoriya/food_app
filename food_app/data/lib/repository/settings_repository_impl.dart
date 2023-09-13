@@ -9,13 +9,13 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }) : _sharedPreferences = sharedPreferences;
 
   @override
-  Future<double?> getTextSize() async {
+  Future<double?> fetchTextSize() async {
     final double? textSize = _sharedPreferences.getDouble('textSize');
     return textSize;
   }
 
   @override
-  Future<void> saveTextSize({required double textSize}) async {
+  Future<void> saveTextSize(double textSize) async {
     await _sharedPreferences.setDouble('textSize', textSize);
   }
 }

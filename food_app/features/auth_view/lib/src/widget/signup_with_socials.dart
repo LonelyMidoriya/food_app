@@ -10,6 +10,7 @@ class SignUpWithSocials extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return Column(
       children: <Widget>[
@@ -25,7 +26,7 @@ class SignUpWithSocials extends StatelessWidget {
         Center(
           child: MaterialButton(
             onPressed: () {
-              BlocProvider.of<AuthViewBloc>(context).add(
+              authViewBloc.add(
                 UserSignupWithGoogleEvent(),
               );
             },

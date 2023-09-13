@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:mocktail/mocktail.dart';
 
-class GetTextSizeUseCaseMock extends Mock implements GetTextSizeUseCase{
+class GetTextSizeUseCaseMock extends Mock implements FetchTextSizeUseCase{
   @override
   Future<double?> execute(NoParams input) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -30,4 +30,4 @@ class CheckIfLoggedInUsecaseMock extends Mock implements CheckIfLoggedInUsecase{
 
 class AddUserUseCaseMock extends Mock implements AddUserUseCase{}
 
-class GetUserUseCaseMock extends Mock implements GetUserUseCase{}
+class GetUserUseCaseMock extends Mock implements FetchUserUseCase{}

@@ -10,6 +10,6 @@ class GetAllUsersOrdersUseCase
 
   @override
   Future<List<OrderHistoryModel>> execute(NoParams input) async {
-    return _orderHistoryRepository.getAllUsersOrders();
+    return _orderHistoryRepository.fetchAllUsersOrders();
   }
 }

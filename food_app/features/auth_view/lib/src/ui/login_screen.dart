@@ -21,6 +21,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AdminControlPanelBloc adminControlPanelBloc =
+        BlocProvider.of<AdminControlPanelBloc>(context);
+    final OrdersViewBloc ordersViewBloc =
+        BlocProvider.of<OrdersViewBloc>(context);
+    final CartViewBloc cartViewBloc = BlocProvider.of<CartViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -28,30 +34,36 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (BuildContext context, AuthViewState state) {
           if (state.isLoggedIn) {
             if (state.user.isAdmin) {
-              BlocProvider.of<OrdersViewBloc>(context).add(
+              ordersViewBloc.add(
                 InitAdminOrdersEvent(),
               );
               if (state.user.isSuperAdmin) {
-                BlocProvider.of<AdminControlPanelBloc>(context).add(
+                adminControlPanelBloc.add(
                   AdminControlPanelInitEvent(),
                 );
-                appRouter.navigate(
-                  const SuperAdminHomePageRoute(),
+                authViewBloc.add(
+                  const NavigateToPageEvent(
+                    route: SuperAdminHomePageRoute(),
+                  ),
                 );
               } else {
-                appRouter.navigate(
-                  const AdminHomePageRoute(),
+                authViewBloc.add(
+                  const NavigateToPageEvent(
+                    route: AdminHomePageRoute(),
+                  ),
                 );
               }
             } else {
-              BlocProvider.of<OrdersViewBloc>(context).add(
+              ordersViewBloc.add(
                 InitOrdersEvent(),
               );
-              BlocProvider.of<CartViewBloc>(context).add(
+              cartViewBloc.add(
                 InitCartEvent(),
               );
-              appRouter.navigate(
-                const HomePageRoute(),
+              authViewBloc.add(
+                const NavigateToPageEvent(
+                  route: HomePageRoute(),
+                ),
               );
             }
           }
@@ -75,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
         },
-        builder: (BuildContext context, AuthViewState state) {
+        builder: (BuildContext _, AuthViewState state) {
           return AnimatedTheme(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
@@ -137,11 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  appRouter.navigate(
-                                    const SignupScreenRoute(),
-                                  );
-                                },
+                                onTap: () => authViewBloc.add(
+                                  const NavigateToPageEvent(
+                                    route: SignupScreenRoute(),
+                                  ),
+                                ),
                                 child: const Text(
                                   "Sign up Now",
                                   style: TextStyle(

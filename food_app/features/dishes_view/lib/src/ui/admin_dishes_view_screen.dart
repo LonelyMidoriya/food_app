@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/widgets/app_button_widget.dart';
 import 'package:core_ui/widgets/app_loader_center_widget.dart';
 import 'package:core_ui/widgets/custom_text.dart';
@@ -28,13 +29,15 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
   }
 
   void _onScroll() {
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+
     if (!_scrollController.hasClients) return;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    if (currentScroll == maxScroll &&
-        !BlocProvider.of<DishesViewBloc>(context).state.isLastPage) {
-      if (BlocProvider.of<DishesViewBloc>(context).state.hasInternet) {
-        BlocProvider.of<DishesViewBloc>(context).add(
+    final double maxScroll = _scrollController.position.maxScrollExtent;
+    final double currentScroll = _scrollController.position.pixels;
+    if (currentScroll == maxScroll && !dishesViewBloc.state.isLastPage) {
+      if (dishesViewBloc.state.hasInternet) {
+        dishesViewBloc.add(
           LoadDishesEvent(),
         );
       }
@@ -50,6 +53,9 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -64,7 +70,7 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
                 duration: const Duration(milliseconds: 500),
                 context: context,
                 builder: (BuildContext context) {
-                  return AddDishDialog();
+                  return const AddDishDialog();
                 },
               );
             },
@@ -101,9 +107,11 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
                           ),
                           itemCount: state.dishes.length,
                           itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => appRouter.navigate(
-                              AdminDishDescriptionPageRoute(
-                                dish: state.dishes[index],
+                            onTap: () => authViewBloc.add(
+                              NavigateToPageEvent(
+                                route: AdminDishDescriptionPageRoute(
+                                  dish: state.dishes[index],
+                                ),
                               ),
                             ),
                             child: AdminDishGridItem(
@@ -127,7 +135,7 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
                               height: 10,
                             ),
                             AppButtonWidget(
-                              label: 'Refresh'.trim(),
+                              label: 'Refresh',
                               onTap: () {
                                 if (!state.hasInternet) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -148,7 +156,7 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
                                     ),
                                   );
                                 }
-                                BlocProvider.of<DishesViewBloc>(context).add(
+                                dishesViewBloc.add(
                                   InitDishesEvent(),
                                 );
                               },

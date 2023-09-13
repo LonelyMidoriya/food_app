@@ -1,13 +1,13 @@
 import '../model/user_model.dart';
 
 abstract class UserRepository {
-  Future<List<UserModel>> getUsers();
+  Future<List<UserModel>> fetchUsers();
 
-  Future<UserModel> getUser();
+  Future<UserModel> fetchUser();
 
   Future<void> addUser();
 
   Future<void> updateUser(UserModel user);
 
-  Future<List<UserModel>> getSearchedUsers(String searchQuery);
+  Future<List<UserModel>> fetchSearchedUsers(String searchQuery);
 }

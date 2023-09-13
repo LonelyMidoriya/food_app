@@ -13,6 +13,7 @@ class OrdersViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final OrdersViewBloc ordersViewBloc = BlocProvider.of<OrdersViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -92,7 +93,7 @@ class OrdersViewScreen extends StatelessWidget {
                               ),
                             );
                           }
-                          BlocProvider.of<OrdersViewBloc>(context).add(
+                          ordersViewBloc.add(
                             InitOrdersEvent(),
                           );
                         },

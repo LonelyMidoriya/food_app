@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:core_ui/widgets/custom_text.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
@@ -16,6 +15,9 @@ class DeleteDishDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    final DishesViewBloc dishesViewBloc =
+        BlocProvider.of<DishesViewBloc>(context);
+    final AuthViewBloc authViewBloc = BlocProvider.of<AuthViewBloc>(context);
 
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -50,18 +52,23 @@ class DeleteDishDialog extends StatelessWidget {
           height: size.height / 15,
           child: ElevatedButton(
             onPressed: () {
-              BlocProvider.of<DishesViewBloc>(context).add(
+              dishesViewBloc.add(
                 DeleteDishEvent(
                   dish: _dish,
                 ),
               );
-              if (BlocProvider.of<AuthViewBloc>(context)
-                  .state
-                  .user
-                  .isSuperAdmin) {
-                appRouter.popUntilRouteWithName(SuperAdminHomePageRoute.name);
+              if (authViewBloc.state.user.isSuperAdmin) {
+                authViewBloc.add(
+                  const PopUntilPageEvent(
+                    route: SuperAdminHomePageRoute.name,
+                  ),
+                );
               } else {
-                appRouter.popUntilRouteWithName(AdminHomePageRoute.name);
+                authViewBloc.add(
+                  const PopUntilPageEvent(
+                    route: AdminHomePageRoute.name,
+                  ),
+                );
               }
             },
             child: const CustomText(
@@ -74,9 +81,9 @@ class DeleteDishDialog extends StatelessWidget {
           width: size.width / 3,
           height: size.height / 15,
           child: ElevatedButton(
-            onPressed: () {
-              appRouter.pop();
-            },
+            onPressed: () => authViewBloc.add(
+              PopToPreviousPageEvent(),
+            ),
             child: const CustomText(
               text: 'No',
               fontWeight: FontWeight.w500,

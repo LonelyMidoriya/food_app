@@ -8,15 +8,16 @@ class UserItem extends StatelessWidget {
   final TextEditingController textEditingController;
 
   const UserItem({
-    Key? key,
     required UserModel user,
     required this.textEditingController,
-  })  : _user = user,
-        super(key: key);
+    super.key,
+  }) : _user = user;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final AdminControlPanelBloc adminControlPanelBloc =
+        BlocProvider.of<AdminControlPanelBloc>(context);
 
     return ListTile(
       shape: RoundedRectangleBorder(
@@ -38,7 +39,7 @@ class UserItem extends StatelessWidget {
               ? const SizedBox()
               : IconButton(
                   onPressed: () {
-                    BlocProvider.of<AdminControlPanelBloc>(context).add(
+                    adminControlPanelBloc.add(
                       TakeAdminRightsEvent(user: _user),
                     );
                   },
@@ -46,7 +47,7 @@ class UserItem extends StatelessWidget {
                 )
           : IconButton(
               onPressed: () {
-                BlocProvider.of<AdminControlPanelBloc>(context).add(
+                adminControlPanelBloc.add(
                   GiveAdminRightsEvent(user: _user),
                 );
               },

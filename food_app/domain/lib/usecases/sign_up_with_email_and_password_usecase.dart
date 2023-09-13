@@ -11,8 +11,6 @@ class SignUpWithEmailAndPasswordUsecase
 
   @override
   Future<void> execute(Credentials input) async {
-    return _authRepository.signUpWithEmailAndPassword(
-      credentials: input,
-    );
+    return _authRepository.signUpWithEmailAndPassword(input);
   }
 }

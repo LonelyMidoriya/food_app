@@ -7,15 +7,15 @@ part 'event.dart';
 part 'state.dart';
 
 class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
-  final GetCartUseCase _getCartUseCase;
+  final FetchCartUseCase _fetchCartUseCase;
   final UpdateCartUseCase _updateCartUseCase;
   final InternetConnection _internetConnection;
 
   CartViewBloc({
-    required GetCartUseCase getCartUseCase,
+    required FetchCartUseCase fetchCartUseCase,
     required UpdateCartUseCase updateCartUseCase,
     required InternetConnection internetConnection,
-  })  : _getCartUseCase = getCartUseCase,
+  })  : _fetchCartUseCase = fetchCartUseCase,
         _updateCartUseCase = updateCartUseCase,
         _internetConnection = internetConnection,
         super(
@@ -89,7 +89,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
     if (state.hasInternet) {
       try {
         final CartModel cartModel =
-            await _getCartUseCase.execute(const NoParams());
+            await _fetchCartUseCase.execute(const NoParams());
         double cost = 0;
         if (cartModel.cartItems.isNotEmpty) {
           for (CartItemModel cartItem in cartModel.cartItems) {

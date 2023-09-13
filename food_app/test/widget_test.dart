@@ -14,7 +14,7 @@ Future<void> main() async {
         {"textSize": 18},
       );
       settingsBloc = SettingsViewBloc(
-        getTextSizeUseCase: GetTextSizeUseCaseMock(),
+        fetchTextSizeUseCase: GetTextSizeUseCaseMock(),
         saveTextSizeUseCase: SaveTextSizeUseCaseMock(),
       );
     },

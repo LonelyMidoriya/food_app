@@ -7,19 +7,19 @@ part 'event.dart';
 part 'state.dart';
 
 class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
-  final GetOrdersUseCase _getOrdersUseCase;
+  final FetchOrdersUseCase _fetchOrdersUseCase;
   final UpdateOrdersUseCase _updateOrdersUseCase;
   final InternetConnection _internetConnection;
   final GetAllUsersOrdersUseCase _getAllUsersOrdersUseCase;
-  final GetSearchedUsersOrdersUseCase _getSearchedUsersOrdersUseCase;
+  final FetchSearchedUsersOrdersUseCase _getSearchedUsersOrdersUseCase;
 
   OrdersViewBloc({
-    required GetOrdersUseCase getOrdersUseCase,
+    required FetchOrdersUseCase fetchOrdersUseCase,
     required UpdateOrdersUseCase updateOrdersUseCase,
     required InternetConnection internetConnection,
     required GetAllUsersOrdersUseCase getAllUsersOrdersUseCase,
-    required GetSearchedUsersOrdersUseCase getSearchedUsersOrdersUseCase,
-  })  : _getOrdersUseCase = getOrdersUseCase,
+    required FetchSearchedUsersOrdersUseCase getSearchedUsersOrdersUseCase,
+  })  : _fetchOrdersUseCase = fetchOrdersUseCase,
         _updateOrdersUseCase = updateOrdersUseCase,
         _internetConnection = internetConnection,
         _getAllUsersOrdersUseCase = getAllUsersOrdersUseCase,
@@ -145,7 +145,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
     if (state.hasInternet) {
       try {
         final OrderHistoryModel ordersModel =
-            await _getOrdersUseCase.execute(const NoParams());
+            await _fetchOrdersUseCase.execute(const NoParams());
 
         emit(state.copyWith(
           isLoaded: true,

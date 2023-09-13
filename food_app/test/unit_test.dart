@@ -9,7 +9,7 @@ void main() {
     () {
       test(
         'Empty DishModel should be a DishModel subclass',
-            () {
+        () {
           expect(DishModel.empty(), isA<DishModel>());
         },
       );
@@ -72,26 +72,24 @@ void main() {
       test(
         'DishMapper should transform DishEntity to DishModel',
         () {
-          DishMapper mapper = DishMapper();
-          expect(mapper.toModel(entity).type, model.type);
-          expect(mapper.toModel(entity).name, model.name);
-          expect(mapper.toModel(entity).stats, model.stats);
-          expect(mapper.toModel(entity).description, model.description);
-          expect(mapper.toModel(entity).imageUrl, model.imageUrl);
-          expect(mapper.toModel(entity).cost, model.cost);
+          expect(DishMapper.toModel(entity).type, model.type);
+          expect(DishMapper.toModel(entity).name, model.name);
+          expect(DishMapper.toModel(entity).stats, model.stats);
+          expect(DishMapper.toModel(entity).description, model.description);
+          expect(DishMapper.toModel(entity).imageUrl, model.imageUrl);
+          expect(DishMapper.toModel(entity).cost, model.cost);
         },
       );
 
       test(
         'DishMapper should transform DishModel to DishEntity',
         () {
-          DishMapper mapper = DishMapper();
-          expect(mapper.toEntity(model).type, entity.type);
-          expect(mapper.toEntity(model).name, entity.name);
-          expect(mapper.toEntity(model).stats, entity.stats);
-          expect(mapper.toEntity(model).description, entity.description);
-          expect(mapper.toEntity(model).imageUrl, entity.imageUrl);
-          expect(mapper.toEntity(model).cost, entity.cost);
+          expect(DishMapper.toEntity(model).type, entity.type);
+          expect(DishMapper.toEntity(model).name, entity.name);
+          expect(DishMapper.toEntity(model).stats, entity.stats);
+          expect(DishMapper.toEntity(model).description, entity.description);
+          expect(DishMapper.toEntity(model).imageUrl, entity.imageUrl);
+          expect(DishMapper.toEntity(model).cost, entity.cost);
         },
       );
     },
@@ -117,15 +115,15 @@ void main() {
       test(
         'GetTextSize should return textSize',
         () async {
-          expect(await settingsRepository.getTextSize(), 18.0);
+          expect(await settingsRepository.fetchTextSize(), 18.0);
         },
       );
 
       test(
         'SaveTextSize should change textSize',
-            () async {
-          await settingsRepository.saveTextSize(textSize: 22);
-          expect(await settingsRepository.getTextSize(), 22.0);
+        () async {
+          await settingsRepository.saveTextSize(22);
+          expect(await settingsRepository.fetchTextSize(), 22.0);
         },
       );
     },

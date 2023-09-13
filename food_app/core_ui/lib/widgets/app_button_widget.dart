@@ -6,12 +6,11 @@ class AppButtonWidget extends StatelessWidget {
   final String _label;
 
   const AppButtonWidget({
-    Key? key,
     void Function()? onTap,
     required String label,
+    super.key,
   })  : _label = label,
-        _onTap = onTap,
-        super(key: key);
+        _onTap = onTap;
 
   @override
   Widget build(BuildContext context) {

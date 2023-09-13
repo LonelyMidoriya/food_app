@@ -9,9 +9,9 @@ class AuthProvider {
     required GoogleSignIn googleSignIn,
   }) : _googleSignIn = googleSignIn;
 
-  Future<void> singUpWithEmailAndPassword({
-    required Credentials credentials,
-  }) async {
+  Future<void> singUpWithEmailAndPassword(
+    Credentials credentials,
+  ) async {
     await firebaseAuth.createUserWithEmailAndPassword(
       email: credentials.email,
       password: credentials.password,
@@ -37,9 +37,9 @@ class AuthProvider {
     await _googleSignIn.signOut();
   }
 
-  Future<void> logIn({
-    required Credentials credentials,
-  }) async {
+  Future<void> logIn(
+    Credentials credentials,
+  ) async {
     await firebaseAuth.signInWithEmailAndPassword(
       email: credentials.email,
       password: credentials.password,

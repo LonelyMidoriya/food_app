@@ -20,6 +20,7 @@ class _AdminOrdersViewScreenState extends State<AdminOrdersViewScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final OrdersViewBloc ordersViewBloc = BlocProvider.of<OrdersViewBloc>(context);
 
     return AnimatedTheme(
       duration: const Duration(milliseconds: 200),
@@ -34,14 +35,14 @@ class _AdminOrdersViewScreenState extends State<AdminOrdersViewScreen> {
                 style: const TextStyle(fontSize: 20),
                 showCursor: false,
                 onChanged: (String text) {
-                  if (text != '') {
-                    BlocProvider.of<OrdersViewBloc>(context).add(
+                  if (text .isNotEmpty) {
+                    ordersViewBloc.add(
                       InitAdminSearchedOrdersEvent(
                         searchQuery: textEditingController.text,
                       ),
                     );
                   } else {
-                    BlocProvider.of<OrdersViewBloc>(context).add(
+                    ordersViewBloc.add(
                       InitAdminOrdersEvent(),
                     );
                   }
@@ -61,12 +62,12 @@ class _AdminOrdersViewScreenState extends State<AdminOrdersViewScreen> {
                 child: LiquidPullToRefresh(
                   showChildOpacityTransition: false,
                   onRefresh: () async {
-                    if (textEditingController.text == '') {
-                      BlocProvider.of<OrdersViewBloc>(context).add(
+                    if (textEditingController.text.isEmpty) {
+                      ordersViewBloc.add(
                         InitAdminOrdersEvent(),
                       );
                     } else {
-                      BlocProvider.of<OrdersViewBloc>(context).add(
+                      ordersViewBloc.add(
                         InitAdminSearchedOrdersEvent(
                           searchQuery: textEditingController.text,
                         ),
@@ -169,7 +170,7 @@ class _AdminOrdersViewScreenState extends State<AdminOrdersViewScreen> {
                                       ),
                                     );
                                   }
-                                  BlocProvider.of<OrdersViewBloc>(context).add(
+                                  ordersViewBloc.add(
                                     InitOrdersEvent(),
                                   );
                                   textEditingController.clear();

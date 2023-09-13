@@ -1,33 +1,36 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:navigation/navigation.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
-  final SignUpWithEmailAndPasswordUsecase _signUpUsecase;
+  final SignUpWithEmailAndPasswordUsecase _signUpWithEmailAndPasswordUsecase;
   final LogInUsecase _logInUsecase;
   final AddUserUseCase _addUserUsecase;
-  final GetUserUseCase _getUserUseCase;
+  final FetchUserUseCase _fetchUserUseCase;
   final SignOutUsecase _signOutUsecase;
   final SignUpWithGoogleUsecase _signUpWithGoogleUsecase;
   final CheckIfLoggedInUsecase _checkIfLoggedInUsecase;
 
   AuthViewBloc({
-    required SignUpWithEmailAndPasswordUsecase signUpUsecase,
+    required SignUpWithEmailAndPasswordUsecase
+        signUpWithEmailAndPasswordUsecase,
     required LogInUsecase logInUsecase,
     required SignOutUsecase signOutUsecase,
     required SignUpWithGoogleUsecase signUpWithGoogleUsecase,
     required CheckIfLoggedInUsecase checkIfLoggedInUsecase,
     required AddUserUseCase addUserUsecase,
-    required GetUserUseCase getUserUseCase,
-  })  : _signUpUsecase = signUpUsecase,
+    required FetchUserUseCase fetchUserUseCase,
+  })  : _signUpWithEmailAndPasswordUsecase = signUpWithEmailAndPasswordUsecase,
         _logInUsecase = logInUsecase,
         _signOutUsecase = signOutUsecase,
         _signUpWithGoogleUsecase = signUpWithGoogleUsecase,
         _checkIfLoggedInUsecase = checkIfLoggedInUsecase,
         _addUserUsecase = addUserUsecase,
-        _getUserUseCase = getUserUseCase,
+        _fetchUserUseCase = fetchUserUseCase,
         super(
           AuthViewState.empty(),
         ) {
@@ -36,6 +39,9 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     on<UserSignupWithGoogleEvent>(_signUpWithGoogle);
     on<UserSignoutEvent>(_signOut);
     on<UserLogInEvent>(_logIn);
+    on<NavigateToPageEvent>(_navigateTo);
+    on<PopUntilPageEvent>(_popUntil);
+    on<PopToPreviousPageEvent>(_popToPage);
   }
 
   Future<void> _init(
@@ -47,11 +53,11 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
           await _checkIfLoggedInUsecase.execute(const NoParams());
 
       if (isLoggedIn) {
-        UserModel user = await _getUserUseCase.execute(const NoParams());
+        UserModel user = await _fetchUserUseCase.execute(const NoParams());
 
-        if (user.email == '') {
+        if (user.email.isEmpty) {
           await _addUserUsecase.execute(const NoParams());
-          user = await _getUserUseCase.execute(const NoParams());
+          user = await _fetchUserUseCase.execute(const NoParams());
         }
 
         emit(
@@ -86,11 +92,11 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     try {
       await _signUpWithGoogleUsecase.execute(const NoParams());
 
-      UserModel user = await _getUserUseCase.execute(const NoParams());
+      UserModel user = await _fetchUserUseCase.execute(const NoParams());
 
-      if (user.email == '') {
+      if (user.email.isEmpty) {
         await _addUserUsecase.execute(const NoParams());
-        user = await _getUserUseCase.execute(const NoParams());
+        user = await _fetchUserUseCase.execute(const NoParams());
       }
 
       emit(
@@ -145,14 +151,10 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
         email: event.email,
         password: event.password,
       );
-      await _signUpUsecase.execute(credentials);
+      await _signUpWithEmailAndPasswordUsecase.execute(credentials);
 
-      UserModel user = await _getUserUseCase.execute(const NoParams());
-
-      if (user.email == '') {
-        await _addUserUsecase.execute(const NoParams());
-        user = await _getUserUseCase.execute(const NoParams());
-      }
+      await _addUserUsecase.execute(const NoParams());
+      final UserModel user = await _fetchUserUseCase.execute(const NoParams());
 
       emit(
         state.copyWith(
@@ -172,6 +174,31 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
     }
   }
 
+  Future<void> _navigateTo(
+    NavigateToPageEvent event,
+    Emitter<AuthViewState> emit,
+  ) async {
+    appRouter.navigate(
+      event.route,
+    );
+  }
+
+  Future<void> _popToPage(
+      PopToPreviousPageEvent event,
+      Emitter<AuthViewState> emit,
+      ) async {
+    appRouter.pop();
+  }
+
+  Future<void> _popUntil(
+      PopUntilPageEvent event,
+      Emitter<AuthViewState> emit,
+      ) async {
+    appRouter.popUntilRouteWithName(
+      event.route,
+    );
+  }
+
   Future<void> _logIn(
     UserLogInEvent event,
     Emitter<AuthViewState> emit,
@@ -183,11 +210,11 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
       );
       await _logInUsecase.execute(credentials);
 
-      UserModel user = await _getUserUseCase.execute(const NoParams());
+      UserModel user = await _fetchUserUseCase.execute(const NoParams());
 
-      if (user.email == '') {
+      if (user.email.isEmpty) {
         await _addUserUsecase.execute(const NoParams());
-        user = await _getUserUseCase.execute(const NoParams());
+        user = await _fetchUserUseCase.execute(const NoParams());
       }
 
       emit(

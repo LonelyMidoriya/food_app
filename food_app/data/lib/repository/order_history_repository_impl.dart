@@ -5,92 +5,64 @@ import 'package:domain/repository/order_history_repository.dart';
 
 class OrderHistoryRepositoryImpl implements OrderHistoryRepository {
   final FirestoreProvider _firestoreProvider;
-  final OrderHistoryMapper _ordersMapper;
   final SharedPreferences _sharedPreferences;
 
   const OrderHistoryRepositoryImpl({
     required FirestoreProvider firestoreProvider,
-    required OrderHistoryMapper ordersMapper,
     required SharedPreferences sharedPreferences,
   })  : _sharedPreferences = sharedPreferences,
-        _ordersMapper = ordersMapper,
         _firestoreProvider = firestoreProvider;
 
   @override
-  Future<OrderHistoryModel> getOrders() async {
-    final OrderHistoryEntity ordersEntity;
-    final Map<String, dynamic>? ordersJson = await _firestoreProvider
-        .getCart(
-          collection: 'orders',
-          userId: _sharedPreferences.getString('uid')!,
-        )
-        .then((value) => value.data());
+  Future<OrderHistoryModel> fetchOrders() async {
+    final OrderHistoryEntity ordersEntity =
+        await _firestoreProvider.fetchOrderHistory(
+      collection: 'orders',
+      userId: _sharedPreferences.getString('uid')!,
+    );
 
-    if (ordersJson == null) {
-      return const OrderHistoryModel(
-        carts: [],
-        email: '',
-      );
-    }
-    ordersEntity = OrderHistoryEntity.fromJson(ordersJson);
-    return _ordersMapper.toModel(ordersEntity);
+    return OrderHistoryMapper.toModel(ordersEntity);
   }
 
   @override
-  Future<void> updateOrders({
-    required OrderHistoryModel orders,
-  }) async {
-    await _firestoreProvider.updateCart(
-      cart: _ordersMapper.toEntity(orders).toJson(),
+  Future<void> updateOrders(
+    OrderHistoryModel orders,
+  ) async {
+    await _firestoreProvider.updateOrderHistory(
+      orders: OrderHistoryMapper.toEntity(orders),
       collection: 'orders',
       userId: _sharedPreferences.getString('uid')!,
     );
   }
 
   @override
-  Future<List<OrderHistoryModel>> getAllUsersOrders() async {
+  Future<List<OrderHistoryModel>> fetchAllUsersOrders() async {
     final List<OrderHistoryModel> orders = [];
 
-    await _firestoreProvider
-        .getAllUsersOrderHistory(
-      collection: 'orders',
-    ).then(
-      (QuerySnapshot<Map<String, dynamic>> value) {
-        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-          orders.add(
-            _ordersMapper.toModel(
-              OrderHistoryEntity.fromJson(
-                result.data(),
-              ),
-            ),
-          );
-        }
-      },
-    );
+    final List<OrderHistoryEntity> entities =
+        await _firestoreProvider.fetchAllUsersOrderHistory('orders');
+
+    for (OrderHistoryEntity entity in entities) {
+      orders.add(OrderHistoryMapper.toModel(entity));
+    }
 
     return orders;
   }
 
   @override
-  Future<List<OrderHistoryModel>> getSearchedUsersOrders(String searchQuery) async {
+  Future<List<OrderHistoryModel>> fetchSearchedUsersOrders(
+      String searchQuery) async {
     final List<OrderHistoryModel> orders = [];
 
-    await _firestoreProvider
-        .getSearchedUsersOrderHistory(
-      collection: 'orders', searchQuery: searchQuery,
-    ).then(
-          (QuerySnapshot<Map<String, dynamic>> value) {
-        for (QueryDocumentSnapshot<Map<String, dynamic>> result in value.docs) {
-          orders.add(
-            _ordersMapper.toModel(
-              OrderHistoryEntity.fromJson(
-                result.data(),
-              ),
-            ),
-          );
-        }
-      },
+    final List<OrderHistoryEntity> entities =
+        await _firestoreProvider.fetchSearchedUsersOrderHistory(
+      collection: 'orders',
+      searchQuery: searchQuery,
     );
+
+    for (OrderHistoryEntity entity in entities) {
+      orders.add(OrderHistoryMapper.toModel(entity));
+    }
 
     return orders;
   }

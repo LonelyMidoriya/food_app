@@ -1,13 +1,13 @@
 import 'package:core/core.dart';
 
 abstract class AuthRepository {
-  Future<void> signUpWithEmailAndPassword({
-    required Credentials credentials,
-  });
+  Future<void> signUpWithEmailAndPassword(
+    Credentials credentials,
+  );
 
-  Future<void> logIn({
-    required Credentials credentials,
-  });
+  Future<void> logIn(
+    Credentials credentials,
+  );
 
   Future<void> signUpWithGoogle();
 
