@@ -31,8 +31,8 @@ class DataDI {
   }
 
   void _initAuth() {
-    appLocator.registerLazySingleton<AuthProvider>(
-      () => AuthProvider(
+    appLocator.registerLazySingleton<CustomAuthProvider>(
+      () => CustomAuthProvider(
         googleSignIn: appLocator.get<GoogleSignIn>(),
         firebaseAuth: FirebaseAuth.instance,
       ),
@@ -213,7 +213,7 @@ class DataDI {
     );
     appLocator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
-        authProvider: appLocator.get<AuthProvider>(),
+        authProvider: appLocator.get<CustomAuthProvider>(),
         sharedPreferences: appLocator.get<SharedPreferences>(),
       ),
     );

@@ -3,11 +3,11 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthProvider _authProvider;
+  final CustomAuthProvider _authProvider;
   final SharedPreferences _sharedPreferences;
 
   const AuthRepositoryImpl({
-    required AuthProvider authProvider,
+    required CustomAuthProvider authProvider,
     required SharedPreferences sharedPreferences,
   })  : _sharedPreferences = sharedPreferences,
         _authProvider = authProvider;

@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 
-class AuthProvider {
+class CustomAuthProvider {
   final FirebaseAuth firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  const AuthProvider({
+  const CustomAuthProvider({
     required this.firebaseAuth,
     required GoogleSignIn googleSignIn,
   }) : _googleSignIn = googleSignIn;
