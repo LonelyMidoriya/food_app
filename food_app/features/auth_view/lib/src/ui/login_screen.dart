@@ -136,9 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 24,
                           ),
                           const SignUpWithSocials(),
-                          const SizedBox(
-                            height: 24,
-                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

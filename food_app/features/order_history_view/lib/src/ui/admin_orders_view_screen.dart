@@ -116,7 +116,7 @@ class _AdminOrdersViewScreenState extends State<AdminOrdersViewScreen> {
                           );
                         } else {
                           return ListView.separated(
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(5),
                             addAutomaticKeepAlives: false,
                             addRepaintBoundaries: false,
                             itemCount: state.allUsersOrders.length,

@@ -35,7 +35,7 @@ class SignUpForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             controller: _emailController,
             validator: emailValidator,
-            decoration: inputDecoration("Email"),
+            decoration: inputDecoration("Email", theme),
           ),
         ),
         const SizedBox(
@@ -47,7 +47,7 @@ class SignUpForm extends StatelessWidget {
             obscureText: true,
             controller: _passwordController,
             validator: passwordValidator,
-            decoration: inputDecoration("Password"),
+            decoration: inputDecoration("Password", theme),
           ),
         ),
         const SizedBox(
@@ -59,7 +59,7 @@ class SignUpForm extends StatelessWidget {
             obscureText: true,
             controller: _confirmPasswordController,
             validator: passwordValidator,
-            decoration: inputDecoration("Confirm Password"),
+            decoration: inputDecoration("Confirm Password", theme),
           ),
         ),
         const SizedBox(

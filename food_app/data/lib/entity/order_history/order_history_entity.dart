@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/core.dart' hide Map;
 
 import '../cart/cart_entity.dart';
 

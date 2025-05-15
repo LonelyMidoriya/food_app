@@ -16,6 +16,7 @@ class DishGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final Size size = MediaQuery.sizeOf(context);
 
     return Padding(
       padding: const EdgeInsets.all(6),
@@ -28,7 +29,7 @@ class DishGridItem extends StatelessWidget {
             BoxShadow(
               blurStyle: BlurStyle.normal,
               color: theme.colorScheme.secondaryContainer,
-              blurRadius: 20.0,
+              blurRadius: 10.0,
               spreadRadius: 1.0,
               offset: const Offset(
                 2.0,
@@ -43,6 +44,16 @@ class DishGridItem extends StatelessWidget {
           children: <Widget>[
             CachedNetworkImage(
               imageUrl: _dish.imageUrl,
+              imageBuilder: (context, imageProvider) => Container(
+                height: size.height / 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
               placeholder: (_, __) => const AppLoaderCenterWidget(),
               errorWidget: (_, __, ___) => const Center(
                 child: Text('Error'),

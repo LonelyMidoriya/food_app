@@ -31,7 +31,7 @@ class LogInForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             controller: _emailController,
             validator: emailValidator,
-            decoration: inputDecoration("Email"),
+            decoration: inputDecoration("Email", theme),
           ),
         ),
         const SizedBox(
@@ -43,7 +43,7 @@ class LogInForm extends StatelessWidget {
             obscureText: true,
             controller: _passwordController,
             validator: passwordValidator,
-            decoration: inputDecoration("Password"),
+            decoration: inputDecoration("Password", theme),
           ),
         ),
         const SizedBox(

@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/core.dart' hide Map;
 
 import '../cart_item/cart_item_entity.dart';
 
@@ -8,6 +8,7 @@ part 'cart_entity.g.dart';
 @freezed
 class CartEntity with _$CartEntity {
   factory CartEntity({
+    required String status,
     required double cost,
     required int id,
     required String date,

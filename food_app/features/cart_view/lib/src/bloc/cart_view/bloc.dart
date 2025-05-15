@@ -127,6 +127,7 @@ class CartViewBloc extends Bloc<CartViewEvent, CartViewState> {
             count: event.count,
           );
           final CartModel newCartModel = CartModel(
+            status: '',
             cartItems: [cartItemModel],
             cost: 0,
             date: '',

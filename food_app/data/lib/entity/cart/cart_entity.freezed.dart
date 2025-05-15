@@ -20,6 +20,7 @@ CartEntity _$CartEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartEntity {
+  String get status => throw _privateConstructorUsedError;
   double get cost => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
@@ -37,7 +38,7 @@ abstract class $CartEntityCopyWith<$Res> {
           CartEntity value, $Res Function(CartEntity) then) =
       _$CartEntityCopyWithImpl<$Res, CartEntity>;
   @useResult
-  $Res call({double cost, int id, String date, List<CartItemEntity> cartItems});
+  $Res call({String status, double cost, int id, String date, List<CartItemEntity> cartItems});
 }
 
 /// @nodoc
@@ -53,12 +54,17 @@ class _$CartEntityCopyWithImpl<$Res, $Val extends CartEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? status = null,
     Object? cost = null,
     Object? id = null,
     Object? date = null,
     Object? cartItems = null,
   }) {
     return _then(_value.copyWith(
+      status: null == status
+          ? _value.status
+          : status
+              as String,
       cost: null == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
@@ -87,7 +93,7 @@ abstract class _$$_CartEntityCopyWith<$Res>
       __$$_CartEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double cost, int id, String date, List<CartItemEntity> cartItems});
+  $Res call({String status, double cost, int id, String date, List<CartItemEntity> cartItems});
 }
 
 /// @nodoc
@@ -101,12 +107,17 @@ class __$$_CartEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? status = null,
     Object? cost = null,
     Object? id = null,
     Object? date = null,
     Object? cartItems = null,
   }) {
     return _then(_$_CartEntity(
+      status: null == status
+          ? _value.status
+          : status
+              as String,
       cost: null == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
@@ -131,7 +142,8 @@ class __$$_CartEntityCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CartEntity implements _CartEntity {
   _$_CartEntity(
-      {required this.cost,
+      {required this.status,
+        required this.cost,
       required this.id,
       required this.date,
       required final List<CartItemEntity> cartItems})
@@ -140,6 +152,8 @@ class _$_CartEntity implements _CartEntity {
   factory _$_CartEntity.fromJson(Map<String, dynamic> json) =>
       _$$_CartEntityFromJson(json);
 
+  @override
+  final String status;
   @override
   final double cost;
   @override
@@ -156,7 +170,7 @@ class _$_CartEntity implements _CartEntity {
 
   @override
   String toString() {
-    return 'CartEntity(cost: $cost, id: $id, date: $date, cartItems: $cartItems)';
+    return 'CartEntity(status: $status, cost: $cost, id: $id, date: $date, cartItems: $cartItems)';
   }
 
   @override
@@ -164,6 +178,7 @@ class _$_CartEntity implements _CartEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CartEntity &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.cost, cost) || other.cost == cost) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.date, date) || other.date == date) &&
@@ -173,7 +188,7 @@ class _$_CartEntity implements _CartEntity {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, cost, id, date,
+  int get hashCode => Object.hash(runtimeType, status, cost, id, date,
       const DeepCollectionEquality().hash(_cartItems));
 
   @JsonKey(ignore: true)
@@ -192,7 +207,8 @@ class _$_CartEntity implements _CartEntity {
 
 abstract class _CartEntity implements CartEntity {
   factory _CartEntity(
-      {required final double cost,
+      {required final String status,
+        required final double cost,
       required final int id,
       required final String date,
       required final List<CartItemEntity> cartItems}) = _$_CartEntity;

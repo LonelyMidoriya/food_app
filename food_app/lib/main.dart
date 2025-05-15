@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final AdaptiveThemeMode? savedThemeMode = await AdaptiveTheme.getThemeMode();
+  const mapkitApiKey = String.fromEnvironment('MAPKIT_API_KEY');
+  await initMapkit(
+    apiKey: mapkitApiKey,
+  );
+  mapkit.onStart();
   await appDI.initDependencies();
   runApp(
     MyApp(
@@ -73,6 +78,7 @@ class _MyAppState extends State<MyApp> {
                 appLocator.get<GetAllUsersOrdersUseCase>(),
             getSearchedUsersOrdersUseCase:
                 appLocator.get<FetchSearchedUsersOrdersUseCase>(),
+            fetchUserUseCase: appLocator.get<FetchUserUseCase>(),
           ),
         ),
         BlocProvider<SettingsViewBloc>(

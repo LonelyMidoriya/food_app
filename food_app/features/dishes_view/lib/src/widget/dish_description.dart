@@ -26,7 +26,17 @@ class DishDescription extends StatelessWidget {
             children: <Widget>[
               CachedNetworkImage(
                 imageUrl: _dish.imageUrl,
-                width: size.width / 2,
+                imageBuilder: (context, imageProvider) => Container(
+                  //height: size.height / 8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                width: size.width / 1.3,
                 height: size.width / 2,
                 placeholder: (_, __) => const AppLoaderCenterWidget(),
                 errorWidget: (_, __, ___) => const Center(
@@ -78,6 +88,7 @@ class DishDescription extends StatelessWidget {
                       child: CustomText(
                         text: _dish.description,
                         fontWeight: FontWeight.w500,
+                        maxLines: 7,
                       ),
                     ),
                     const SizedBox(
@@ -88,13 +99,13 @@ class DishDescription extends StatelessWidget {
                         (MapEntry<dynamic, dynamic> entry) {
                           if (entry.key == 'kcal') {
                             return CustomProgressIndicator(
-                              end: entry.value / 1000,
+                              end: entry.value / 800,
                               stat: getStatShortForm(entry.key),
                               statValue: entry.value,
                             );
                           }
                           return CustomProgressIndicator(
-                            end: entry.value / 100,
+                            end: entry.value / 80,
                             stat: getStatShortForm(entry.key),
                             statValue: entry.value,
                           );

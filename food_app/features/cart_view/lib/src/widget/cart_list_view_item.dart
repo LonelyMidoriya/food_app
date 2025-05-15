@@ -21,6 +21,7 @@ class CartListViewItem extends StatelessWidget {
     final Size size = MediaQuery.sizeOf(context);
 
     return Container(
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: theme.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(30),
@@ -28,7 +29,7 @@ class CartListViewItem extends StatelessWidget {
           BoxShadow(
             blurStyle: BlurStyle.normal,
             color: theme.colorScheme.secondaryContainer,
-            blurRadius: 20.0,
+            blurRadius: 10.0,
             spreadRadius: 1.0,
             offset: const Offset(
               2.0,
@@ -41,8 +42,18 @@ class CartListViewItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CachedNetworkImage(
-            width: size.width / 2.3,
-            height: size.width / 2.3,
+            imageBuilder: (context, imageProvider) => Container(
+              //height: size.height / 8,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            width: size.width / 3,
+            height: size.width / 4,
             imageUrl: _itemModel.dish.imageUrl,
             placeholder: (_, __) => const AppLoaderCenterWidget(),
             errorWidget: (_, __, ___) => const Center(
@@ -57,6 +68,7 @@ class CartListViewItem extends StatelessWidget {
                 child: CustomText(
                   text: _itemModel.dish.name,
                   fontWeight: FontWeight.w800,
+                  maxLines: 1,
                 ),
               ),
               const SizedBox(

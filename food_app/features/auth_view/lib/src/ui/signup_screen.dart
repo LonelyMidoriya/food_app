@@ -77,9 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: 24,
                           ),
                           const SignUpWithSocials(),
-                          const SizedBox(
-                            height: 24,
-                          ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

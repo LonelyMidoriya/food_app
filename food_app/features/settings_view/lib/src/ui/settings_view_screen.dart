@@ -3,10 +3,8 @@ import 'package:core/core.dart';
 import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/routes/app_router.dart';
-import 'package:settings_view/src/widget/about_us_tile.dart';
-import 'package:settings_view/src/widget/sign_out_dialog.dart';
-import 'package:settings_view/src/widget/text_size_list_tile.dart';
-import 'package:settings_view/src/widget/theme_list_tile.dart';
+
+import '../../settings_view.dart';
 
 class SettingsViewScreen extends StatelessWidget {
   const SettingsViewScreen({Key? key}) : super(key: key);
@@ -23,12 +21,14 @@ class SettingsViewScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: theme.colorScheme.primary,
             title: BlocBuilder<AuthViewBloc, AuthViewState>(
               builder: (BuildContext context, AuthViewState state) {
                 if (state.isLoggedIn) {
                   return CustomText(
                     text: state.user.email,
                     fontWeight: FontWeight.w500,
+                    maxLines: 1,
                   );
                 } else {
                   return const CustomText(
@@ -85,6 +85,13 @@ class SettingsViewScreen extends StatelessWidget {
                 height: 12,
               ),
               AboutUsTile(),
+              SizedBox(
+                height: 12,
+              ),
+              SizedBox(
+                height: 400,
+                child: SinglePlacemarkMap(),
+              )
             ],
           ),
         ),

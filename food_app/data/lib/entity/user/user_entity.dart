@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/core.dart' hide Map;
 
 part 'user_entity.freezed.dart';
 part 'user_entity.g.dart';

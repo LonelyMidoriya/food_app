@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 
-InputDecoration inputDecoration(String hint) {
+InputDecoration inputDecoration(String hint, ThemeData theme) {
   return InputDecoration(
     filled: true,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: Colors.white,
-      ),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: Colors.white,
+      borderSide: BorderSide(
+        color: theme.colorScheme.tertiary,
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: Colors.white,
+      borderSide: BorderSide(
+        color: theme.colorScheme.primary,
       ),
     ),
-    fillColor: Colors.grey,
+    fillColor: theme.colorScheme.tertiaryContainer,
     focusColor: Colors.grey,
     hintText: hint,
   );
