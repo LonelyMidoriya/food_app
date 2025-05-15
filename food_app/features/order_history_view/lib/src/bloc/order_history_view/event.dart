@@ -24,6 +24,18 @@ class SetInternetOrdersEvent implements OrdersViewEvent {
 
 class InitOrdersEvent implements OrdersViewEvent {}
 
+class UpdateOrderStatusEvent implements OrdersViewEvent {
+  final CartModel cartModel;
+  final String status;
+  final String email;
+
+  const UpdateOrderStatusEvent({
+    required this.cartModel,
+    required this.status,
+    required this.email,
+  });
+}
+
 class InitAdminOrdersEvent implements OrdersViewEvent {}
 
 class InitAdminSearchedOrdersEvent implements OrdersViewEvent {

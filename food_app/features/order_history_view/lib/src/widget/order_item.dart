@@ -19,7 +19,7 @@ class OrderItem extends StatelessWidget {
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
       builder: (BuildContext context, SettingsViewState state) {
         return Container(
-          height: (_cartModel.cartItems.length + 2) * state.fontSize * 3,
+          height: (_cartModel.cartItems.length + 3) * state.fontSize * 3,
           decoration: BoxDecoration(
             color: theme.colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(30),
@@ -94,6 +94,7 @@ class OrderItem extends StatelessWidget {
                                   text: _cartModel.cartItems[index].dish.name,
                                   fontWeight: FontWeight.w500,
                                   textAlign: TextAlign.left,
+                                  maxLines: 1,
                                 ),
                               ),
                             ),
@@ -124,7 +125,6 @@ class OrderItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 15,
-                    bottom: 15,
                     right: 15,
                   ),
                   child: Row(
@@ -136,6 +136,32 @@ class OrderItem extends StatelessWidget {
                       ),
                       CustomText(
                         text: '${(_cartModel.cost).toStringAsFixed(2)}\$',
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(
+                thickness: 3,
+              ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    bottom: 15,
+                    right: 15,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const CustomText(
+                        text: 'Status:',
+                        fontWeight: FontWeight.w800,
+                      ),
+                      CustomText(
+                        text: _cartModel.status,
                         fontWeight: FontWeight.w800,
                       ),
                     ],

@@ -3,7 +3,7 @@ import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
 class DishesRepositoryImpl implements DishesRepository {
-  final String _collection = 'dishes';
+  final String _collection = 'items';
   final FirestoreProvider _firestoreProvider;
   final HiveProvider _hiveProvider;
   final InternetConnection _internetConnection;

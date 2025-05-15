@@ -1,5 +1,6 @@
 name: settings_view
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -19,6 +20,7 @@ dependencies:
   auth_view:
     path: ../auth_view
   url_launcher: ^6.0.3
+
 
 dev_dependencies:
   flutter_test:

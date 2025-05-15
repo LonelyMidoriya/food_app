@@ -15,10 +15,11 @@ ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
     brightness: Brightness.dark,
     background: blackColor,
-    primary: purpleColor,
+    primary: aquamarineDarkColor,
     secondary: Colors.black87,
     primaryContainer: Colors.white24,
     secondaryContainer: Colors.black45,
     tertiary: Colors.white,
+    tertiaryContainer: Colors.white30,
   ),
 );

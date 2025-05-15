@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/core.dart' hide Map;
 import 'package:data/data.dart';
 
 part 'cart_item_entity.freezed.dart';

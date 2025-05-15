@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+import 'package:core/core.dart' hide Image;
 import 'package:core_ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 

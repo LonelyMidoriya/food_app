@@ -10,6 +10,7 @@ class CartMapper {
         .toList();
 
     return CartEntity(
+      status: model.status,
       cartItems: cartItems,
       cost: model.cost,
       id: model.id,
@@ -25,6 +26,7 @@ class CartMapper {
         .toList();
 
     return CartModel(
+      status: entity.status,
       cartItems: cartItems,
       cost: entity.cost,
       id: entity.id,

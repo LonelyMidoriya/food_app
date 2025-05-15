@@ -6,3 +6,4 @@ export 'src/widget/text_size_list_tile.dart';
 export 'src/widget/about_us_tile.dart';
 export 'src/widget/sign_out_dialog.dart';
 export 'src/widget/theme_list_tile.dart';
+export 'src/widget/yandex_map.dart';

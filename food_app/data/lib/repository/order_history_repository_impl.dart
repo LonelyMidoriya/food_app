@@ -31,7 +31,7 @@ class OrderHistoryRepositoryImpl implements OrderHistoryRepository {
     await _firestoreProvider.updateOrderHistory(
       orders: OrderHistoryMapper.toEntity(orders),
       collection: 'orders',
-      userId: _sharedPreferences.getString('uid')!,
+      email: orders.email,
     );
   }
 

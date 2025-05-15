@@ -8,6 +8,7 @@ part 'state.dart';
 
 class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
   final FetchOrdersUseCase _fetchOrdersUseCase;
+  final FetchUserUseCase _fetchUserUseCase;
   final UpdateOrdersUseCase _updateOrdersUseCase;
   final InternetConnection _internetConnection;
   final GetAllUsersOrdersUseCase _getAllUsersOrdersUseCase;
@@ -19,11 +20,13 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
     required InternetConnection internetConnection,
     required GetAllUsersOrdersUseCase getAllUsersOrdersUseCase,
     required FetchSearchedUsersOrdersUseCase getSearchedUsersOrdersUseCase,
+    required FetchUserUseCase fetchUserUseCase,
   })  : _fetchOrdersUseCase = fetchOrdersUseCase,
         _updateOrdersUseCase = updateOrdersUseCase,
         _internetConnection = internetConnection,
         _getAllUsersOrdersUseCase = getAllUsersOrdersUseCase,
         _getSearchedUsersOrdersUseCase = getSearchedUsersOrdersUseCase,
+        _fetchUserUseCase = fetchUserUseCase,
         super(
           OrdersViewState.empty(),
         ) {
@@ -32,6 +35,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
     on<SetInternetOrdersEvent>(_setInternet);
     on<InitAdminOrdersEvent>(_initAdmin);
     on<InitAdminSearchedOrdersEvent>(_initAdminSearched);
+    on<UpdateOrderStatusEvent>(_updateOrderStatus);
     final StreamSubscription<InternetStatus> listener =
         _internetConnection.onStatusChange.listen(
       (InternetStatus status) {
@@ -172,6 +176,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
         if (state.orders.carts.isEmpty) {
           final String date = DateTime.now().toString();
           final CartModel newCartModel = event.cartModel.copyWith(
+            status: OrderStatus.Waiting.name,
             cost: event.cost,
             id: 1,
             date: date,
@@ -193,6 +198,7 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
 
           final String date = DateTime.now().toString();
           final CartModel newCartModel = event.cartModel.copyWith(
+            status: OrderStatus.Waiting.name,
             cost: event.cost,
             id: newModel.carts.last.id + 1,
             date: date,
@@ -220,4 +226,49 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
       }
     }
   }
+
+  Future<void> _updateOrderStatus(
+      UpdateOrderStatusEvent event,
+      Emitter<OrdersViewState> emit,
+      ) async {
+    if (state.hasInternet) {
+      try {
+         {
+           OrderHistoryModel newModel = const OrderHistoryModel(carts: [], email: '');
+           List<OrderHistoryModel> models = state.allUsersOrders;
+           int id = 0;
+           for(int i = 0; i < models.length; i++){
+             if (models[i].email == event.email){
+               newModel = models[i];
+               id = i;
+              }
+            }
+
+          final CartModel newCartModel = event.cartModel.copyWith(
+            status: event.status,
+          );
+          newModel.carts[newCartModel.id-1] = newCartModel;
+          _updateOrdersUseCase.execute(newModel);
+          models[id] = newModel;
+
+          emit(
+            state.copyWith(
+              allUsersOrders: models,
+              isLoaded: true,
+              isError: false,
+            ),
+          );
+        }
+      } catch (e, _) {
+        emit(
+          state.copyWith(
+            isError: true,
+            isLoaded: false,
+            errorMessage: e,
+          ),
+        );
+      }
+    }
+  }
+
 }

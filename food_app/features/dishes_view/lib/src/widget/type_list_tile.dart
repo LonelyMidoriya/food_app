@@ -21,7 +21,7 @@ class TypeListTile extends StatelessWidget {
     return BlocBuilder<SettingsViewBloc, SettingsViewState>(
       builder: (BuildContext context, SettingsViewState state) {
         return SizedBox(
-          width: state.fontSize * 6,
+          width: state.fontSize * 7,
           child: ListTile(
             selected: _isSelected,
             selectedTileColor: theme.colorScheme.primary,

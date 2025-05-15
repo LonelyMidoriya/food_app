@@ -1,4 +1,5 @@
-import 'package:core/core.dart';
+
+import 'package:core/core.dart' hide Map;
 import 'package:data/data.dart';
 
 class FirestoreProvider {
@@ -33,9 +34,10 @@ class FirestoreProvider {
   Future<void> updateOrderHistory({
     required OrderHistoryEntity orders,
     required String collection,
-    required String userId,
+    required String email,
   }) async {
-    await fireStore.collection(collection).doc(userId).set(orders.toJson());
+    UserEntity user = await fetchUser(collection: 'users', email: email);
+    await fireStore.collection(collection).doc(user.uid).set(orders.toJson());
   }
 
   Future<void> addUser({
@@ -213,6 +215,7 @@ class FirestoreProvider {
         .then((value) => value.data());
     if (cartJson == null) {
       return CartEntity(
+        status: '',
         cartItems: [],
         cost: 0,
         date: '',

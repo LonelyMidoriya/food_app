@@ -7,16 +7,19 @@ class CustomText extends StatelessWidget {
   final FontWeight _fontWeight;
   final Color _textColor;
   final TextAlign _textAlign;
+  final int _maxLines;
 
   const CustomText({
     required String text,
     required FontWeight fontWeight,
     Color textColor = Colors.transparent,
     TextAlign textAlign = TextAlign.center,
+    int maxLines = 2,
     super.key,
   })  : _textColor = textColor,
         _fontWeight = fontWeight,
         _textAlign = textAlign,
+        _maxLines = maxLines,
         _text = text;
 
   @override
@@ -39,7 +42,7 @@ class CustomText extends StatelessWidget {
             child: AutoSizeText(
               _text,
               textAlign: _textAlign,
-              maxLines: 2,
+              maxLines: _maxLines,
             ),
           ),
         );
