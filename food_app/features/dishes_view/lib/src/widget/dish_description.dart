@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:dishes_view/src/widget/review_button.dart';
+import 'package:dishes_view/src/widget/review_tile.dart';
 import 'package:domain/model/dish_model.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,12 @@ class DishDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.sizeOf(context);
+    double rating = 0;
+    for(int i = 0; i < _dish.reviews.length; i++){
+      rating += _dish.reviews[i].rating;
+    }
+    rating /= _dish.reviews.length;
+
 
     return Container(
       height: double.infinity,
@@ -84,6 +92,22 @@ class DishDescription extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
+                    _dish.reviews.isNotEmpty ? Center(
+                      child: StarRating(
+                        size: 30.0,
+                        rating: rating,
+                        color: Colors.orange,
+                        borderColor: Colors.grey,
+                        allowHalfRating: true,
+                        starCount: 5,
+                      ),
+                    ) : const CustomText(
+                        text: "No reviews",
+                        fontWeight: FontWeight.w800,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
                     Center(
                       child: CustomText(
                         text: _dish.description,
@@ -114,6 +138,33 @@ class DishDescription extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              ReviewButton(dish: _dish),
+              const SizedBox(
+                height: 15,
+              ),
+            _dish.reviews.isNotEmpty ? const CustomText(
+              text: 'Reviews',
+              fontWeight: FontWeight.w800,
+            ) : const SizedBox(),
+              const SizedBox(
+                height: 15,
+              ),
+              ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemCount: _dish.reviews.length,
+                itemBuilder: (BuildContext context, int index) {
+                    return ReviewTile(
+                      review:  _dish.reviews[index],
+                    );
+                } ,
               ),
               const SizedBox(
                 height: 60,

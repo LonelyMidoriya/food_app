@@ -52,6 +52,7 @@ void main() {
               'carbohydrates': 34,
               'proteins': 45,
             },
+            reviews: [],
           );
           model = const DishModel(
             name: 'Cheeseburger',
@@ -65,6 +66,7 @@ void main() {
               'carbohydrates': 34,
               'proteins': 45,
             },
+            reviews: [],
           );
         },
       );

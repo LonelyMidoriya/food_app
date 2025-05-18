@@ -1,3 +1,5 @@
+import 'package:domain/model/review_model.dart';
+
 class DishModel {
   final String name;
   final String imageUrl;
@@ -5,6 +7,7 @@ class DishModel {
   final String type;
   final String description;
   final Map<dynamic, dynamic> stats;
+  final List<ReviewModel> reviews;
 
   const DishModel({
     required this.name,
@@ -13,6 +16,7 @@ class DishModel {
     required this.type,
     required this.description,
     required this.stats,
+    required this.reviews,
   });
 
   DishModel.empty()
@@ -26,7 +30,8 @@ class DishModel {
           'fats': 0,
           'carbohydrates': 0,
           'proteins': 0,
-        };
+        },
+        reviews = [];
 
   DishModel copyWith({
     String? name,
@@ -35,6 +40,7 @@ class DishModel {
     String? type,
     String? description,
     Map<dynamic, dynamic>? stats,
+    List<ReviewModel>? reviews,
   }) =>
       DishModel(
         name: name ?? this.name,
@@ -43,5 +49,6 @@ class DishModel {
         type: type ?? this.type,
         stats: stats ?? this.stats,
         description: description ?? this.description,
+        reviews: reviews ?? this.reviews,
       );
 }

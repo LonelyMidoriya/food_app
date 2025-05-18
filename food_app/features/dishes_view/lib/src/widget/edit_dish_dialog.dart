@@ -202,6 +202,7 @@ class _EditDishDialogState extends State<EditDishDialog> {
                             int.parse(carbohydratesController.text),
                         'proteins': int.parse(proteinsController.text),
                       },
+                      reviews: widget._dish.reviews,
                     ),
                     dish: widget._dish,
                   ),

@@ -11,9 +11,9 @@ abstract class OrderHistoryMapper {
           (CartModel model) => CartMapper.toEntity(model),
         )
         .toList();
-
+    carts.sort((a,b) {return a.id.compareTo(b.id);});
     return OrderHistoryEntity(
-      carts: carts,
+      carts: carts.reversed.toList(),
       email: model.email,
     );
   }
@@ -24,9 +24,9 @@ abstract class OrderHistoryMapper {
           (CartEntity entity) => CartMapper.toModel(entity),
         )
         .toList();
-
+    carts.sort((a,b) {return a.id.compareTo(b.id);});
     return OrderHistoryModel(
-      carts: carts,
+      carts: carts.reversed.toList(),
       email: entity.email,
     );
   }
