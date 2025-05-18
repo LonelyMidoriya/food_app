@@ -200,11 +200,11 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
           final CartModel newCartModel = event.cartModel.copyWith(
             status: OrderStatus.Waiting.name,
             cost: event.cost,
-            id: newModel.carts.last.id + 1,
+            id: newModel.carts.first.id + 1,
             date: date,
           );
 
-          newModel.carts.add(newCartModel);
+          newModel.carts.insert(0, newCartModel);
           _updateOrdersUseCase.execute(newModel);
 
           emit(

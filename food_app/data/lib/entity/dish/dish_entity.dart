@@ -1,9 +1,11 @@
 import 'package:core/core.dart' hide Map;
+import 'package:data/entity/review/review_entity.dart';
+
 part 'dish_entity.freezed.dart';
 part 'dish_entity.g.dart';
 
 @freezed
-@HiveType(typeId: 1, adapterName: 'DishEntityAdapter')
+@HiveType(typeId: 3, adapterName: 'DishEntityAdapter')
 class DishEntity extends HiveObject with _$DishEntity {
   DishEntity._();
 
@@ -14,6 +16,7 @@ class DishEntity extends HiveObject with _$DishEntity {
     @HiveField(3) required String type,
     @HiveField(4) required String description,
     @HiveField(5) required Map<dynamic, dynamic> stats,
+    required List<ReviewEntity> reviews,
 
   }) = _DishEntity;
 

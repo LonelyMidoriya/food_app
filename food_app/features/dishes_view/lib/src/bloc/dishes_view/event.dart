@@ -47,3 +47,4 @@ class UpdateDishEvent implements DishesViewEvent {
     required this.newDish,
   });
 }
+

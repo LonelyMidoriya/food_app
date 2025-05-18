@@ -35,6 +35,7 @@ Future<void> main() async {
           'carbohydrates': 33,
           'proteins': 44,
         },
+        reviews: [],
       );
 
       await tester.pumpWidget(
@@ -76,6 +77,7 @@ Future<void> main() async {
           'carbohydrates': 33,
           'proteins': 44,
         },
+        reviews: [],
       );
 
       await tester.pumpWidget(

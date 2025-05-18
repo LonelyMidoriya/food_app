@@ -33,3 +33,4 @@ export 'package:yandex_maps_mapkit_lite/image.dart';
 export 'package:yandex_maps_mapkit_lite/mapkit_factory.dart';
 export 'package:yandex_maps_mapkit_lite/mapkit.dart' hide TextStyle;
 export 'constants/order_status.dart';
+export 'package:flutter_rating/flutter_rating.dart';

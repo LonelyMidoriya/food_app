@@ -23,6 +23,7 @@ class DishEntityAdapter extends TypeAdapter<DishEntity> {
       type: fields[3] as String,
       description: fields[4] as String,
       stats: fields[5] as Map<dynamic, dynamic>,
+      reviews: [],
     );
   }
 
@@ -67,6 +68,9 @@ _$_DishEntity _$$_DishEntityFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       description: json['description'] as String,
       stats: Map<dynamic, dynamic>.from(json['stats'] as Map),
+      reviews: (json['reviews'] as List)
+          .map((e) => ReviewEntity.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
@@ -77,4 +81,5 @@ Map<String, dynamic> _$$_DishEntityToJson(_$_DishEntity instance) =>
       'type': instance.type,
       'description': instance.description,
       'stats': instance.stats,
+      'reviews': instance.reviews.map((e) => e.toJson()),
     };

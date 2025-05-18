@@ -18,3 +18,5 @@ export 'mapper/order_history_mapper.dart';
 export 'entity/user/user_entity.dart';
 export 'mapper/user_mapper.dart';
 export 'repository/user_repository_impl.dart';
+export 'entity/review/review_entity.dart';
+export 'mapper/review_mapper.dart';

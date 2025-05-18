@@ -191,6 +191,7 @@ class _AddDishDialogState extends State<AddDishDialog> {
                             int.parse(carbohydratesController.text),
                         'proteins': int.parse(proteinsController.text),
                       },
+                      reviews: [],
                     ),
                   ),
                 );
