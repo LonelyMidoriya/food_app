@@ -32,6 +32,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     final Size size = MediaQuery.sizeOf(context);
     final DishesViewBloc dishesViewBloc =
     BlocProvider.of<DishesViewBloc>(context);
@@ -39,6 +40,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
     //newRating = widget._review.rating;
 
     return AlertDialog(
+      // backgroundColor: theme.colorScheme.onTertiary.withOpacity(0.5),
       insetPadding: EdgeInsets.only(
         top: size.height / 20,
         bottom: size.height / 20,
@@ -78,7 +80,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: reviewController,
                   decoration: const InputDecoration(
-                    labelText: 'description',
+                    labelText: 'Review text',
                   ),
                 ),
                 const SizedBox(

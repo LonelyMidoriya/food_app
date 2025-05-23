@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 
 class DishDescription extends StatelessWidget {
   final DishModel _dish;
+  final bool _isAdmin;
 
   const DishDescription({
     required DishModel dish,
+    required bool isAdmin,
     super.key,
-  }) : _dish = dish;
+  }) : _dish = dish,
+        _isAdmin = isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,17 @@ class DishDescription extends StatelessWidget {
 
     return Container(
       height: double.infinity,
-      color: theme.colorScheme.background,
+      //color: theme.colorScheme.background,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.inversePrimary,
+            theme.colorScheme.inverseSurface,
+          ],
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
@@ -57,19 +70,7 @@ class DishDescription extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      blurStyle: BlurStyle.normal,
-                      color: theme.colorScheme.secondaryContainer,
-                      blurRadius: 30.0,
-                      spreadRadius: 1.0,
-                      offset: const Offset(
-                        2.0,
-                        2.0,
-                      ),
-                    ),
-                  ],
-                  color: theme.colorScheme.primaryContainer,
+                  color: theme.colorScheme.onTertiary.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -142,7 +143,7 @@ class DishDescription extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              ReviewButton(dish: _dish),
+              _isAdmin ? const SizedBox(height: 0,) : ReviewButton(dish: _dish),
               const SizedBox(
                 height: 15,
               ),

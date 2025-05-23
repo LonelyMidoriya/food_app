@@ -24,10 +24,10 @@ Future<void> main() async {
     'DishDescription should show valid data',
     (WidgetTester tester) async {
       const DishModel dish = DishModel(
-        name: 'Cheeseburger',
+        name: "Striploin Steak",
         imageUrl: 'imageUrl',
         cost: 12.1,
-        type: 'burger',
+        type: 'Main',
         description: 'description1',
         stats: {
           'kcal': 12,
@@ -45,13 +45,14 @@ Future<void> main() async {
             home: Scaffold(
               body: DishDescription(
                 dish: dish,
+                isAdmin: false,
               ),
             ),
           ),
         ),
       );
 
-      expect(find.text('Cheeseburger'), findsOneWidget);
+      expect(find.text("Striploin Steak"), findsOneWidget);
       expect(find.text('name'), findsNothing);
 
       expect(find.text('44'), findsOneWidget);
@@ -69,7 +70,7 @@ Future<void> main() async {
         name: 'name',
         imageUrl: 'imageUrl',
         cost: 12.1,
-        type: 'burger',
+        type: 'Main',
         description: 'description1',
         stats: {
           'kcal': 12,
@@ -98,7 +99,7 @@ Future<void> main() async {
 
       expect(find.text('12.1\$'), findsOneWidget);
 
-      expect(find.text('burger'), findsNothing);
+      expect(find.text('Main'), findsNothing);
       expect(find.text('description1'), findsNothing);
     },
   );

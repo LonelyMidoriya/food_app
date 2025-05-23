@@ -25,20 +25,8 @@ class AdminDishGridItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer,
+          color: theme.colorScheme.onTertiary.withOpacity(0.5),
           borderRadius: BorderRadius.circular(30),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              blurStyle: BlurStyle.normal,
-              color: theme.colorScheme.secondaryContainer,
-              blurRadius: 20.0,
-              spreadRadius: 1.0,
-              offset: const Offset(
-                2.0,
-                2.0,
-              ),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

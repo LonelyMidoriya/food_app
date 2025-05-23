@@ -60,7 +60,7 @@ class AdminDishDescriptionPage extends StatelessWidget {
           centerTitle: true,
           title: const Text('Description'),
         ),
-        body: DishDescription(dish: _dish),
+        body: DishDescription(dish: _dish, isAdmin: true),
       ),
     );
   }

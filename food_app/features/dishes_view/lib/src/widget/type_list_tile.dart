@@ -28,6 +28,7 @@ class TypeListTile extends StatelessWidget {
             title: CustomText(
               text: _type,
               fontWeight: FontWeight.w500,
+              textColor: _isSelected ? theme.colorScheme.tertiary : theme.colorScheme.secondaryContainer,
             ),
           ),
         );

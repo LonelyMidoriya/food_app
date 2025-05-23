@@ -84,6 +84,7 @@ class _$AppRouter extends RootStackRouter {
         child: DishDescriptionPage(
           key: args.key,
           dish: args.dish,
+          isAdmin: false,
         ),
         transitionsBuilder: TransitionsBuilders.slideTop,
         durationInMilliseconds: 300,

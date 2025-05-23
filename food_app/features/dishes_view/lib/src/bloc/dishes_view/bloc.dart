@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:navigation/navigation.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -130,7 +129,7 @@ class DishesViewBloc extends Bloc<DishesViewEvent, DishesViewState> {
 
       final String type = TypeOfFood.values[event.selectedType].name;
 
-      if (type != 'all') {
+      if (type != 'All') {
         final List<DishModel> loadedDishes =
             await _fetchDishesByTypeUseCase.execute(type);
         emit(

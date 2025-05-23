@@ -77,98 +77,110 @@ class _AdminDishesViewScreenState extends State<AdminDishesViewScreen> {
             child: const Icon(CupertinoIcons.plus),
           ),
           backgroundColor: theme.colorScheme.background,
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const TypeListView(),
-              Expanded(
-                child: BlocBuilder<DishesViewBloc, DishesViewState>(
-                  builder: (BuildContext context, DishesViewState state) {
-                    if (!state.isError && !state.isLoaded) {
-                      return const AppLoaderCenterWidget();
-                    } else if (state.isError) {
-                      return Center(
-                        child: Text(state.errorMessage.toString()),
-                      );
-                    } else if (state.isLoaded && state.hasInternet) {
-                      return LiquidPullToRefresh(
-                        color: theme.colorScheme.primary,
-                        onRefresh: _onRefresh,
-                        child: GridView.builder(
-                          controller: _scrollController,
-                          key: const PageStorageKey<String>('items'),
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 2 / 3,
-                          ),
-                          itemCount: state.dishes.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => authViewBloc.add(
-                              NavigateToPageEvent(
-                                route: AdminDishDescriptionPageRoute(
-                                  dish: state.dishes[index],
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.inversePrimary,
+                  theme.colorScheme.inverseSurface,
+                ],
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const TypeListView(),
+                Expanded(
+                  child: BlocBuilder<DishesViewBloc, DishesViewState>(
+                    builder: (BuildContext context, DishesViewState state) {
+                      if (!state.isError && !state.isLoaded) {
+                        return const AppLoaderCenterWidget();
+                      } else if (state.isError) {
+                        return Center(
+                          child: Text(state.errorMessage.toString()),
+                        );
+                      } else if (state.isLoaded && state.hasInternet) {
+                        return LiquidPullToRefresh(
+                          color: theme.colorScheme.primary,
+                          onRefresh: _onRefresh,
+                          child: GridView.builder(
+                            controller: _scrollController,
+                            key: const PageStorageKey<String>('items'),
+                            addAutomaticKeepAlives: false,
+                            addRepaintBoundaries: false,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 2 / 3,
+                            ),
+                            itemCount: state.dishes.length,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () => authViewBloc.add(
+                                NavigateToPageEvent(
+                                  route: AdminDishDescriptionPageRoute(
+                                    dish: state.dishes[index],
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: AdminDishGridItem(
-                              dish: state.dishes[index],
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Center(
-                              child: CustomText(
-                                text: 'Internet connection lost.',
-                                fontWeight: FontWeight.w500,
+                              child: AdminDishGridItem(
+                                dish: state.dishes[index],
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            AppButtonWidget(
-                              label: 'Refresh',
-                              onTap: () {
-                                if (!state.hasInternet) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      elevation: 50,
-                                      backgroundColor: Colors.teal,
-                                      content: CustomText(
-                                        text: 'No Internet connection!',
-                                        fontWeight: FontWeight.w800,
-                                        textColor: theme.colorScheme.tertiary,
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Center(
+                                child: CustomText(
+                                  text: 'Internet connection lost.',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              AppButtonWidget(
+                                label: 'Refresh',
+                                onTap: () {
+                                  if (!state.hasInternet) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        elevation: 50,
+                                        backgroundColor: Colors.teal,
+                                        content: CustomText(
+                                          text: 'No Internet connection!',
+                                          fontWeight: FontWeight.w800,
+                                          textColor: theme.colorScheme.tertiary,
+                                        ),
+                                        duration: const Duration(seconds: 2),
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 60,
+                                          horizontal: 30,
+                                        ),
                                       ),
-                                      duration: const Duration(seconds: 2),
-                                      margin: const EdgeInsets.symmetric(
-                                        vertical: 60,
-                                        horizontal: 30,
-                                      ),
-                                    ),
+                                    );
+                                  }
+                                  dishesViewBloc.add(
+                                    InitDishesEvent(),
                                   );
-                                }
-                                dishesViewBloc.add(
-                                  InitDishesEvent(),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

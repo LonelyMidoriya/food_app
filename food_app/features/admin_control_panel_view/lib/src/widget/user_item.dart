@@ -19,40 +19,45 @@ class UserItem extends StatelessWidget {
     final AdminControlPanelBloc adminControlPanelBloc =
         BlocProvider.of<AdminControlPanelBloc>(context);
 
-    return ListTile(
+    return Material(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      tileColor: theme.colorScheme.primary,
-      iconColor: theme.colorScheme.tertiary,
-      title: CustomText(
-        text: _user.email,
-        fontWeight: FontWeight.w500,
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        tileColor: theme.colorScheme.primary,
+        iconColor: theme.colorScheme.tertiary,
+        title: CustomText(
+          text: _user.email,
+          fontWeight: FontWeight.w500,
+        ),
+        leading: _user.isAdmin
+            ? const Icon(
+                Icons.admin_panel_settings,
+              )
+            : const SizedBox(),
+        trailing: _user.isAdmin
+            ? _user.isSuperAdmin
+                ? const SizedBox()
+                : IconButton(
+                    onPressed: () {
+                      adminControlPanelBloc.add(
+                        TakeAdminRightsEvent(user: _user),
+                      );
+                    },
+                    icon: const Icon(Icons.cancel_outlined),
+                  )
+            : IconButton(
+                onPressed: () {
+                  adminControlPanelBloc.add(
+                    GiveAdminRightsEvent(user: _user),
+                  );
+                },
+                icon: const Icon(Icons.check_circle_outline),
+              ),
       ),
-      leading: _user.isAdmin
-          ? const Icon(
-              Icons.admin_panel_settings,
-            )
-          : const SizedBox(),
-      trailing: _user.isAdmin
-          ? _user.isSuperAdmin
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    adminControlPanelBloc.add(
-                      TakeAdminRightsEvent(user: _user),
-                    );
-                  },
-                  icon: const Icon(Icons.cancel_outlined),
-                )
-          : IconButton(
-              onPressed: () {
-                adminControlPanelBloc.add(
-                  GiveAdminRightsEvent(user: _user),
-                );
-              },
-              icon: const Icon(Icons.check_circle_outline),
-            ),
     );
   }
 }

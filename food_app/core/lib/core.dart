@@ -22,7 +22,7 @@ export 'package:intl/intl.dart';
 export 'package:adaptive_theme/adaptive_theme.dart';
 export 'constants/urls.dart';
 export 'constants/types_of_food.dart';
-export 'package:rive/rive.dart';
+export 'package:rive/rive.dart' hide LinearGradient;
 export 'credentials/credentials.dart';
 export 'package:auto_size_text/auto_size_text.dart';
 export 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';

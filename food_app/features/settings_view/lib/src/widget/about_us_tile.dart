@@ -11,28 +11,33 @@ class AboutUsTile extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final Uri uri = Uri.parse(gitHubUrl);
 
-    return ListTile(
+    return Material(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
-      leading: const Icon(
-        Icons.link,
-      ),
-      tileColor: theme.colorScheme.primary,
-      iconColor: theme.colorScheme.tertiary,
-      title: const Align(
-        alignment: Alignment.centerLeft,
-        child: CustomText(
-          text:'About Us',
-          fontWeight: FontWeight.w500,
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
         ),
+        leading: const Icon(
+          Icons.link,
+        ),
+        tileColor: theme.colorScheme.primary,
+        iconColor: theme.colorScheme.tertiary,
+        title: const Align(
+          alignment: Alignment.centerLeft,
+          child: CustomText(
+            text:'About Us',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        onTap: () async {
+          await launchUrl(
+            uri,
+            mode: LaunchMode.platformDefault,
+          );
+        },
       ),
-      onTap: () async {
-        await launchUrl(
-          uri,
-          mode: LaunchMode.platformDefault,
-        );
-      },
     );
   }
 }

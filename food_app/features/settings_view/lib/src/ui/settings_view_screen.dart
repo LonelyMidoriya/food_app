@@ -71,28 +71,40 @@ class SettingsViewScreen extends StatelessWidget {
               },
             ),
           ),
-          backgroundColor: theme.colorScheme.background,
-          body: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(16.0),
-            children: const <Widget>[
-              ThemeListTile(),
-              SizedBox(
-                height: 12,
+          //backgroundColor: theme.colorScheme.background,
+          body: Container(
+            decoration:  BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.inversePrimary,
+                  theme.colorScheme.inverseSurface,
+                ],
               ),
-              TextSizeListTile(),
-              SizedBox(
-                height: 12,
-              ),
-              AboutUsTile(),
-              SizedBox(
-                height: 12,
-              ),
-              SizedBox(
-                height: 400,
-                child: SinglePlacemarkMap(),
-              )
-            ],
+            ),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(16.0),
+              children: const <Widget>[
+                ThemeListTile(),
+                SizedBox(
+                  height: 12,
+                ),
+                TextSizeListTile(),
+                SizedBox(
+                  height: 12,
+                ),
+                AboutUsTile(),
+                SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  height: 400,
+                  child: SinglePlacemarkMap(),
+                )
+              ],
+            ),
           ),
         ),
       ),

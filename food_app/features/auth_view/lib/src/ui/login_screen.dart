@@ -93,75 +93,87 @@ class _LoginScreenState extends State<LoginScreen> {
             curve: Curves.easeOut,
             data: theme,
             child: Scaffold(
-              backgroundColor: theme.colorScheme.background,
-              body: SafeArea(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24.0),
-                            child: Center(
-                              child: CustomText(
-                                text: 'Hello Again!',
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24.0),
-                            child: Center(
-                              child: CustomText(
-                                text: 'Please log in to use our services.',
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          LogInForm(
-                            emailController: emailController,
-                            passwordController: passwordController,
-                            formKey: _formKey,
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          const SignUpWithSocials(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const Text(
-                                "Don't have an account? ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+              //backgroundColor: theme.colorScheme.background,
+              body: Container(
+                decoration:  BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      theme.colorScheme.inversePrimary,
+                      theme.colorScheme.inverseSurface,
+                    ],
+                  ),
+                ),
+                child: SafeArea(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Center(
+                                child: CustomText(
+                                  text: 'Hello Again!',
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
-                              InkWell(
-                                onTap: () => authViewBloc.add(
-                                  const NavigateToPageEvent(
-                                    route: SignupScreenRoute(),
-                                  ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Center(
+                                child: CustomText(
+                                  text: 'Please log in to use our services.',
+                                  fontWeight: FontWeight.w900,
                                 ),
-                                child: const Text(
-                                  "Sign up Now",
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 60,
+                            ),
+                            LogInForm(
+                              emailController: emailController,
+                              passwordController: passwordController,
+                              formKey: _formKey,
+                            ),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            const SignUpWithSocials(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Text(
+                                  "Don't have an account? ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple,
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
+                                InkWell(
+                                  onTap: () => authViewBloc.add(
+                                    const NavigateToPageEvent(
+                                      route: SignupScreenRoute(),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Sign up Now",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepPurple,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

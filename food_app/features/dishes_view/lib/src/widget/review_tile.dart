@@ -18,19 +18,8 @@ class ReviewTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            blurStyle: BlurStyle.normal,
-            color: theme.colorScheme.secondaryContainer,
-            blurRadius: 30.0,
-            spreadRadius: 1.0,
-            offset: const Offset(
-              2.0,
-              2.0,
-            ),
-          ),
-        ],
-        color: theme.colorScheme.primaryContainer,
+
+        color: theme.colorScheme.onTertiary.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

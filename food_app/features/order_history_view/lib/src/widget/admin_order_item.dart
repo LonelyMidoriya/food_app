@@ -58,6 +58,7 @@ class AdminOrderItem extends StatelessWidget {
                   return Column(
                     children: [
                       OrderItem(
+                        isAdmin: true,
                         cartModel: _orders.carts[index],
                       ),
                       const SizedBox(

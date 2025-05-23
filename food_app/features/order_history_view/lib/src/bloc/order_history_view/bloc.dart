@@ -8,7 +8,6 @@ part 'state.dart';
 
 class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
   final FetchOrdersUseCase _fetchOrdersUseCase;
-  final FetchUserUseCase _fetchUserUseCase;
   final UpdateOrdersUseCase _updateOrdersUseCase;
   final InternetConnection _internetConnection;
   final GetAllUsersOrdersUseCase _getAllUsersOrdersUseCase;
@@ -26,7 +25,6 @@ class OrdersViewBloc extends Bloc<OrdersViewEvent, OrdersViewState> {
         _internetConnection = internetConnection,
         _getAllUsersOrdersUseCase = getAllUsersOrdersUseCase,
         _getSearchedUsersOrdersUseCase = getSearchedUsersOrdersUseCase,
-        _fetchUserUseCase = fetchUserUseCase,
         super(
           OrdersViewState.empty(),
         ) {

@@ -1,12 +1,12 @@
 enum TypeOfFood {
-  all,
+  All,
   // burger,
   // chicken,
   // fries,
   // sauce,
-  bruschetta,
-  soup,
-  salad,
-  main,
-  dessert,
+  Bruschetta,
+  Soup,
+  Salad,
+  Main,
+  Dessert,
 }

@@ -6,11 +6,14 @@ import '../widget/dish_description.dart';
 
 class DishDescriptionPage extends StatelessWidget {
   final DishModel _dish;
+  final bool _isAdmin;
 
   const DishDescriptionPage({
     super.key,
     required DishModel dish,
-  }) : _dish = dish;
+    required bool isAdmin,
+  }) : _dish = dish,
+        _isAdmin = isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class DishDescriptionPage extends StatelessWidget {
           centerTitle: true,
           title: const Text('Description'),
         ),
-        body: DishDescription(dish: _dish),
+        body: DishDescription(dish: _dish, isAdmin:_isAdmin,),
       ),
     );
   }

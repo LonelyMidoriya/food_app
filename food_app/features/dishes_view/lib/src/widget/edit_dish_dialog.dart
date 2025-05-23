@@ -109,7 +109,7 @@ class _EditDishDialogState extends State<EditDishDialog> {
                 DropdownButtonFormField(
                   value: dropDownController.text,
                   items: TypeOfFood.values
-                      .where((element) => element.name != 'all')
+                      .where((element) => element.name != 'All')
                       .toList()
                       .map<DropdownMenuItem<String>>(
                     (TypeOfFood e) {

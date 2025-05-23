@@ -29,143 +29,156 @@ class _AdminControlPanelScreenState extends State<AdminControlPanelScreen> {
       data: theme,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: theme.colorScheme.background,
-          body: Column(
-            children: <Widget>[
-              TextField(
-                style: const TextStyle(fontSize: 20),
-                showCursor: false,
-                onChanged: (String text) {
-                  if (text.isNotEmpty) {
-                    adminControlPanelBloc.add(
-                      GetSearchedUsersEvent(
-                        searchQuery: textEditingController.text,
-                      ),
-                    );
-                  } else {
-                    adminControlPanelBloc.add(
-                      AdminControlPanelInitEvent(),
-                    );
-                  }
-                },
-                decoration: InputDecoration(
-                  fillColor: theme.colorScheme.background,
-                  hintText: 'Search for user',
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                textInputAction: TextInputAction.search,
-                enableInteractiveSelection: false,
-                controller: textEditingController,
+          //backgroundColor: theme.colorScheme.background,
+          body: Container(
+            decoration:  BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.inversePrimary,
+                  theme.colorScheme.inverseSurface,
+                ],
               ),
-              Expanded(
-                child: LiquidPullToRefresh(
-                  showChildOpacityTransition: false,
-                  onRefresh: () async {
-                    if (textEditingController.text.isEmpty) {
-                      adminControlPanelBloc.add(
-                        AdminControlPanelInitEvent(),
-                      );
-                    } else {
+            ),            child: Column(
+              children: <Widget>[
+                TextField(
+                  style: const TextStyle(fontSize: 20),
+                  showCursor: false,
+                  onChanged: (String text) {
+                    if (text.isNotEmpty) {
                       adminControlPanelBloc.add(
                         GetSearchedUsersEvent(
                           searchQuery: textEditingController.text,
                         ),
                       );
+                    } else {
+                      adminControlPanelBloc.add(
+                        AdminControlPanelInitEvent(),
+                      );
                     }
                   },
-                  color: theme.colorScheme.primary,
-                  child: BlocBuilder<AdminControlPanelBloc,
-                      AdminControlPanelState>(
-                    builder: (BuildContext _, AdminControlPanelState state) {
-                      if (!state.isError &&
-                          !state.isLoaded &&
-                          state.hasInternet) {
-                        return const AppLoaderCenterWidget();
-                      } else if (state.isError && state.hasInternet) {
-                        return Center(
-                          child: Text(state.errorMessage.toString()),
+                  decoration: InputDecoration(
+                    fillColor: theme.colorScheme.onBackground,
+                    hintText: 'Search for user',
+                    
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.all(Radius. circular(0)),
+                    ),
+                  ),
+                  textInputAction: TextInputAction.search,
+                  enableInteractiveSelection: false,
+                  controller: textEditingController,
+                ),
+                Expanded(
+                  child: LiquidPullToRefresh(
+                    showChildOpacityTransition: false,
+                    onRefresh: () async {
+                      if (textEditingController.text.isEmpty) {
+                        adminControlPanelBloc.add(
+                          AdminControlPanelInitEvent(),
                         );
-                      } else if (state.isLoaded && state.hasInternet) {
-                        if (state.users.isEmpty) {
-                          return const Center(
-                            child: CustomText(
-                              text: 'No users found',
-                              fontWeight: FontWeight.w900,
-                            ),
-                          );
-                        } else {
-                          return ListView.separated(
-                            padding: const EdgeInsets.all(10),
-                            addAutomaticKeepAlives: false,
-                            addRepaintBoundaries: false,
-                            itemCount: state.users.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return UserItem(
-                                user: state.users[index],
-                                textEditingController: textEditingController,
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(
-                                height: 15,
-                              );
-                            },
-                          );
-                        }
                       } else {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const Center(
-                                child: CustomText(
-                                  text: 'Internet connection lost.',
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              AppButtonWidget(
-                                label: 'Refresh',
-                                onTap: () {
-                                  if (!state.hasInternet) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        behavior: SnackBarBehavior.floating,
-                                        elevation: 50,
-                                        backgroundColor: Colors.teal,
-                                        content: CustomText(
-                                          text: 'No Internet connection!',
-                                          fontWeight: FontWeight.w800,
-                                          textColor: theme.colorScheme.tertiary,
-                                        ),
-                                        duration: const Duration(seconds: 2),
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 60,
-                                          horizontal: 30,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  adminControlPanelBloc.add(
-                                    AdminControlPanelInitEvent(),
-                                  );
-                                  textEditingController.clear();
-                                },
-                              ),
-                            ],
+                        adminControlPanelBloc.add(
+                          GetSearchedUsersEvent(
+                            searchQuery: textEditingController.text,
                           ),
                         );
                       }
                     },
+                    color: theme.colorScheme.primary,
+                    child: BlocBuilder<AdminControlPanelBloc,
+                        AdminControlPanelState>(
+                      builder: (BuildContext _, AdminControlPanelState state) {
+                        if (!state.isError &&
+                            !state.isLoaded &&
+                            state.hasInternet) {
+                          return const AppLoaderCenterWidget();
+                        } else if (state.isError && state.hasInternet) {
+                          return Center(
+                            child: Text(state.errorMessage.toString()),
+                          );
+                        } else if (state.isLoaded && state.hasInternet) {
+                          if (state.users.isEmpty) {
+                            return const Center(
+                              child: CustomText(
+                                text: 'No users found',
+                                fontWeight: FontWeight.w900,
+                              ),
+                            );
+                          } else {
+                            return ListView.separated(
+                              padding: const EdgeInsets.all(10),
+                              addAutomaticKeepAlives: false,
+                              addRepaintBoundaries: false,
+                              itemCount: state.users.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return UserItem(
+                                  user: state.users[index],
+                                  textEditingController: textEditingController,
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const SizedBox(
+                                  height: 15,
+                                );
+                              },
+                            );
+                          }
+                        } else {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Center(
+                                  child: CustomText(
+                                    text: 'Internet connection lost.',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                AppButtonWidget(
+                                  label: 'Refresh',
+                                  onTap: () {
+                                    if (!state.hasInternet) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          elevation: 50,
+                                          backgroundColor: Colors.teal,
+                                          content: CustomText(
+                                            text: 'No Internet connection!',
+                                            fontWeight: FontWeight.w800,
+                                            textColor: theme.colorScheme.tertiary,
+                                          ),
+                                          duration: const Duration(seconds: 2),
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 60,
+                                            horizontal: 30,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    adminControlPanelBloc.add(
+                                      AdminControlPanelInitEvent(),
+                                    );
+                                    textEditingController.clear();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -5,9 +5,11 @@ import 'package:core/core.dart';
 
 class OrderItem extends StatelessWidget {
   final CartModel _cartModel;
+  final bool _isAdmin;
 
-  const OrderItem({Key? key, required CartModel cartModel})
+  const OrderItem({Key? key, required CartModel cartModel, required bool isAdmin})
       : _cartModel = cartModel,
+        _isAdmin = isAdmin,
         super(key: key);
 
   @override
@@ -21,20 +23,8 @@ class OrderItem extends StatelessWidget {
         return Container(
           height: (_cartModel.cartItems.length + 3) * state.fontSize * 3,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer,
+            color: _isAdmin ? theme.colorScheme.primaryContainer.withOpacity(0.6) : theme.colorScheme.onTertiary.withOpacity(0.5),
             borderRadius: BorderRadius.circular(30),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                blurStyle: BlurStyle.normal,
-                color: theme.colorScheme.secondaryContainer,
-                blurRadius: 10.0,
-                spreadRadius: 1.0,
-                offset: const Offset(
-                  2.0,
-                  2.0,
-                ),
-              ),
-            ],
           ),
           child: Column(
             children: <Widget>[

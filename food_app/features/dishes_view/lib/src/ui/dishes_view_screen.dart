@@ -55,73 +55,85 @@ class _DishesViewScreenState extends State<DishesViewScreen> {
       data: theme,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: theme.colorScheme.background,
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const TypeListView(),
-              Expanded(
-                child: BlocBuilder<DishesViewBloc, DishesViewState>(
-                  builder: (BuildContext context, DishesViewState state) {
-                    if (!state.isError && !state.isLoaded) {
-                      return const AppLoaderCenterWidget();
-                    } else if (state.isError) {
-                      return Center(
-                        child: Text(state.errorMessage.toString()),
-                      );
-                    } else if (state.dishes.isEmpty) {
-                      return const Center(
-                        child: CustomText(
-                          text: 'Nothing here',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      );
-                    } else if (state.isLoaded) {
-                      return LiquidPullToRefresh(
-                        color: theme.colorScheme.primary,
-                        onRefresh: _onRefresh,
-                        child: GridView.builder(
-                          controller: _scrollController,
-                          key: const PageStorageKey<String>('items'),
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 2 / 3,
+          //backgroundColor: theme.colorScheme.background,
+          body: Container(
+            decoration:  BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    theme.colorScheme.inversePrimary,
+                    theme.colorScheme.inverseSurface,
+                  ],
+                ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const TypeListView(),
+                Expanded(
+                  child: BlocBuilder<DishesViewBloc, DishesViewState>(
+                    builder: (BuildContext context, DishesViewState state) {
+                      if (!state.isError && !state.isLoaded) {
+                        return const AppLoaderCenterWidget();
+                      } else if (state.isError) {
+                        return Center(
+                          child: Text(state.errorMessage.toString()),
+                        );
+                      } else if (state.dishes.isEmpty) {
+                        return const Center(
+                          child: CustomText(
+                            text: 'Nothing here',
+                            fontWeight: FontWeight.w500,
                           ),
-                          itemCount: state.dishes.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () => authViewBloc.add(
-                              NavigateToPageEvent(
-                                route: DishDescriptionPageRoute(
-                                  dish: state.dishes[index],
+                        );
+                      } else if (state.isLoaded) {
+                        return LiquidPullToRefresh(
+                          color: theme.colorScheme.primary,
+                          onRefresh: _onRefresh,
+                          child: GridView.builder(
+                            controller: _scrollController,
+                            key: const PageStorageKey<String>('items'),
+                            addAutomaticKeepAlives: false,
+                            addRepaintBoundaries: false,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 2 / 3,
+                            ),
+                            itemCount: state.dishes.length,
+                            itemBuilder: (context, index) => GestureDetector(
+                              onTap: () => authViewBloc.add(
+                                NavigateToPageEvent(
+                                  route: DishDescriptionPageRoute(
+                                    dish: state.dishes[index],
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: DishGridItem(
-                              dish: state.dishes[index],
+                              child: DishGridItem(
+                                dish: state.dishes[index],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: AppButtonWidget(
-                          label: 'load',
-                          onTap: () {
-                            dishesViewBloc.add(
-                              InitDishesEvent(),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
+                        );
+                      } else {
+                        return Center(
+                          child: AppButtonWidget(
+                            label: 'load',
+                            onTap: () {
+                              dishesViewBloc.add(
+                                InitDishesEvent(),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
